@@ -1,77 +1,137 @@
-@extends('layouts.app')
-
-@section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Register') }}</div>
-
-                <div class="card-body">
-                    <form method="POST" action="{{ route('register') }}">
-                        @csrf
-
-                        <div class="form-group row">
-                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" required autofocus>
-
-                                @if ($errors->has('name'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('name') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required>
-
-                                @if ($errors->has('email'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
-
-                                @if ($errors->has('password'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Register') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Register | Smart Exam</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->  
+    <link rel="icon" type="image/png" href="{{ asset('login_register/images/icons/favicon.ico') }}"/>
+<!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{{ asset('login_register/vendor/bootstrap/css/bootstrap.min.css') }}">
+<!--===============================================================================================-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+{{--     <link rel="stylesheet" type="text/css" href="{{ asset('login_register/fonts/font-awesome-4.7.0/css') }}/font-awesome.min.css"> --}}
+<!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{{ asset('login_register/vendor/animate/animate.css') }}">
+<!--===============================================================================================-->  
+    <link rel="stylesheet" type="text/css" href="{{ asset('login_register/vendor/css-hamburgers/hamburgers.min.css') }}">
+<!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{{ asset('login_register/vendor/select2/select2.min.css') }}">
+<!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{{ asset('login_register/css/util.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('login_register/css/main.css') }}">
+<!--===============================================================================================-->
+</head>
+<body>
+    
+    <div class="limiter">
+        <div class="container-login100">
+            <div class="wrap-login100">
+                <div class="login100-pic js-tilt" data-tilt>
+                    <img src="{{ asset('login_register/images/img-01.png') }}" alt="Smart Exam logo">
                 </div>
+                <form class="login100-form validate-form" method="POST" action="{{ url('register') }}">
+                    @csrf
+                    <span class="login100-form-title">
+                        Create your account
+                    </span>
+                    @if ($errors->has('email'))
+                        <div class="alert alert-danger text-center" role="alert">
+                            <h6 style="font-size: 12px">{!! $errors->first('email') !!}</h6>
+                        </div>
+                    @endif
+                    @if ($errors->has('kode'))
+                        <div class="alert alert-danger text-center" role="alert">
+                            <h6 style="font-size: 12px">{!! $errors->first('kode') !!}</h6>
+                        </div>
+                    @endif
+                    @if ($errors->has('password'))
+                        <div class="alert alert-danger text-center" role="alert">
+                            <h6 style="font-size: 12px">{!! $errors->first('password') !!}</h6>
+                        </div>
+                    @endif
+                    <div class="wrap-input100 validate-input">
+                        <input id="name" type="name" class="input100" value="{{ old('name') }}" required placeholder="Name" name="name">
+
+                        <span class="focus-input100"></span>
+                        <span class="symbol-input100">
+                            <i class="fas fa-user" aria-hidden="true"></i>
+                        </span>
+                    </div>
+
+                    <div class="wrap-input100 validate-input">
+                        <input id="email" type="email" class="input100" value="{{ old('email') }}" required placeholder="Email" name="email">
+
+                        <span class="focus-input100"></span>
+                        <span class="symbol-input100">
+                            <i class="fas fa-envelope" aria-hidden="true"></i>
+                        </span>
+                    </div>
+
+                    <div class="wrap-input100 validate-input">
+                        <input id="kode" type="kode" class="input100" value="{{ old('kode') }}" required placeholder="NRP / NIP" name="kode">
+
+                        <span class="focus-input100"></span>
+                        <span class="symbol-input100">
+                            <i class="fas fa-envelope" aria-hidden="true"></i>
+                        </span>
+                    </div>
+
+                    <div class="wrap-input100 validate-input">
+                        <input id="password" type="password" class="input100" required placeholder="Password" name="password">
+
+                        <span class="focus-input100"></span>
+                        <span class="symbol-input100">
+                            <i class="fas fa-lock" aria-hidden="true"></i>
+                        </span>
+                    </div>
+
+                    <div class="wrap-input100 validate-input">
+                        <input id="password-confirm" type="password" class="input100" required placeholder="Password Confirm" name="password_confirmation">
+
+                        <span class="focus-input100"></span>
+                        <span class="symbol-input100">
+                            <i class="fas fa-lock" aria-hidden="true"></i>
+                        </span>
+                    </div>
+
+                    <div class="container-login100-form-btn">
+                        <button type="submit" class="login100-form-btn">
+                            Create
+                        </button>
+                    </div>
+
+                    <div class="text-center p-t-136 txt2">
+                        Already have your account? Login by
+                        <a class="txt2" href="{{ url('login')}}">
+                            Click here
+                            <i class="fas fa-long-arrow-right m-l-5" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-</div>
-@endsection
+    
+    
+
+    
+<!--===============================================================================================-->  
+    <script src="{{ asset('login_register/vendor/jquery/jquery-3.2.1.min.js') }}"></script>
+<!--===============================================================================================-->
+    <script src="{{ asset('login_register/vendor/bootstrap/js/popper.js') }}"></script>
+    <script src="{{ asset('login_register/vendor/bootstrap/js/bootstrap.min.js') }}"></script>
+<!--===============================================================================================-->
+    <script src="{{ asset('login_register/vendor/select2/select2.min.js') }}"></script>
+<!--===============================================================================================-->
+    <script src="{{ asset('login_register/vendor/tilt/tilt.jquery.min.js') }}"></script>
+    <script >
+        $('.js-tilt').tilt({
+            scale: 1.1
+        })
+    </script>
+<!--===============================================================================================-->
+    <script src="{{ asset('login_register/js/main.js') }}"></script>
+
+</body>
+</html>
