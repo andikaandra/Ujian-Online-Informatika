@@ -13,16 +13,20 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-    	$faker = Faker::create('id_ID');
-		for ($i=0; $i < 10; $i++) {
+		for ($i=1; $i <= 180; $i++) {
             $user = User::create([
-                'name' => $faker->name,
-                'email' => $faker->freeEmail,
-                'kode' => '05111640000'.$i,
+                'kode' => '05111640000'.sprintf('%03u', $i),
                 'password' => bcrypt('secret'),
                 'role' => 'mahasiswa',
             ]);
         }
 
+        for ($i=1; $i <= 10; $i++) {
+            $user = User::create([
+                'kode' => '194710251978031'.sprintf('%03u', $i),
+                'password' => bcrypt('secret'),
+                'role' => 'dosen',
+            ]);
+        }
     }
 }

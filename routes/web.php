@@ -15,8 +15,19 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('login', 'Auth\LoginController@showLoginForm');
+Route::get('login', 'Auth\LoginController@loginPage');
 Route::post('login', 'Auth\LoginController@login');
 Route::post('logout', 'Auth\LogoutController@logout');
+
+Route::get('/data/fill-data', 'PageController@getDataFillingPage');
+Route::post('/data/fill-data', 'MahasiswaController@setDataFilling')->name('fill.data');
+
+
+Route::get('/mahasiswa', 'PageController@getMahasiswaPage');
+
+Route::get('/dosen', 'PageController@getDosenPage');
+Route::get('/dosen/tambah-ujian', 'PageController@getTambahUjianPage');
+Route::get('/dosen/list-ujian', 'PageController@getListUjianPage');
+
 
 Route::get('/home', 'HomeController@index')->name('home');

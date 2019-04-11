@@ -9,7 +9,7 @@
     <meta name="author" content="Software Silo">
     <meta name="keyword" content="Medicine Competition University">
 
-    <title>AMSW <?php echo date("Y"); ?> Dashboard</title>
+    <title>SMART Exam <?php echo date("Y"); ?> Dashboard</title>
     
     <!-- Icons-->
     <link href="{{asset('dashboard/node_modules/@coreui/icons/css/coreui-icons.min.css')}}" rel="stylesheet">
@@ -35,19 +35,19 @@
     </style>
     @yield('style')
   </head>
-  <body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show aside-menu-lg-show"">
+  <body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show aside-menu-lg-show">
    
-    @include('includes.participant.header')
+    @include('includes.mahasiswa.header')
 
     <div class="app-body">
      
-        @include('includes.participant.sidebar')
+        @include('includes.mahasiswa.sidebar')
 
       <main class="main">
         <!-- Breadcrumb-->
         <ol class="breadcrumb">
           <li class="breadcrumb-item">Home</li>
-          <li class="breadcrumb-item">Participant</li>
+          <li class="breadcrumb-item">Mahasiswa</li>
           <li class="breadcrumb-item active">@yield('path')</li>
 
 {{--           <li class="breadcrumb-menu d-md-down-none">
@@ -70,7 +70,7 @@
           </div>
         </div>
       </main>
-      @include('includes.participant.aside')
+      @include('includes.mahasiswa.aside')
     </div>
     <footer class="app-footer">
       <div>
