@@ -27,12 +27,12 @@ class PageController extends Controller
 
     public function getTambahUjianPage()
     {
-        return view('pages.dosen.index');
+        return view('pages.dosen.tambah-ujian');
     }
 
     public function getListUjianPage()
     {
-        return view('pages.dosen.index');
+        return view('pages.dosen.list-ujian');
     }
 
 }

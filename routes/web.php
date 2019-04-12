@@ -27,6 +27,7 @@ Route::get('/mahasiswa', 'PageController@getMahasiswaPage');
 
 Route::get('/dosen', 'PageController@getDosenPage');
 Route::get('/dosen/tambah-ujian', 'PageController@getTambahUjianPage');
+Route::post('/dosen/tambah-ujian', 'MahasiswaController@setTambahUjian')->name('tambah.ujian');
 Route::get('/dosen/list-ujian', 'PageController@getListUjianPage');
 
 

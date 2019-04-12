@@ -34,7 +34,7 @@
     </li>
     <li class="nav-item">
         <a class="nav-link" href="{{ url('dosen/list-ujian')}}">
-        <i class="nav-icon fas fa-list"></i> Daftar Ujian</a>
+        <i class="nav-icon fas fa-list"></i> List Ujian</a>
     </li>
     <li class="divider"></li>
     @if(!Auth::user()->name)

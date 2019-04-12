@@ -1,4 +1,4 @@
-@extends('layouts.mahasiswa')
+@extends('layouts.dosen')
 
 @section('path', 'Fill name and email')
 
