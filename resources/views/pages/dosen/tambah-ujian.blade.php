@@ -44,22 +44,50 @@
             </div>
             <div class="form-row">
               <div class="form-group col">
-                <label for="nilai_benar">Skor jawaban benar</label>
+                <label for="">Skor jawaban benar</label>
                 <input type="number" min="1" class="form-control" id="nilai_benar" name="nilai_benar" placeholder="Skor jika jawaban benar. contoh: 2" required>
               </div>
               <div class="form-group col">
-                <label for="nilai_benar">Skor jawaban salah</label>
+                <label for="">Skor jawaban salah</label>
                 <input type="number" class="form-control" id="nilai_salah" name="nilai_salah" placeholder="Skor jika jawaban benar. contoh: 0 atau -1" required>
+              </div>
+            </div>
+            <hr>
+            <div class="form-row">
+              <div class="form-group col">
+                <label for="">Tanggal mulai</label>
+                <input type="date" class="form-control" id="tanggal_mulai" name="tanggal_mulai" placeholder="Tanggal ujian dimulai" required>
+              </div>
+              <div class="form-group col">
+                <label for="">Waktu mulai</label>
+                <input type="time" class="form-control" id="waktu_mulai" name="waktu_mulai" placeholder="Waktu ujian dimulai" required>
               </div>
             </div>
             <div class="form-row">
               <div class="form-group col">
-                <label for="nilai_benar">Tanggal mulai</label>
-                <input type="date" class="form-control" id="tanggal_mulai" name="tanggal_mulai" placeholder="Tanggal ujian dimulai" required>
+                <label for="">Tanggal akhir</label>
+                <input type="date" class="form-control" id="tanggal_akhir" name="tanggal_akhir" placeholder="Tanggal ujian dimulai" required>
               </div>
               <div class="form-group col">
-                <label for="nilai_benar">Waktu mulai</label>
-                <input type="time" class="form-control" id="waktu_mulai" name="waktu_mulai" placeholder="Waktu ujian dimulai" required>
+                <label for="">Waktu akhir</label>
+                <input type="time" class="form-control" id="waktu_akhir" name="waktu_akhir" placeholder="Waktu ujian dimulai" required>
+              </div>
+            </div>
+            <hr>
+            <div class="form-row">
+              <div class="form-group col">
+                <label for="">Laporan jawaban ke mahasiswa</label>
+                <select class="custom-select" name="report" required>
+                  <option value="ya" selected>Ya</option>
+                  <option value="tidak">Tidak</option>
+                </select>
+              </div>
+              <div class="form-group col">
+                <label for="">Laporan nilai ke mahasiswa</label>
+                <select class="custom-select" name="result" required>
+                  <option value="tidak" selected>Tidak</option>
+                  <option value="ya" >Ya</option>
+                </select>
               </div>
             </div>
             <button class="btn btn-sm btn-info text-white" type="submit">

@@ -19,16 +19,23 @@ Route::get('login', 'Auth\LoginController@loginPage');
 Route::post('login', 'Auth\LoginController@login');
 Route::post('logout', 'Auth\LogoutController@logout');
 
-Route::get('/data/fill-data', 'PageController@getDataFillingPage');
-Route::post('/data/fill-data', 'MahasiswaController@setDataFilling')->name('fill.data');
+
+Route::prefix('data')->middleware(['has_fill_data'])->group(function () {
+	Route::get('/fill-data', 'PageController@getDataFillingPage');
+	Route::post('/fill-data', 'MahasiswaController@setDataFilling')->name('fill.data');
+});
+
+Route::prefix('mahasiswa')->middleware(['mahasiswa_only'])->group(function () {
+	Route::get('/', 'PageController@getMahasiswaPage');
+});
 
 
-Route::get('/mahasiswa', 'PageController@getMahasiswaPage');
-
-Route::get('/dosen', 'PageController@getDosenPage');
-Route::get('/dosen/tambah-ujian', 'PageController@getTambahUjianPage');
-Route::post('/dosen/tambah-ujian', 'MahasiswaController@setTambahUjian')->name('tambah.ujian');
-Route::get('/dosen/list-ujian', 'PageController@getListUjianPage');
+Route::prefix('dosen')->middleware(['dosen_only'])->group(function () {
+	Route::get('/', 'PageController@getDosenPage');
+	Route::get('/tambah-ujian', 'PageController@getTambahUjianPage');
+	Route::post('/tambah-ujian', 'DosenController@setTambahUjian')->name('tambah.ujian');
+	Route::get('/list-ujian', 'PageController@getListUjianPage');
+});
 
 
 Route::get('/home', 'HomeController@index')->name('home');

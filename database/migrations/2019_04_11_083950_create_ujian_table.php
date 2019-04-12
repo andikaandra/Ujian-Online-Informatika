@@ -18,13 +18,15 @@ class CreateUjianTable extends Migration
             $table->string('nama');
             $table->string('id_dosen');
             $table->integer("test_time");
-            $table->integer("status");
+            $table->integer("status")->default('0');
             $table->integer("true_answer");
             $table->integer("false_answer");;
-            $table->integer("result_to_user");
-            $table->integer("report_to_user");
-            $table->timestamp('time_start')->nullable();
-            $table->timestamp('time_end')->nullable();
+            $table->string("result_to_user");
+            $table->string("report_to_user");
+            $table->timestamp('date_start')->nullable();
+            $table->timestamp('date_end')->nullable();
+            $table->time('time_start')->nullable();
+            $table->time('time_end')->nullable();
             $table->timestamps();
         });
     }
