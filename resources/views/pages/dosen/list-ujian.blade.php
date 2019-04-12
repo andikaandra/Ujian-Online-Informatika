@@ -49,11 +49,11 @@
             </thead>
             <tbody>
               @php
-                $no = 1;
+                $n = 1;
               @endphp
               @foreach($listUjian as $ujian)
                 <tr>
-                    <td align="center">{{$no++}}</td>
+                    <td align="center">{{$n++}}</td>
                     <td>{{$ujian->nama}}</td>
 {{--                     <td>{{$ujian->test_time}}</td>
                     <td>{{$ujian->true_answer}}</td>
