@@ -35,6 +35,9 @@ Route::prefix('dosen')->middleware(['dosen_only'])->group(function () {
 	Route::get('/tambah-ujian', 'PageController@getTambahUjianPage');
 	Route::post('/tambah-ujian', 'DosenController@setTambahUjian')->name('tambah.ujian');
 	Route::get('/list-ujian', 'PageController@getListUjianPage');
+	Route::get('/list/ujian/data', 'PageController@getListUjianData');
+	Route::get('/list/ujian/data/{id}', 'PageController@getUjianData');
+	Route::post('/update-ujian', 'DosenController@setUpdateUjian')->name('update.ujian');
 });
 
 

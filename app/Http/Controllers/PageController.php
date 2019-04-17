@@ -33,8 +33,18 @@ class PageController extends Controller
 
     public function getListUjianPage()
     {
+        return view('pages.dosen.list-ujian');
+    }
+
+    public function getListUjianData()
+    {
         $listUjian = Ujian::where('id_dosen', Auth::user()->id)->get();
-        return view('pages.dosen.list-ujian', compact('listUjian'));
+        return response()->json(['data' => $listUjian]);
+    }
+
+    public function getUjianData($id)
+    {
+        return response()->json(['ujian' => Ujian::find($id)]);
     }
 
 }

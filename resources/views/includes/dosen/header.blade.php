@@ -3,8 +3,9 @@
     <span class="navbar-toggler-icon"></span>
 </button>
 <a class="navbar-brand" href="#">
-    <img class="navbar-brand-full" src="{{asset('dashboard/img/brand/logo.svg')}}" width="89" height="25" alt="AMSW Logo">
-    <img class="navbar-brand-minimized" src="{{asset('dashboard/img/brand/sygnet.svg')}}" width="30" height="30" alt="AMSW Logo">
+{{--     <img class="navbar-brand-full" src="{{asset('dashboard/img/brand/logo.svg')}}" width="89" height="25" alt="AMSW Logo">
+    <img class="navbar-brand-minimized" src="{{asset('dashboard/img/brand/sygnet.svg')}}" width="30" height="30" alt="AMSW Logo"> --}}
+    SMART EXAM
 </a>
 <button class="navbar-toggler sidebar-toggler d-md-down-none" type="button" data-toggle="sidebar-lg-show">
     <span class="navbar-toggler-icon"></span>

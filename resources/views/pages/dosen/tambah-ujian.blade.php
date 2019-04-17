@@ -78,15 +78,15 @@
               <div class="form-group col">
                 <label for="">Laporan jawaban ke mahasiswa</label>
                 <select class="custom-select" name="report" required>
-                  <option value="ya" selected>Ya</option>
-                  <option value="tidak">Tidak</option>
+                  <option value="tidak" selected>Tidak</option>
+                  <option value="ya" >Ya</option>
                 </select>
               </div>
               <div class="form-group col">
                 <label for="">Laporan nilai ke mahasiswa</label>
                 <select class="custom-select" name="result" required>
-                  <option value="tidak" selected>Tidak</option>
-                  <option value="ya" >Ya</option>
+                  <option value="ya" selected>Ya</option>
+                  <option value="tidak">Tidak</option>
                 </select>
               </div>
             </div>

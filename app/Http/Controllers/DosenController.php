@@ -32,6 +32,30 @@ class DosenController extends Controller
 	        Log::emergency($eMessage);
 	    	return redirect()->back()->with('error', 'Whoops, something error!'); 
 	    }
-	    return redirect('dosen/list-ujian');->with('success', 'Test successfully created!'); 
+	    return redirect('dosen/list-ujian')->with('success', 'Test successfully created!'); 
+    }
+
+    public function setUpdateUjian(Request $request)
+    {
+    	// return $request;
+		try {
+			Ujian::find($request->id_ujian)->update([
+				'nama' => $request->nama,
+				'test_time'	=>	$request->waktu_ujian,
+				'true_answer'	=>	$request->nilai_benar,
+				'false_answer'	=>	$request->nilai_salah,
+				'result_to_user'	=>	$request->result,
+				'report_to_user'	=>	$request->report,
+				'date_start'	=>	$request->tanggal_mulai,
+				'date_end'	=>	$request->tanggal_akhir,
+				'time_start'	=>	$request->waktu_mulai,
+				'time_end'	=>	$request->waktu_akhir,
+      	]);
+		} catch (\Exception $e) {
+	        $eMessage = 'update ujian - User: ' . Auth::user()->id . ', error: ' . $e->getMessage();
+	        Log::emergency($eMessage);
+	    	return redirect()->back()->with('error', 'Whoops, something error!'); 
+	    }
+	    return redirect('dosen/list-ujian')->with('success', 'Test successfully updated!'); 
     }
 }
