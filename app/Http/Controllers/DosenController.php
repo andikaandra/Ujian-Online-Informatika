@@ -20,6 +20,7 @@ class DosenController extends Controller
 				'test_time'	=>	$request->waktu_ujian,
 				'true_answer'	=>	$request->nilai_benar,
 				'false_answer'	=>	$request->nilai_salah,
+				'jumlah_soal'	=>	$request->jumlah_soal,
 				'result_to_user'	=>	$request->result,
 				'report_to_user'	=>	$request->report,
 				'date_start'	=>	$request->tanggal_mulai,
@@ -57,5 +58,18 @@ class DosenController extends Controller
 	    	return redirect()->back()->with('error', 'Whoops, something error!'); 
 	    }
 	    return redirect('dosen/list-ujian')->with('success', 'Test successfully updated!'); 
+    }
+
+    public function getPesertaUjianPage($id)
+    {
+    	$ujian = Ujian::where('id_dosen', Auth::user()->id)->where('id', $id)->first();
+    	// return $ujian->peserta;
+        return view('pages.dosen.peserta_ujian', compact('ujian'));
+    }
+
+    public function getPesertaUjian($id)
+    {
+    	$ujian = Ujian::where('id_dosen', Auth::user()->id)->where('id', $id)->first();
+		return response()->json(['data' => $ujian->peserta]);
     }
 }

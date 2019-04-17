@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Auth;
 use App\Ujian;
+use App\User;
 
 class PageController extends Controller
 {
@@ -45,6 +46,11 @@ class PageController extends Controller
     public function getUjianData($id)
     {
         return response()->json(['ujian' => Ujian::find($id)]);
+    }
+
+    public function finishTour(Request $request) {
+        $user = User::find(Auth::user()->id)->update(['has_finish_tour' => 1]);
+        return response()->json(['message' => $user], 200);
     }
 
 }

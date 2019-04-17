@@ -29,7 +29,7 @@
             </div>
         @endif
         <div class="alert alert-primary">
-          lorem ipsum si dolor amet
+          You can create new exam here, after that add your participant on your exam list
         </div>
         <div class="chart-wrapper mt-3" style="min-height:300px;">
           <form method="post" id="" action="{{route('tambah.ujian')}}">
@@ -40,7 +40,11 @@
             </div>
             <div class="form-group">
               <label for="nama">Lama ujian(menit)</label>
-              <input type="number" class="form-control" name="waktu_ujian" id="waktu_ujian" placeholder="Waktu Ujian (menit)" required>
+              <input type="number" min="1" class="form-control" name="waktu_ujian" id="waktu_ujian" placeholder="Waktu Ujian (menit)" required>
+            </div>
+            <div class="form-group">
+              <label for="nama">Jumlah soal</label>
+              <input type="number" min="1" class="form-control" name="jumlah_soal" id="jumlah_soal" placeholder="Jumlah soal" required>
             </div>
             <div class="form-row">
               <div class="form-group col">

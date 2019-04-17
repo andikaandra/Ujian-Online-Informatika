@@ -31,7 +31,29 @@
       .card-content:hover{ 
           box-shadow: 1px 8px 20px grey;
             -webkit-transition:  box-shadow .2s ease-in;
+      }
+
+      .heartbeat {
+        animation: .8s infinite beatHeart;
+      }
+
+      @keyframes beatHeart {
+        0% {
+          transform: scale(1);
         }
+        25% {
+          transform: scale(1.1);
+        }
+        40% {
+          transform: scale(1);
+        }
+        60% {
+          transform: scale(1.1);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
     </style>
     @yield('style')
   </head>
@@ -74,7 +96,7 @@
     </div>
     <footer class="app-footer">
       <div>
-        <span>Hand-crafted & made with <i class="fas fa-heart" style="color: red" aria-hidden="true"></i></span>
+        <span>Copyright AMSW 2019-<?php echo date("Y"); ?> © | Handcrafted with huge <i class="fas fa-heart heartbeat" style="color: red" aria-hidden="true"></i> by Software Silo</span>
       </div>
     </footer>
     <!-- CoreUI and necessary plugins-->

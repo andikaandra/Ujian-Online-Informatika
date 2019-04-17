@@ -28,14 +28,14 @@
               {!! \Session::get('error') !!}
             </div>
         @endif
-        <div class="alert alert-primary">
-          
-        </div>
+{{--         <div class="alert alert-primary">          
+        </div> --}}
         <div class="chart-wrapper mt-3" style="min-height:300px;">
           <table class="table table-striped table-hover">
             <thead>
               <th>ID</th>
               <th>Nama</th>
+              <th>Participant</th>
               <th>Action</th>
             </thead>
             <tbody>
@@ -68,7 +68,11 @@
                   </div>
                   <div class="form-group">
                     <label for="nama">Lama ujian(menit)</label>
-                    <input type="number" class="form-control" name="waktu_ujian" id="waktu_ujian" placeholder="Waktu Ujian (menit)" required>
+                    <input type="number" min="1" class="form-control" name="waktu_ujian" id="waktu_ujian" placeholder="Waktu Ujian (menit)" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="nama">Jumlah soal</label>
+                    <input type="number" min="1" class="form-control" name="jumlah_soal" id="jumlah_soal" placeholder="Jumlah soal" required>
                   </div>
                   <div class="form-row">
                     <div class="form-group col">
@@ -133,6 +137,7 @@
 
 @section('script')
 <script>
+  $('#body-section').removeClass('aside-menu-lg-show');
   $(document).ready( function () {
       let dataTable = $(".table").DataTable({
         responsive: true,
@@ -140,6 +145,11 @@
         columns: [
           {data: "id"},
           {data: "nama"},
+          {data: null,
+            render: function(data, type, row) {
+                return "0 | <a href='ujian/peserta/"+row.id+"' role='button' class='btn btn-info text-white btn-sm participant' data-id='"+row.id+"'>Participant</a>";
+            }
+          },
           {data: null,
             render: function(data, type, row) {
                 return "<button class='btn btn-success btn-sm info' data-id='"+row.id+"'>Info</button>";
@@ -167,6 +177,7 @@
         $('#waktu_ujian').val(data.ujian.test_time)
         $('#nilai_benar').val(data.ujian.true_answer)
         $('#nilai_salah').val(data.ujian.false_answer)
+        $('#jumlah_soal').val(data.ujian.jumlah_soal)
         $('#tanggal_mulai').val((data.ujian.date_start).slice(0, 10))
         $('#waktu_mulai').val(data.ujian.time_start)
         $('#tanggal_akhir').val((data.ujian.date_end).slice(0, 10))
@@ -186,7 +197,6 @@
         $("#modalDetail").modal('show');
         dataTable.ajax.reload(null, false);
       });
-
   });
 
 </script>

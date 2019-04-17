@@ -6,8 +6,8 @@
 
 @endsection
 @section('content')
-    <div class="card card-content">
-      <div class="card-body" data-step="1" data-intro="Hello, welcome to SmartExam.">
+    <div class="card card-content" data-step="1" data-intro="Hello, welcome to SmartExam.">
+      <div class="card-body">
         <div class="row">
           <div class="col-sm-5">
             <h4 class="card-title mb-0">SMART Exam</h4>
@@ -28,20 +28,34 @@
         </div>
       </div>
       <div class="card-footer">
-
       </div>
     </div>
 @endsection
 
 @section('script')
 <script>
+  function completeTour() {
+    try {
+        res = $.ajax({
+          url: '{{url('finish-tour')}}',
+          method: 'POST',
+          data: {'_token': '{{ csrf_token() }}'}
+        });
+        // console.log(res);
+    } catch (error) {
+        alert("error");
+        console.log(error);
+        return;
+    }
+  }
+
   $(function() {  
-    var hadTour = localStorage.getItem('firstTimeDashboardSmartExamDosen');
+    var hadTour = {{Auth::user()->has_finish_tour}};
     if(!hadTour){
       introJs().oncomplete(function() {
-        localStorage.setItem('firstTimeDashboardSmartExamDosen', true);
+        completeTour();
       }).onexit(function(){
-        localStorage.setItem('firstTimeDashboardSmartExamDosen', true);
+        completeTour();
       }).start();
     }
   });

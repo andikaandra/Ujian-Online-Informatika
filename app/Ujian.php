@@ -8,4 +8,8 @@ class Ujian extends Model
 {
 	protected $table = 'ujian';
     protected $guarded = [];
+
+	public function peserta(){
+	    return $this->hasMany('App\PesertaUjian', 'ujian_id', 'id');
+	}
 }

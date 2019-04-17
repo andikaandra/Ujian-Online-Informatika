@@ -16,11 +16,12 @@ class CreateUjianTable extends Migration
         Schema::create('ujian', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('nama');
-            $table->string('id_dosen');
+            $table->bigInteger('id_dosen')->unsigned();
             $table->integer("test_time");
+            $table->integer("jumlah_soal");
             $table->integer("status")->default('0');
             $table->integer("true_answer");
-            $table->integer("false_answer");;
+            $table->integer("false_answer");
             $table->string("result_to_user");
             $table->string("report_to_user");
             $table->timestamp('date_start')->nullable();

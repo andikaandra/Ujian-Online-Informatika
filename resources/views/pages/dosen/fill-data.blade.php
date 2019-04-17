@@ -29,7 +29,7 @@
             </div>
         @endif
         <div class="alert alert-danger">
-          Once you submit your name and email, you cant change your data
+          Once you submit your name, you cant change your data
         </div>
         <div class="chart-wrapper mt-3" style="min-height:300px;">
           <form method="post" id="dataPeserta" action="{{route('fill.data')}}">
