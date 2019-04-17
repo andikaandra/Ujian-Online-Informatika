@@ -7,7 +7,7 @@
 @endsection
 @section('content')
     <div class="card card-content">
-      <div class="card-body">
+      <div class="card-body" data-step="1" data-intro="Hello, welcome to SmartExam.">
         <div class="row">
           <div class="col-sm-5">
             <h4 class="card-title mb-0">SMART Exam</h4>
@@ -31,4 +31,19 @@
 
       </div>
     </div>
+@endsection
+
+@section('script')
+<script>
+  $(function() {  
+    var hadTour = localStorage.getItem('firstTimeDashboardSmartExamDosen');
+    if(!hadTour){
+      introJs().oncomplete(function() {
+        localStorage.setItem('firstTimeDashboardSmartExamDosen', true);
+      }).onexit(function(){
+        localStorage.setItem('firstTimeDashboardSmartExamDosen', true);
+      }).start();
+    }
+  });
+</script>
 @endsection

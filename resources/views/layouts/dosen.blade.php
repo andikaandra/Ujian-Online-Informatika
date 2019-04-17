@@ -22,6 +22,7 @@
     <link href="{{asset('dashboard/css/style.css')}}" rel="stylesheet">
     <link href="{{asset('dashboard/vendors/pace-progress/css/pace.min.css')}}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+    <link href="{{asset('introjs/introjs.css')}}" rel="stylesheet">
 
     <style>
       .card-content{
@@ -91,6 +92,7 @@
 {{--     <script src="{{asset('dashboard/node_modules/@coreui/coreui-plugin-chartjs-custom-tooltips/dist/js/custom-tooltips.min.js')}}"></script> --}}
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
     <script src="{{asset('dashboard/js/main.js')}}"></script>
+    <script type="text/javascript" src="{{asset('introjs/intro.js')}}"></script>
     @yield('script')
   </body>
 </html>

@@ -1,4 +1,4 @@
-<div class="sidebar">
+<div class="sidebar" data-step="3" data-intro="You can navigate to other menu by click on this section">
 <nav class="sidebar-nav">
     <ul class="nav">
     <li class="nav-item nav-profile">
