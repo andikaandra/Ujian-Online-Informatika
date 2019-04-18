@@ -34,7 +34,7 @@ Route::prefix('dosen')->middleware(['dosen_only'])->group(function () {
 	Route::get('/', 'PageController@getDosenPage');
 	Route::get('/tambah-ujian', 'PageController@getTambahUjianPage');
 	Route::post('/tambah-ujian', 'DosenController@setTambahUjian')->name('tambah.ujian');
-	Route::post('/tambah-peserta', 'DosenController@setTambahUjian')->name('list.participant');
+	Route::post('/add/ujian/peserta', 'DosenController@setTambahPeserta')->name('tambah.peserta');
 	Route::get('/list-ujian', 'PageController@getListUjianPage');
 	Route::get('/list/ujian/data', 'PageController@getListUjianData');
 	Route::get('/list/ujian/data/{id}', 'PageController@getUjianData');

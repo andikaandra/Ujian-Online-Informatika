@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use App\Ujian;
+use App\PesertaUjian;
 use Auth;
 use Log;
 
@@ -63,13 +64,33 @@ class DosenController extends Controller
     public function getPesertaUjianPage($id)
     {
     	$ujian = Ujian::where('id_dosen', Auth::user()->id)->where('id', $id)->first();
-    	// return $ujian->peserta;
-        return view('pages.dosen.peserta_ujian', compact('ujian'));
+    	$users = User::where('role', 'mahasiswa')->get();
+        return view('pages.dosen.peserta_ujian', compact('ujian', 'users'));
     }
 
     public function getPesertaUjian($id)
     {
     	$ujian = Ujian::where('id_dosen', Auth::user()->id)->where('id', $id)->first();
+    	// return $ujian->peserta[0]->user->kode;
 		return response()->json(['data' => $ujian->peserta]);
     }
+
+    public function setTambahPeserta(Request $request)
+    {
+    	return $request;
+		try {
+			foreach ($request->peserta as $peserta) {
+				PesertaUjian::updateOrCreate ([
+					'ujian_id' => $request->ujian_id,
+					'user_id' => $peserta
+		      	]);
+			}
+		} catch (\Exception $e) {
+	        $eMessage = 'new participant - User: ' . Auth::user()->id . ', error: ' . $e->getMessage();
+	        Log::emergency($eMessage);
+	    	return response()->json(['error' => $eMessage]);
+	    }
+	    return response()->json(['success' => 'Success!']);
+    }
+    
 }

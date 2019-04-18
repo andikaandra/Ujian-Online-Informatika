@@ -29,21 +29,27 @@
             </div>
         @endif
         <div class="chart-wrapper mt-3" style="min-height:300px;">
+          <form>
+          @csrf
           <div class="row">
             <div class="col-4 col-md-2">
               Pilih peserta ujian :
             </div>
             <div class="col-8 col-md-8">
               <div class="form-group">
-                <select class="selectpicker form-control" data-live-search="true" multiple>
-                  <option>Mustard</option>
+                <select class="selectpicker form-control" id="peserta" data-live-search="true" multiple name="peserta[]">
+                  @foreach($users as $user)
+                  <option value="{{$user->id}}">{{$user->kode}} | {{$user->name}}</option> 
+                  @endforeach
                 </select>
               </div>
             </div>
+            <input type="hidden" name="ujian_id" value="{{$ujian->id}}">
             <div class="col-12 col-md-2">
-              <button type="submit" class="btn btn-primary btn-block">Simpan</button>
+              <button type="submit" class="btn btn-primary btn-block submit-participant">Simpan</button>
             </div>
           </div>
+          </form>
           <hr>
           <br>
           <table class="table table-striped table-hover">
@@ -69,19 +75,15 @@
 <script>
   $('#body-section').removeClass('aside-menu-lg-show');
 
-  $(document).ready( function () {
+    $(function () {
       $('select').selectpicker();
       let dataTable = $(".table").DataTable({
         responsive: true,
         ajax: '{{url('/dosen/list/ujian/peserta')}}'+'/'+{{$ujian->id}},
         columns: [
-          {data: "id"},
-          {data: "nama"},
-          {data: null,
-            render: function(data, type, row) {
-                return "0 | <a href='ujian/peserta/"+row.id+"' role='button' class='btn btn-info text-white btn-sm participant' data-id='"+row.id+"'>Participant</a>";
-            }
-          },
+          {data: 'id'},
+          {data: 'user_id'},
+          {data: 'user_id'},
           {data: null,
             render: function(data, type, row) {
                 return "<button class='btn btn-success btn-sm info' data-id='"+row.id+"'>Info</button>";
@@ -90,44 +92,30 @@
         ]
       });
 
-      $(document).on('click', '.info', async function(){
-        const id = $(this).attr('data-id');
-        let data;
-
-        try {
-            data = await $.ajax({
-              url: '{{url('dosen/list/ujian/data')}}/' + id
-            });
-        } catch (e) {
-          alert("Ajax error");
-          console.log(e);
-          return;
-        }
-        // console.log((data.ujian.date_start))
-        $('#id_ujian').val(data.ujian.id)
-        $('#nama').val(data.ujian.nama)
-        $('#waktu_ujian').val(data.ujian.test_time)
-        $('#nilai_benar').val(data.ujian.true_answer)
-        $('#nilai_salah').val(data.ujian.false_answer)
-        $('#jumlah_soal').val(data.ujian.jumlah_soal)
-        $('#tanggal_mulai').val((data.ujian.date_start).slice(0, 10))
-        $('#waktu_mulai').val(data.ujian.time_start)
-        $('#tanggal_akhir').val((data.ujian.date_end).slice(0, 10))
-        $('#waktu_akhir').val(data.ujian.time_end)
-        if (data.ujian.result_to_user=='ya') {
-          $("#result").val('ya');
-        }
-        else{
-          $("#result").val('tidak');
-        }
-        if (data.ujian.report_to_user=='ya') {
-          $("#report").val('ya');
-        }
-        else{
-          $("#report").val('tidak');
-        }
-        $("#modalDetail").modal('show');
-        dataTable.ajax.reload(null, false);
+      $('form').on('submit', function (e) {
+          e.preventDefault();
+          alertify.confirm('Confirmation', 'Would you like to add these participants?', async function() {
+              let res;
+              try {
+                  res = await $.ajax({
+                          url: `{{url('dosen/add/ujian/peserta')}}`, 
+                          method: 'POST',
+                          data: $('form').serialize()
+                        });    
+              } catch (error) {
+                  alert("error adding");
+                  console.log(error);
+                  return;
+              }
+              console.log(res);
+              alertify.success('participant added!');
+              dataTable.ajax.reload(null, false);
+            }, 
+            function() { 
+                // alertify.error('Cancel')
+            }
+          );
+          // $("#peserta").val("");
       });
 
   });

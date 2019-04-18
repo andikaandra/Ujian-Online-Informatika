@@ -17,9 +17,9 @@ class CreatePesertaUjianTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('ujian_id')->unsigned();
             $table->bigInteger('user_id')->unsigned();
-            $table->integer("total_true_answer");
-            $table->integer("total_false_answer");
-            $table->integer("nilai");
+            $table->integer("total_true_answer")->nullable();
+            $table->integer("total_false_answer")->nullable();
+            $table->integer("nilai")->nullable();
             $table->timestamps();
         });
     }
