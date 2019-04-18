@@ -1,4 +1,4 @@
-      <aside class="aside-menu">
+      <aside class="aside-menu" data-step="2" data-intro="This is your section about information">
         <ul class="nav nav-tabs" role="tablist">
           <li class="nav-item">
             <a class="nav-link">

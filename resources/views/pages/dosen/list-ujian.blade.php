@@ -1,6 +1,6 @@
 @extends('layouts.dosen')
 
-@section('path', 'Fill name and email')
+@section('path', 'Test list')
 
 @section('style')
 
@@ -36,6 +36,7 @@
               <th>ID</th>
               <th>Nama</th>
               <th>Participant</th>
+              <th>Status</th>
               <th>Action</th>
             </thead>
             <tbody>
@@ -145,12 +146,29 @@
         columns: [
           {data: "id"},
           {data: "nama"},
-          {data: null,
+          {data: null, className: "text-center",
             render: function(data, type, row) {
-                return "0 | <a href='ujian/peserta/"+row.id+"' role='button' class='btn btn-info text-white btn-sm participant' data-id='"+row.id+"'>Participant</a>";
+                return "<a href='ujian/peserta/"+row.id+"' role='button' class='btn btn-info text-white btn-sm participant' data-id='"+row.id+"'>Participant</a>";
             }
           },
-          {data: null,
+          {data: null, className: "text-center",
+            render: function(data, type, row) {
+                let start = new Date((row.date_start).slice(0, 10)+ ' ' + (row.time_start));
+                let end = new Date((row.date_end).slice(0, 10)+ ' ' + (row.time_end));
+                let now = new Date();
+                if (now > end) {
+                  return "Berakhir";
+                }
+                else if(now < start ){
+                  return "Belum dimulai";
+                }
+                else{
+                  return "Sedang berlangsung";
+                }
+                // start    end
+            }
+          },
+          {data: null, className: "text-center",
             render: function(data, type, row) {
                 return "<button class='btn btn-success btn-sm info' data-id='"+row.id+"'>Info</button>";
             }

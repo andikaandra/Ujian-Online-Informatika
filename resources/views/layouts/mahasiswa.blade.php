@@ -21,6 +21,10 @@
     <!-- Main styles for this application-->
     <link href="{{asset('dashboard/css/style.css')}}" rel="stylesheet">
     <link href="{{asset('dashboard/vendors/pace-progress/css/pace.min.css')}}" rel="stylesheet">
+    <link href="{{asset('dashboard/css/style.css')}}" rel="stylesheet">
+    <link href="{{asset('dashboard/vendors/pace-progress/css/pace.min.css')}}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+    <link href="{{asset('introjs/introjs.css')}}" rel="stylesheet">
     <style>
       .card-content{
         box-shadow: 0px 0px 0px grey;
@@ -57,7 +61,7 @@
     </style>
     @yield('style')
   </head>
-  <body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show aside-menu-lg-show">
+  <body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show aside-menu-lg-show" id="body-section">
    
     @include('includes.mahasiswa.header')
 
@@ -109,7 +113,11 @@
     <!-- Plugins and scripts required by this view-->
     {{-- <script src="{{asset('dashboard/node_modules/chart.js/dist/Chart.min.js')}}"></script> --}}
 {{--     <script src="{{asset('dashboard/node_modules/@coreui/coreui-plugin-chartjs-custom-tooltips/dist/js/custom-tooltips.min.js')}}"></script> --}}
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
     <script src="{{asset('dashboard/js/main.js')}}"></script>
+    <script type="text/javascript" src="{{asset('introjs/intro.js')}}"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/i18n/defaults-*.min.js"></script> --}}
+{{--     <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.11.2/build/alertify.min.js"></script>     --}}
     @yield('script')
   </body>
 </html>

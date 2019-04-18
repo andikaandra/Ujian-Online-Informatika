@@ -1,6 +1,6 @@
 @extends('layouts.dosen')
 
-@section('path', 'Fill name and email')
+@section('path', 'Add Test')
 
 @section('style')
 

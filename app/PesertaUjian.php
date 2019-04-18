@@ -12,4 +12,8 @@ class PesertaUjian extends Model
 	public function user(){
 	    return $this->belongsTo('App\User');
 	}
+
+	public function ujians(){
+	    return $this->belongsTo('App\Ujian', 'ujian_id', 'id');
+	}
 }

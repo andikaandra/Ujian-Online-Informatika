@@ -1,6 +1,6 @@
 @extends('layouts.dosen')
 
-@section('path', 'Fill name and email')
+@section('path', 'Test participants')
 
 @section('style')
 
@@ -9,11 +9,11 @@
     <div class="card card-content">
       <div class="card-body">
         <div class="row">
-          <div class="col-sm-5">
-            <h4 class="card-title mb-0">Peserta Ujian {{$ujian->nama}}</h4>
+          <div class="col-8">
+            <h4 class="card-title mb-0">Peserta Ujian {{$ujian->nama}} | Jumlah Peserta {{count($ujian->peserta)}}</h4>
             <div class="small text-muted">SMART Exam</div>
           </div>
-          <div class="col-sm-7 d-none d-md-block">
+          <div class="col d-none d-md-block">
 
           </div>
         </div>
@@ -29,7 +29,8 @@
             </div>
         @endif
         <div class="chart-wrapper mt-3" style="min-height:300px;">
-          <form>
+          <br>
+          <form id="addParticipant">
           @csrf
           <div class="row">
             <div class="col-4 col-md-2">
@@ -52,15 +53,27 @@
           </form>
           <hr>
           <br>
-          <table class="table table-striped table-hover">
-            <thead>
-              <th>ID</th>
+          @php
+            $no=1; 
+          @endphp
+          <table class="display responsive no-wrap table" width="100%">
+            <thead class="text-center">
+              <th width="10">NO</th>
               <th>Nama</th>
               <th>NRP</th>
-              <th>Action</th>
+              <th>Nilai</th>
+              <th >Action</th>
             </thead>
             <tbody>
-
+              @foreach($ujian->peserta as $u)
+              <tr>
+                <td class="text-center">{{$no++}}</td>
+                <td>{{$u->user->name}}</td>
+                <td>{{$u->user->kode}}</td>
+                <td>{{$u->nilai}}</td>
+                <td align="center"><button class="btn btn-danger btn-sm delete" data-id="{{$u->id}}">Hapus</button></td>
+              </tr>
+              @endforeach
             </tbody>
           </table>
         </div>
@@ -69,6 +82,10 @@
 
       </div>
     </div>
+<form method="post" id="hapusPeserta" action="{{route('hapus.peserta')}}">
+  @csrf
+  <input type="hidden" name="id" id="idPesertaUjian">
+</form>    
 @endsection
 
 @section('script')
@@ -79,43 +96,48 @@
       $('select').selectpicker();
       let dataTable = $(".table").DataTable({
         responsive: true,
-        ajax: '{{url('/dosen/list/ujian/peserta')}}'+'/'+{{$ujian->id}},
+        pageLength: 50,
         columns: [
-          {data: 'id'},
-          {data: 'user_id'},
-          {data: 'user_id'},
-          {data: null,
-            render: function(data, type, row) {
-                return "<button class='btn btn-success btn-sm info' data-id='"+row.id+"'>Info</button>";
-            }
-          }
+          null,
+          null,
+          null,
+          null,
+          {orderable: false},
         ]
       });
 
-      $('form').on('submit', function (e) {
+      $('#addParticipant').on('submit', function (e) {
           e.preventDefault();
           alertify.confirm('Confirmation', 'Would you like to add these participants?', async function() {
               let res;
               try {
-                  res = await $.ajax({
-                          url: `{{url('dosen/add/ujian/peserta')}}`, 
-                          method: 'POST',
-                          data: $('form').serialize()
-                        });    
+                res = await $.ajax({
+                        url: `{{url('dosen/add/ujian/peserta')}}`, 
+                        method: 'POST',
+                        data: $('form').serialize()
+                      });
+                console.log(res);
               } catch (error) {
                   alert("error adding");
                   console.log(error);
                   return;
+              } finally {
+                $("#peserta").val("");
               }
-              console.log(res);
               alertify.success('participant added!');
-              dataTable.ajax.reload(null, false);
+              location.reload();
+              // dataTable.ajax.reload(null, false);
             }, 
             function() { 
                 // alertify.error('Cancel')
             }
           );
-          // $("#peserta").val("");
+      });
+
+      $(".delete").click(function() {
+        const id = $(this).attr('data-id');
+        $('#idPesertaUjian').val(id);
+        $('#hapusPeserta').submit();
       });
 
   });

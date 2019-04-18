@@ -1,4 +1,4 @@
-<div class="sidebar">
+<div class="sidebar" data-step="3" data-intro="You can navigate to other menu by click on this section">
 <nav class="sidebar-nav">
     <ul class="nav">
     <li class="nav-item nav-profile">
@@ -25,6 +25,10 @@
     <li class="nav-item">
         <a class="nav-link" href="{{ url('mahasiswa')}}">
         <i class="nav-icon fas fa-clipboard"></i> Dashboard</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{{ url('mahasiswa/history')}}">
+        <i class="nav-icon fas fa-history"></i> History</a>
     </li>
     <li class="divider"></li>
     @if(!Auth::user()->name and !Auth::user()->email)

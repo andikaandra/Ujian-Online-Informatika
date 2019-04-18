@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Auth;
+use App\PesertaUjian;
 use App\Ujian;
 use App\User;
+use Auth;
 
 class PageController extends Controller
 {
@@ -51,6 +52,13 @@ class PageController extends Controller
     public function finishTour(Request $request) {
         $user = User::find(Auth::user()->id)->update(['has_finish_tour' => 1]);
         return response()->json(['message' => $user], 200);
+    }
+
+    public function getHistoryPage()
+    {
+        $ujian = PesertaUjian::where('user_id', Auth::user()->id)->get();
+        // return $ujian[0]->ujians;
+        return view('pages.mahasiswa.historis', compact('ujian'));
     }
 
 }

@@ -77,7 +77,7 @@ class DosenController extends Controller
 
     public function setTambahPeserta(Request $request)
     {
-    	return $request;
+    	// return $request;
 		try {
 			foreach ($request->peserta as $peserta) {
 				PesertaUjian::updateOrCreate ([
@@ -91,6 +91,18 @@ class DosenController extends Controller
 	    	return response()->json(['error' => $eMessage]);
 	    }
 	    return response()->json(['success' => 'Success!']);
+    }
+
+    public function deletePeserta(Request $request)
+    {
+		try {
+			PesertaUjian::find($request->id)->delete();
+		} catch (\Exception $e) {
+	        $eMessage = 'delete participant - User: ' . Auth::user()->id . ', error: ' . $e->getMessage();
+	        Log::emergency($eMessage);
+	    	return redirect()->back()->with('error', 'Whoops, something error!'); 
+	    }
+	    return redirect()->back()->with('success', 'Delete Success!');
     }
     
 }
