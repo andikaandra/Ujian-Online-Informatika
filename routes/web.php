@@ -25,6 +25,7 @@ Route::prefix('data')->middleware(['has_fill_data'])->group(function () {
 	Route::post('/fill-data', 'MahasiswaController@setDataFilling')->name('fill.data');
 });
 
+
 Route::prefix('mahasiswa')->middleware(['mahasiswa_only'])->group(function () {
 	Route::get('/', 'PageController@getMahasiswaPage');
 	Route::get('/history', 'PageController@getHistoryPage');
@@ -43,6 +44,10 @@ Route::prefix('dosen')->middleware(['dosen_only'])->group(function () {
 	Route::post('/update-ujian', 'DosenController@setUpdateUjian')->name('update.ujian');
 	Route::get('/ujian/peserta/{id}', 'DosenController@getPesertaUjianPage');
 	Route::get('/list/ujian/peserta/{id}', 'DosenController@getPesertaUjian');
+});
+
+Route::prefix('admin')->middleware(['admin_only'])->group(function () {
+
 });
 
 Route::post('/finish-tour', 'PageController@finishTour');

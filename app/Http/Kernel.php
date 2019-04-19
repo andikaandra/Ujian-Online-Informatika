@@ -62,6 +62,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'dosen_only' => \App\Http\Middleware\DosenOnly::class,
         'mahasiswa_only' => \App\Http\Middleware\MahasiswaOnly::class,
+        'admin_only' => \App\Http\Middleware\AdminOnly::class,
         'has_fill_data' => \App\Http\Middleware\HasFillData::class,
     ];
 

@@ -3,20 +3,19 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Auth;
 
-class DosenOnly
+class AdminOnly
 {
     public function handle($request, Closure $next)
     {
-        if (Auth::user() && Auth::user()->role == 'dosen') {
+        if (Auth::user() && Auth::user()->role == 'admin') {
             return $next($request);
         }
         elseif (Auth::user() && Auth::user()->role == 'mahasiswa') {
             return redirect('/mahasiswa');
         }
-        elseif (Auth::user() && Auth::user()->role == 'admin') {
-            return redirect('/admin');
+        elseif (Auth::user() && Auth::user()->role == 'dosen') {
+            return redirect('/dosen');
         }
         if ($request->ajax()) {
           return response()->json(['message' => 'unauthorised'], 401);

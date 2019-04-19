@@ -15,6 +15,9 @@ class MahasiswaOnly
         elseif (Auth::user() && Auth::user()->role == 'dosen') {
             return redirect('/dosen');
         }
+        elseif (Auth::user() && Auth::user()->role == 'admin') {
+            return redirect('/admin');
+        }
         if ($request->ajax()) {
           return response()->json(['message' => 'unauthorised'], 401);
         }
