@@ -41,7 +41,7 @@
               <th width="20%">Nilai</th>
             </thead>
             <tbody>
-              @foreach($ujian as $u)
+              @foreach(Auth::user()->ujians as $u)
               <tr>
                 <td>{{$no++}}</td>
                 <td>{{$u->ujians->nama}}</td>

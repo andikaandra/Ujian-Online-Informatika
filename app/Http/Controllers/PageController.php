@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\PesertaUjian;
-use App\Ujian;
 use App\User;
+use App\Soal;
+use App\Ujian;
+use App\PesertaUjian;
 use Auth;
+use Log;
 
 class PageController extends Controller
 {
@@ -56,9 +58,26 @@ class PageController extends Controller
 
     public function getHistoryPage()
     {
-        $ujian = PesertaUjian::where('user_id', Auth::user()->id)->get();
-        // return $ujian[0]->ujians;
+        // $ujian = PesertaUjian::where('user_id', Auth::user()->id)->get();
+        // // return $ujian[0]->ujians;
+        // return $ujian;
+        // return Auth::user()->ujians;
         return view('pages.mahasiswa.historis', compact('ujian'));
+    }
+
+    public function getPesertaUjianPage($id)
+    {
+        $ujian = Ujian::where('id_dosen', Auth::user()->id)->where('id', $id)->first();
+        $users = User::where('role', 'mahasiswa')->get();
+        return view('pages.dosen.peserta_ujian', compact('ujian', 'users'));
+    }
+
+    public function getSoalUjianPage($id)
+    {
+        // return $id;
+        $ujian = Ujian::where('id_dosen', Auth::user()->id)->where('id', $id)->first();
+        $users = User::where('role', 'mahasiswa')->get();
+        return view('pages.dosen.soal_ujian', compact('ujian', 'users'));
     }
 
 }

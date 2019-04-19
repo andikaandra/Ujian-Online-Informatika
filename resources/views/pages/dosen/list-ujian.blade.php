@@ -36,6 +36,7 @@
               <th>ID</th>
               <th>Nama</th>
               <th>Participant</th>
+              <th>Question's</th>
               <th>Status</th>
               <th>Action</th>
             </thead>
@@ -149,6 +150,11 @@
           {data: null, className: "text-center",
             render: function(data, type, row) {
                 return "<a href='ujian/peserta/"+row.id+"' role='button' class='btn btn-info text-white btn-sm participant' data-id='"+row.id+"'>Participant</a>";
+            }
+          },
+          {data: null, className: "text-center",
+            render: function(data, type, row) {
+                return "<a href='ujian/soal/"+row.id+"' role='button' class='btn btn-info text-white btn-sm question' data-id='"+row.id+"'>Question</a>";
             }
           },
           {data: null, className: "text-center",

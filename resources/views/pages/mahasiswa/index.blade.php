@@ -25,9 +25,9 @@
           Your incoming exam list :
           <div class="row">
             <ul>
-              <li>a</li>
-              <li>a</li>
-              <li>a</li>
+              @foreach(Auth::user()->ujians as $u)
+              <li><a href="{{url('exam/')}}" style="text-decoration: none;">{{$u->ujians->nama}}</a></li>
+              @endforeach
             </ul>
           </div>
         </div>

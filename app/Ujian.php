@@ -12,4 +12,8 @@ class Ujian extends Model
 	public function peserta(){
 	    return $this->hasMany('App\PesertaUjian', 'ujian_id', 'id');
 	}
+
+	public function soals(){
+	    return $this->hasMany('App\Soal', 'ujian_id', 'id');
+	}
 }

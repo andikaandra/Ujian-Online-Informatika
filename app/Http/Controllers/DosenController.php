@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Soal;
 use App\Ujian;
 use App\PesertaUjian;
 use Auth;
@@ -61,20 +62,6 @@ class DosenController extends Controller
 	    return redirect('dosen/list-ujian')->with('success', 'Test successfully updated!'); 
     }
 
-    public function getPesertaUjianPage($id)
-    {
-    	$ujian = Ujian::where('id_dosen', Auth::user()->id)->where('id', $id)->first();
-    	$users = User::where('role', 'mahasiswa')->get();
-        return view('pages.dosen.peserta_ujian', compact('ujian', 'users'));
-    }
-
-    public function getPesertaUjian($id)
-    {
-    	$ujian = Ujian::where('id_dosen', Auth::user()->id)->where('id', $id)->first();
-    	// return $ujian->peserta[0]->user->kode;
-		return response()->json(['data' => $ujian->peserta]);
-    }
-
     public function setTambahPeserta(Request $request)
     {
     	// return $request;
@@ -99,6 +86,18 @@ class DosenController extends Controller
 			PesertaUjian::find($request->id)->delete();
 		} catch (\Exception $e) {
 	        $eMessage = 'delete participant - User: ' . Auth::user()->id . ', error: ' . $e->getMessage();
+	        Log::emergency($eMessage);
+	    	return redirect()->back()->with('error', 'Whoops, something error!'); 
+	    }
+	    return redirect()->back()->with('success', 'Delete Success!');
+    }
+
+    public function deleteSoal(Request $request)
+    {
+		try {
+			Soal::find($request->id)->delete();
+		} catch (\Exception $e) {
+	        $eMessage = 'delete soal - User: ' . Auth::user()->id . ', error: ' . $e->getMessage();
 	        Log::emergency($eMessage);
 	    	return redirect()->back()->with('error', 'Whoops, something error!'); 
 	    }
