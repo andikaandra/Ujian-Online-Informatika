@@ -29,7 +29,7 @@ class DosenController extends Controller
 				'date_end'	=>	$request->tanggal_akhir,
 				'time_start'	=>	$request->waktu_mulai,
 				'time_end'	=>	$request->waktu_akhir,
-      	]);
+	      	]);
 		} catch (\Exception $e) {
 	        $eMessage = 'new ujian - User: ' . Auth::user()->id . ', error: ' . $e->getMessage();
 	        Log::emergency($eMessage);
@@ -90,6 +90,22 @@ class DosenController extends Controller
 	    	return redirect()->back()->with('error', 'Whoops, something error!'); 
 	    }
 	    return redirect()->back()->with('success', 'Delete Success!');
+    }
+
+
+    public function setTambahSoal(Request $request)
+    {
+    	return $request;
+		try {
+			Soal::create([
+
+	      	]);
+		} catch (\Exception $e) {
+	        $eMessage = 'new soal - User: ' . Auth::user()->id . ', error: ' . $e->getMessage();
+	        Log::emergency($eMessage);
+	    	return response()->json(['error' => $eMessage]);
+	    }
+	    return response()->json(['success' => 'Success!']);
     }
 
     public function deleteSoal(Request $request)

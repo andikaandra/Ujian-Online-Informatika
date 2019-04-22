@@ -34,15 +34,20 @@ Route::prefix('mahasiswa')->middleware(['mahasiswa_only'])->group(function () {
 
 Route::prefix('dosen')->middleware(['dosen_only'])->group(function () {
 	Route::get('/', 'PageController@getDosenPage');
+	
 	Route::get('/tambah-ujian', 'PageController@getTambahUjianPage');
 	Route::post('/tambah-ujian', 'DosenController@setTambahUjian')->name('tambah.ujian');
+
 	Route::post('/add/ujian/peserta', 'DosenController@setTambahPeserta')->name('tambah.peserta');
 	Route::post('/delete/ujian/peserta', 'DosenController@deletePeserta')->name('hapus.peserta');
+
+	Route::post('/add/ujian/soal', 'DosenController@setTambahSoal')->name('tambah.soal');
 	Route::post('/delete/ujian/soal', 'DosenController@deleteSoal')->name('hapus.soal');
 
 	Route::get('/list-ujian', 'PageController@getListUjianPage');
 	Route::get('/list/ujian/data', 'PageController@getListUjianData');
 	Route::get('/list/ujian/data/{id}', 'PageController@getUjianData');
+	
 	Route::post('/update-ujian', 'DosenController@setUpdateUjian')->name('update.ujian');
 
 	Route::get('/ujian/peserta/{id}', 'PageController@getPesertaUjianPage');

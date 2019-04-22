@@ -16,11 +16,13 @@ class CreateSoalTable extends Migration
         Schema::create('soal', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('ujian_id')->unsigned();
+            $table->text("deskripsi");
+            $table->text("file_path")->nullable();
             $table->string("pilihan_a");
             $table->string("pilihan_b");
             $table->string("pilihan_c");
             $table->string("pilihan_d");
-            $table->string("pilihan_e");
+            $table->string("pilihan_e")->nullable();
             $table->string("jawaban");
             $table->timestamps();
         });
