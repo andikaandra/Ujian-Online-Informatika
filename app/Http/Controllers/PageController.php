@@ -51,6 +51,11 @@ class PageController extends Controller
         return response()->json(['ujian' => Ujian::find($id)]);
     }
 
+    public function getSoalData($id)
+    {
+        return response()->json(['soal' => Soal::find($id)]);
+    }
+
     public function finishTour(Request $request) {
         $user = User::find(Auth::user()->id)->update(['has_finish_tour' => 1]);
         return response()->json(['message' => $user], 200);
@@ -80,4 +85,10 @@ class PageController extends Controller
         return view('pages.dosen.soal_ujian', compact('ujian', 'users'));
     }
 
+    public function getUjianPage($id, $name)
+    {
+        $ujian = Ujian::find($id);
+        // return $ujian;
+        return view('pages.mahasiswa.ujian', compact('ujian'));
+    }
 }

@@ -16,4 +16,8 @@ class Ujian extends Model
 	public function soals(){
 	    return $this->hasMany('App\Soal', 'ujian_id', 'id');
 	}
+
+	public function dosen(){
+	    return $this->belongsTo('App\User', 'id_dosen', 'id');
+	}
 }

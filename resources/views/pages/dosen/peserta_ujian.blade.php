@@ -33,10 +33,13 @@
           <form id="addParticipant">
           @csrf
           <div class="row">
-            <div class="col-4 col-md-2">
+            <div class="col-12 col-md-2">
+              <a href="{{url('dosen/list-ujian')}}" role="button" class="mb-2 btn btn-block btn-info text-white"><i class="fas fa-backward"></i> &nbsp;Kembali</a>
+            </div>
+            <div class="col-12 col-md-2">
               Pilih peserta ujian :
             </div>
-            <div class="col-8 col-md-8">
+            <div class="col-12 col-md-6">
               <div class="form-group">
                 <select class="selectpicker form-control" id="peserta" data-live-search="true" multiple name="peserta[]">
                   @foreach($users as $user)
@@ -47,7 +50,7 @@
             </div>
             <input type="hidden" name="ujian_id" value="{{$ujian->id}}">
             <div class="col-12 col-md-2">
-              <button type="submit" class="btn btn-primary btn-block submit-participant">Simpan</button>
+              <button type="submit" class="btn btn-primary btn-block submit-participant"><i class="fas fa-save"></i> &nbsp;Simpan</button>
             </div>
           </div>
           </form>

@@ -19,6 +19,9 @@
         <hr>
         <div class="chart-wrapper mt-3" style="min-height:300px;">
           <div class="email-unverified">
+            @if(!Auth::user()->name)
+            <p>Please complete your name and email <a href="{{url('/data/fill-data')}}">here</a></p>
+            @endif
             <p>Hello {{Auth::user()->name ? Auth::user()->name : ' '}} 
               <strong>{{Auth::user()->kode}}</strong>. <br> </p>
           </div>
@@ -26,7 +29,7 @@
           <div class="row">
             <ul>
               @foreach(Auth::user()->ujians as $u)
-              <li><a href="{{url('exam/')}}" style="text-decoration: none;">{{$u->ujians->nama}}</a></li>
+              <li><a href="{{url('mahasiswa/exam').'/'.$u->ujians->id.'/'.urlencode($u->ujians->nama)}}" style="text-decoration: none;">{{$u->ujians->nama}}</a></li>
               @endforeach
             </ul>
           </div>

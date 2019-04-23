@@ -7,6 +7,7 @@ use App\User;
 use App\Soal;
 use App\Ujian;
 use App\PesertaUjian;
+use Validator;
 use Auth;
 use Log;
 
@@ -95,17 +96,57 @@ class DosenController extends Controller
 
     public function setTambahSoal(Request $request)
     {
-    	return $request;
 		try {
-			Soal::create([
+	        $validator = Validator::make($request->all(), [
+	            'description' =>  'required|max:2000',
+	            'pilihan1' => 'required|max:600',
+	            'pilihan2' => 'required|max:600',
+	            'pilihan3' => 'required|max:600',
+	            'pilihan4' => 'required|max:600',
+	            'jawaban' => 'required|max:600'
+	        ]);
 
-	      	]);
+	        if ($validator->fails()) {
+	            return redirect()->back()->withErrors($validator)->withInput();
+	        }
+
+			$soal = new Soal;
+
+		    $soal->ujian_id = $request->ujian_id;
+		    $soal->deskripsi = $request->description;
+		    $soal->pilihan_a = $request->pilihan1;
+		    $soal->pilihan_b = $request->pilihan2;
+		    $soal->pilihan_c = $request->pilihan3;
+		    $soal->pilihan_d = $request->pilihan4;
+		    $soal->jawaban = $request->{$request->jawaban};
+        	if ($request->pilihan5!='') {
+	    		$validator = Validator::make($request->all(), [
+    	            'pilihan5' => 'required|max:600',
+	        	]);
+				if ($validator->fails()) {
+		            return redirect()->back()->withErrors($validator);
+		        }
+    			$soal->pilihan_e = $request->pilihan5;
+    		}
+	    	if ($request->image) {
+	    		$validator = Validator::make($request->all(), [
+    	            'image' => 'bail|required|max:1000'
+	        	]);
+				if ($validator->fails()) {
+		            return redirect()->back()->withErrors($validator);
+		        }
+
+	    		$file_path = $request->file('image')->store('public/question-image');
+
+	    		$soal->file_path = str_replace("public","", $file_path);
+	    	}
+		    $soal->save();
 		} catch (\Exception $e) {
 	        $eMessage = 'new soal - User: ' . Auth::user()->id . ', error: ' . $e->getMessage();
 	        Log::emergency($eMessage);
-	    	return response()->json(['error' => $eMessage]);
+	    	return redirect()->back()->with('error', $eMessage); 
 	    }
-	    return response()->json(['success' => 'Success!']);
+	    return redirect()->back()->with('success', 'Question successfully created!');
     }
 
     public function deleteSoal(Request $request)

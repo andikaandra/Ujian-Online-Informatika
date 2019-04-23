@@ -2,7 +2,7 @@
 <nav class="sidebar-nav">
     <ul class="nav">
     <li class="nav-item nav-profile">
-      <a href="{{url('participant')}}" class="nav-link" style="cursor: default;">
+      <a href="{{url('mahasiswa')}}" class="nav-link" style="cursor: default;">
         <div class="row justify-content-center">
             <div class="nav-profile-image">
               <img src="{{asset('dashboard/img/avatars/avatar.png')}}" alt="image" style="width: 50px">
