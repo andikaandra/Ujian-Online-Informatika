@@ -88,7 +88,7 @@ class PageController extends Controller
         return view('pages.dosen.soal_ujian', compact('ujian', 'users'));
     }
 
-    public function getUjianPage($id, $name)
+    public function getUjianPage($id, $name, Request $request)
     {
         $ujian = Ujian::find($id);
         // return $ujian->peserta;
@@ -100,6 +100,16 @@ class PageController extends Controller
             }
         }
         if ($status) {
+            $packets = PesertaUjian::where('ujian_id', $ujian->id)->where('user_id', Auth::user()->id)->first();
+            date_default_timezone_set('Asia/Jakarta');
+            $format = 'Y-m-d H:i:s';
+            $start = date($format,strtotime(substr($ujian->date_start, 0, 11).$ujian->time_start));
+            $end = date($format,strtotime(substr($ujian->date_end, 0, 11).$ujian->time_end));
+            $now = date($format);
+            if ($packets && $packets->soal && $now <= $end && $now > $start) {
+                $total = count($packets->packet);
+                return view('pages.mahasiswa.ujian-joined', compact('ujian', 'packets', 'total'));
+            }
             return view('pages.mahasiswa.ujian', compact('ujian'));
         }
         return redirect('mahasiswa/');

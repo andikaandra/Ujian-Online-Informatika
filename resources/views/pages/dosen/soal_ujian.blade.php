@@ -61,8 +61,8 @@
               @foreach($ujian->soals as $u)
               <tr>
                 <td align="center">{{$no++}}</td>
-                <td><?php echo str_limit($u->deskripsi, 60, '...'); ?></td>
-                <td>{{$u->jawaban}}</td>
+                <td><?php echo str_limit($u->deskripsi, 80, '...'); ?></td>
+                <td><?php echo str_limit($u->jawaban, 30, '...'); ?></td>
                 <td align="center">
                   <button class="btn btn-info text-white btn-sm view" data-id="{{$u->id}}">View</button>
                   <button class="btn btn-danger btn-sm delete" data-id="{{$u->id}}">Hapus</button>

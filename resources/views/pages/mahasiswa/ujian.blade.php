@@ -30,11 +30,24 @@
                   <strong>Total Questions</strong> : {{count($ujian->soals)}}<br><br>
 
                   <strong>Lecturer</strong> : {{$ujian->dosen->name ?? 'Mr. lecturer'}}<br><br>
-                  <form action="{{route('join.ujian')}}" method="post">
-                    @csrf
-                    <input type="hidden" name="ujian_id" value="{{$ujian->id}}">
-                    <button type="submit" class="btn btn-success btn-block">JOIN</button>
-                  </form>
+                  @php
+                  date_default_timezone_set('Asia/Jakarta');
+                  $format = 'Y-m-d H:i:s';
+                  $start = DateTime::createFromFormat($format, substr($ujian->date_start, 0, 11).$ujian->time_start);
+                  $end = DateTime::createFromFormat($format, substr($ujian->date_end, 0, 11).$ujian->time_end);
+                  $now = (new DateTime())->format('Y-m-d H:i:s');
+                  @endphp
+                  @if($now > $end->format('Y-m-d H:i:s'))
+                    <button class="btn btn-success btn-block">ALREADY ENDED</button>
+                  @elseif($now < $start->format('Y-m-d H:i:s'))
+                    <button class="btn btn-success btn-block">NOT YET STARTED</button>
+                  @else
+                    <form action="{{route('join.ujian')}}" method="post">
+                      @csrf
+                      <input type="hidden" name="ujian_id" value="{{$ujian->id}}">
+                      <button type="submit" class="btn btn-success btn-block">JOIN</button>
+                    </form>
+                  @endif
 
                 </div>
               </div>
