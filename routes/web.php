@@ -31,6 +31,7 @@ Route::prefix('mahasiswa')->middleware(['mahasiswa_only'])->group(function () {
 	Route::get('/history', 'PageController@getHistoryPage');
 
 	Route::get('/exam/{id}/{name}', 'PageController@getUjianPage');
+	Route::post('/exam/join', 'MahasiswaController@ujian')->name('join.ujian');
 });
 
 

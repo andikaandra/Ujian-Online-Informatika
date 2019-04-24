@@ -29,9 +29,13 @@
                   <strong>False point</strong> : {{$ujian->false_answer}}<br>
                   <strong>Total Questions</strong> : {{count($ujian->soals)}}<br><br>
 
-                  <strong>Lecturer</strong> : {{$ujian->dosen->name ?? 'Mr. lecturer'}}<br><br>                  
-                  <a role="button" href="" class="btn btn-success btn-block">JOIN</a>
-                  
+                  <strong>Lecturer</strong> : {{$ujian->dosen->name ?? 'Mr. lecturer'}}<br><br>
+                  <form action="{{route('join.ujian')}}" method="post">
+                    @csrf
+                    <input type="hidden" name="ujian_id" value="{{$ujian->id}}">
+                    <button type="submit" class="btn btn-success btn-block">JOIN</button>
+                  </form>
+
                 </div>
               </div>
             </div>

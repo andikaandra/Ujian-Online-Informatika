@@ -48,7 +48,7 @@ class PageController extends Controller
 
     public function getUjianData($id)
     {
-        return response()->json(['ujian' => Ujian::find($id)]);
+        return response()->json(['ujian' => Ujian::find($id)->where('id_dosen', Auth::user()->id)->first()]);
     }
 
     public function getSoalData($id)
@@ -73,6 +73,9 @@ class PageController extends Controller
     public function getPesertaUjianPage($id)
     {
         $ujian = Ujian::where('id_dosen', Auth::user()->id)->where('id', $id)->first();
+        if (!$ujian) {
+            return redirect('dosen/');
+        }
         $users = User::where('role', 'mahasiswa')->get();
         return view('pages.dosen.peserta_ujian', compact('ujian', 'users'));
     }
@@ -88,7 +91,17 @@ class PageController extends Controller
     public function getUjianPage($id, $name)
     {
         $ujian = Ujian::find($id);
-        // return $ujian;
-        return view('pages.mahasiswa.ujian', compact('ujian'));
+        // return $ujian->peserta;
+        $status = 0;
+        foreach ($ujian->peserta as $peserta) {
+            if ($peserta->user_id == Auth::user()->id) {
+                $status = 1;
+                break;
+            }
+        }
+        if ($status) {
+            return view('pages.mahasiswa.ujian', compact('ujian'));
+        }
+        return redirect('mahasiswa/');
     }
 }

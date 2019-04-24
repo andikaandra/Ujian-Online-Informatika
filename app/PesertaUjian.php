@@ -16,4 +16,8 @@ class PesertaUjian extends Model
 	public function ujians(){
 	    return $this->belongsTo('App\Ujian', 'ujian_id', 'id');
 	}
+
+	public function packet(){
+	    return $this->hasMany('App\Packet', 'peserta_ujian_id', 'id');
+	}
 }

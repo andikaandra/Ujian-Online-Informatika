@@ -73,6 +73,9 @@
                 <div class="links">
                     Coming Soon
                 </div>
+                <div class="links">
+                    <a href="{{url('login')}}" style="text-decoration: none;">Login</a>
+                </div>
             </div>
         </div>
     </body>

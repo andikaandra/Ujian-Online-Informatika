@@ -17,6 +17,9 @@ class CreatePesertaUjianTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('ujian_id')->unsigned();
             $table->bigInteger('user_id')->unsigned();
+            $table->integer("status")->default('0');
+            $table->text("soal")->nullable();
+            // $table->text("jawaban")->nullable();
             $table->integer("total_true_answer")->nullable();
             $table->integer("total_false_answer")->nullable();
             $table->integer("nilai")->nullable();

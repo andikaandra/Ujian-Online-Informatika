@@ -5,11 +5,11 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <meta name="description" content="AMSW - FK UNAIR">
+    <meta name="description" content="SMART- EXAM">
     <meta name="author" content="Software Silo">
     <meta name="keyword" content="Medicine Competition University">
 
-    <title>AMSW Dashboard</title>
+    <title>SMART EXAM-admin</title>
     
     <!-- Icons-->
     <link href="{{asset('dashboard/node_modules/@coreui/icons/css/coreui-icons.min.css')}}" rel="stylesheet">
