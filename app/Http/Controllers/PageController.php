@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Soal;
 use App\Ujian;
+use App\Packet;
 use App\PesertaUjian;
 use Auth;
 use Log;
@@ -48,7 +49,7 @@ class PageController extends Controller
 
     public function getUjianData($id)
     {
-        return response()->json(['ujian' => Ujian::find($id)->where('id_dosen', Auth::user()->id)->first()]);
+        return response()->json(['ujian' => Ujian::where('id_dosen', Auth::user()->id)->where('id', $id)->first()]);
     }
 
     public function getSoalData($id)
@@ -99,6 +100,7 @@ class PageController extends Controller
                 break;
             }
         }
+        // return $status;
         if ($status) {
             $packets = PesertaUjian::where('ujian_id', $ujian->id)->where('user_id', Auth::user()->id)->first();
             date_default_timezone_set('Asia/Jakarta');
@@ -106,12 +108,29 @@ class PageController extends Controller
             $start = date($format,strtotime(substr($ujian->date_start, 0, 11).$ujian->time_start));
             $end = date($format,strtotime(substr($ujian->date_end, 0, 11).$ujian->time_end));
             $now = date($format);
-            if ($packets && $packets->soal && $now <= $end && $now > $start) {
-                $total = count($packets->packet);
-                return view('pages.mahasiswa.ujian-joined', compact('ujian', 'packets', 'total'));
+            if ($packets && strlen($packets->soal) && $now <= $end && $now > $start) {
+                $daftarSoal = $packets->packet;
+                $total = count($daftarSoal);
+                if ($request->packet_id) {
+                    $soal = $daftarSoal[$request->packet_id];
+                    $index = $request->packet_id;
+                }
+                else{
+                    $soal = $packets->packet[0];
+                    $index = 0;
+                }
+                // return $soal->id;
+                return view('pages.mahasiswa.ujian-joined', compact('ujian', 'total', 'soal', 'index'));
             }
             return view('pages.mahasiswa.ujian', compact('ujian'));
         }
         return redirect('mahasiswa/');
     }
+
+    public function changeQuestion(Request $request)
+    {
+        return $request;
+        return view('pages.dosen.soal_ujian', compact('ujian', 'users'));
+    }
+
 }

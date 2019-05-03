@@ -36,6 +36,7 @@ class MahasiswaController extends Controller
 
     public function ujian(Request $request)
     {
+    	// return $request;
 		try {
 			$start = microtime(true);
 			$ujian = Ujian::find($request->ujian_id);
@@ -61,6 +62,7 @@ class MahasiswaController extends Controller
 		} catch (\Exception $e) {
 	        $eMessage = 'ujian - User: ' . Auth::user()->id . ', error: ' . $e->getMessage();
 	        Log::emergency($eMessage);
+	        // return $e->getMessage();
 	    	return redirect()->back()->with('error', 'Whoops, something error!');
 	    }
 		return redirect('/mahasiswa');

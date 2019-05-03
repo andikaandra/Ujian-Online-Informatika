@@ -69,7 +69,9 @@
                 <div class="title m-b-md">
                     SMART Exam
                 </div>
-
+                <div class="links">
+                    <div id="time" style="font-size: 50px"></div>
+                </div>
                 <div class="links">
                     Coming Soon
                 </div>
@@ -80,3 +82,27 @@
         </div>
     </body>
 </html>
+
+<script>
+    function checkTime(i) {
+        if (i < 10) {
+            i = "0" + i;
+        }
+        return i;
+    }
+
+    function startTime() {
+        var today = new Date();
+        var h = today.getHours();
+        var m = today.getMinutes();
+        var s = today.getSeconds();
+        // add a zero in front of numbers<10
+        m = checkTime(m);
+        s = checkTime(s);
+        document.getElementById('time').innerHTML = h + ":" + m + ":" + s;
+        t = setTimeout(function () {
+            startTime()
+        }, 500);
+    }
+    startTime();
+</script>

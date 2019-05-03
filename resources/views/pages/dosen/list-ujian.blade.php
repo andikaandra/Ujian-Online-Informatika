@@ -183,13 +183,15 @@
       });
 
       $(document).on('click', '.info', async function(){
-        const id = $(this).attr('data-id');
+        var id = $(this).attr('data-id');
+        // console.log(id);
         let data;
 
         try {
             data = await $.ajax({
               url: '{{url('dosen/list/ujian/data')}}/' + id
             });
+            console.log(id);
         } catch (e) {
           alert("Ajax error");
           console.log(e);

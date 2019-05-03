@@ -25,7 +25,7 @@
             <p>Hello {{Auth::user()->name ? Auth::user()->name : ' '}} 
               <strong>{{Auth::user()->kode}}</strong>. <br> </p>
           </div>
-          Your incoming exam list :
+          Your exam list :
           <div class="row">
             <ul>
               @foreach(Auth::user()->ujians as $u)

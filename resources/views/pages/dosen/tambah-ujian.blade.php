@@ -38,10 +38,10 @@
               <label for="nama">Nama Ujian</label>
               <input type="text" maxlength="100" class="form-control" name="nama" id="nama" placeholder="Nama Ujian" required>
             </div>
-            <div class="form-group">
-              <label for="nama">Lama ujian(menit)</label>
-              <input type="number" min="1" class="form-control" name="waktu_ujian" id="waktu_ujian" placeholder="Waktu Ujian (menit)" required>
-            </div>
+{{--             <div class="form-group">
+              <label for="nama">Lama ujian(menit)</label> --}}
+              <input type="hidden" min="1" value="60" class="form-control" name="waktu_ujian" id="waktu_ujian" placeholder="Waktu Ujian (menit)" required>
+            {{-- </div> --}}
             <div class="form-group">
               <label for="nama">Jumlah soal</label>
               <input type="number" min="1" class="form-control" name="jumlah_soal" id="jumlah_soal" placeholder="Jumlah soal" required>

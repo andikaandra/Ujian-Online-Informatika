@@ -30,8 +30,9 @@ Route::prefix('mahasiswa')->middleware(['mahasiswa_only'])->group(function () {
 	Route::get('/', 'PageController@getMahasiswaPage');
 	Route::get('/history', 'PageController@getHistoryPage');
 
-	Route::get('/exam/{id}/{name}', 'PageController@getUjianPage');
+	Route::get('/exam/{id}/{name}', 'PageController@getUjianPage')->name('change.question');
 	Route::post('/exam/join', 'MahasiswaController@ujian')->name('join.ujian');
+	// Route::post('/change/question', 'PageController@changeQuestion')->name('change.question');
 });
 
 
