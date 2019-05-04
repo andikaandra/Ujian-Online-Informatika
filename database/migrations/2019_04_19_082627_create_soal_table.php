@@ -23,6 +23,7 @@ class CreateSoalTable extends Migration
             $table->string("pilihan_c");
             $table->string("pilihan_d");
             $table->string("pilihan_e")->nullable();
+            $table->string("status")->nullable();
             $table->string("jawaban");
             $table->timestamps();
         });

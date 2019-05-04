@@ -17,10 +17,10 @@ class CreateUjianTable extends Migration
             $table->bigIncrements('id');
             $table->string('nama');
             $table->bigInteger('id_dosen')->unsigned();
-            $table->integer("test_time");
+            $table->integer("test_time")->nullable();
             $table->integer("jumlah_soal");
             $table->integer("status")->default('0');
-            $table->integer("true_answer");
+            $table->integer("true_answer")->nullable();
             $table->integer("false_answer");
             $table->string("result_to_user");
             $table->string("report_to_user");

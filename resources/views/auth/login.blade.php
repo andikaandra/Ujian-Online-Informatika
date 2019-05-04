@@ -44,8 +44,8 @@
                             <h6 style="font-size: 12px">{!! \Session::get('success') !!}</h6>
                         </div>
                     @endif
-                    <div class="wrap-input100 validate-input" data-validate = "Valid NRP/NIP is required: ex@gmail.com">
-                        <input id="kode" type="text" class="input100" name="kode" value="{{ old('kode') }}" required placeholder="NRP / NIP" name="kode">
+                    <div class="wrap-input100 validate-input" data-validate = "Valid Email is required: ex@gmail.com">
+                        <input id="email" type="email" class="input100" name="email" value="{{ old('email') }}" required placeholder="Email" name="email">
 
                         <span class="focus-input100"></span>
                         <span class="symbol-input100">

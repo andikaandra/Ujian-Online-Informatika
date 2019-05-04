@@ -10,6 +10,7 @@
         <div class="tab-content">
           <div class="tab-pane active" id="timeline" role="tabpanel">
             <div class="list-group list-group-accent">
+              @if(!Auth::user()->name)
               <div class="list-group-item list-group-item-accent-secondary bg-light text-center font-weight-bold text-muted text-uppercase small">Fill Data</div>
               <div class="list-group-item list-group-item-accent-{{ Auth::user()->name ? 'success' : 'danger' }} list-group-item-divider">
                 <div class="row">
@@ -25,6 +26,7 @@
                   </div>
                 </div>
               </div>
+              @endif
             </div>
           </div>
         </div>

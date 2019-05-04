@@ -37,7 +37,7 @@
           <br>
           <div class="row">
             <div class="col-12 col-md-2">
-              <a href="{{url('dosen/list-ujian')}}" role="button" class="mb-2 btn btn-block btn-info text-white"><i class="fas fa-backward"></i> &nbsp;Kembali</a>
+              <a href="{{url('dosen/list-ujian')}}" role="button" class="mb-2 btn btn-block btn-info text-white"><i class="fas fa-backward"></i> &nbsp;List Ujian</a>
             </div>
             <div class="col">
               
@@ -92,7 +92,7 @@
       <div class="modal-body">
         <div class="form-group">
           <label for="nama">Deskripsi soal</label>
-          <div id="editor" class="mb-3"></div>
+          <div id="editor" style="height: 375px;" class="mb-3"></div>
           <input type="hidden" id="description" name="description">
         </div>
         <hr>
@@ -161,7 +161,7 @@
       <div class="modal-body">
         <div class="form-group">
           <label for="nama">Deskripsi soal</label>
-          <div class="form-control" readonly id="editor2"></div>
+          <div class="form-control" id="editor2"></div>
         </div>
         <hr>
         <div class="form-group">
@@ -220,6 +220,13 @@
     placeholder: 'Deskripsi soal.',
   });
 
+  const quill2 = new Quill('#editor2', {
+    theme: 'snow',
+    modules: {
+      toolbar: toolbarOptions
+    },
+    readOnly: true,
+  });
 </script>
 <script>
   $('#body-section').removeClass('aside-menu-lg-show');
@@ -267,7 +274,9 @@
           console.log(e);
           return;
         }
-        $('#editor2').html(data.soal.deskripsi)
+
+        quill2.root.innerHTML = data.soal.deskripsi
+
         $('#pilihan1view').val(data.soal.pilihan_a)
         $('#pilihan2view').val(data.soal.pilihan_b)
         $('#pilihan3view').val(data.soal.pilihan_c)

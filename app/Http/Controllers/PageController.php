@@ -10,6 +10,7 @@ use App\Packet;
 use App\PesertaUjian;
 use Auth;
 use Log;
+use DB;
 
 class PageController extends Controller
 {
@@ -33,7 +34,8 @@ class PageController extends Controller
 
     public function getTambahUjianPage()
     {
-        return view('pages.dosen.tambah-ujian');
+        $matkul = DB::table('agenda')->where('fk_idPIC',Auth::user()->idUser)->get();
+        return view('pages.dosen.tambah-ujian', compact('matkul'));
     }
 
     public function getListUjianPage()
@@ -43,13 +45,13 @@ class PageController extends Controller
 
     public function getListUjianData()
     {
-        $listUjian = Ujian::where('id_dosen', Auth::user()->id)->get();
+        $listUjian = Ujian::where('id_dosen', Auth::user()->idUser)->get();
         return response()->json(['data' => $listUjian]);
     }
 
     public function getUjianData($id)
     {
-        return response()->json(['ujian' => Ujian::where('id_dosen', Auth::user()->id)->where('id', $id)->first()]);
+        return response()->json(['ujian' => Ujian::where('id_dosen', Auth::user()->idUser)->where('id', $id)->first()]);
     }
 
     public function getSoalData($id)
@@ -58,13 +60,13 @@ class PageController extends Controller
     }
 
     public function finishTour(Request $request) {
-        $user = User::find(Auth::user()->id)->update(['has_finish_tour' => 1]);
+        $user = User::find(Auth::user()->idUser)->update(['has_finish_tour' => 1]);
         return response()->json(['message' => $user], 200);
     }
 
     public function getHistoryPage()
     {
-        // $ujian = PesertaUjian::where('user_id', Auth::user()->id)->get();
+        // $ujian = PesertaUjian::where('user_id', Auth::user()->idUser)->get();
         // // return $ujian[0]->ujians;
         // return $ujian;
         // return Auth::user()->ujians;
@@ -73,7 +75,7 @@ class PageController extends Controller
 
     public function getPesertaUjianPage($id)
     {
-        $ujian = Ujian::where('id_dosen', Auth::user()->id)->where('id', $id)->first();
+        $ujian = Ujian::where('id_dosen', Auth::user()->idUser)->where('id', $id)->first();
         if (!$ujian) {
             return redirect('dosen/');
         }
@@ -84,7 +86,7 @@ class PageController extends Controller
     public function getSoalUjianPage($id)
     {
         // return $id;
-        $ujian = Ujian::where('id_dosen', Auth::user()->id)->where('id', $id)->first();
+        $ujian = Ujian::where('id_dosen', Auth::user()->idUser)->where('id', $id)->first();
         $users = User::where('role', 'mahasiswa')->get();
         return view('pages.dosen.soal_ujian', compact('ujian', 'users'));
     }
@@ -95,14 +97,14 @@ class PageController extends Controller
         // return $ujian->peserta;
         $status = 0;
         foreach ($ujian->peserta as $peserta) {
-            if ($peserta->user_id == Auth::user()->id) {
+            if ($peserta->user_id == Auth::user()->idUser) {
                 $status = 1;
                 break;
             }
         }
         // return $status;
         if ($status) {
-            $packets = PesertaUjian::where('ujian_id', $ujian->id)->where('user_id', Auth::user()->id)->first();
+            $packets = PesertaUjian::where('ujian_id', $ujian->id)->where('user_id', Auth::user()->idUser)->first();
             date_default_timezone_set('Asia/Jakarta');
             $format = 'Y-m-d H:i:s';
             $start = date($format,strtotime(substr($ujian->date_start, 0, 11).$ujian->time_start));

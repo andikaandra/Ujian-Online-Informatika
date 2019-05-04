@@ -34,7 +34,7 @@
           @csrf
           <div class="row">
             <div class="col-12 col-md-2">
-              <a href="{{url('dosen/list-ujian')}}" role="button" class="mb-2 btn btn-block btn-info text-white"><i class="fas fa-backward"></i> &nbsp;Kembali</a>
+              <a href="{{url('dosen/list-ujian')}}" role="button" class="mb-2 btn btn-block btn-info text-white"><i class="fas fa-backward"></i> &nbsp;List Ujian</a>
             </div>
             <div class="col-12 col-md-2">
               Pilih peserta ujian :
@@ -43,7 +43,7 @@
               <div class="form-group">
                 <select class="selectpicker form-control" id="peserta" data-live-search="true" multiple name="peserta[]">
                   @foreach($users as $user)
-                  <option value="{{$user->id}}">{{$user->kode}} | {{$user->name}}</option> 
+                  <option value="{{$user->id}}">{{$user->idUser}} | {{$user->name}}</option> 
                   @endforeach
                 </select>
               </div>
@@ -72,7 +72,7 @@
               <tr>
                 <td class="text-center">{{$no++}}</td>
                 <td>{{$u->user->name}}</td>
-                <td>{{$u->user->kode}}</td>
+                <td>{{$u->user->idUser}}</td>
                 <td>{{$u->nilai}}</td>
                 <td align="center"><button class="btn btn-danger btn-sm delete" data-id="{{$u->id}}">Hapus</button></td>
               </tr>

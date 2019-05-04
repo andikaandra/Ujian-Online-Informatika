@@ -110,9 +110,6 @@
     <script src="{{asset('dashboard/node_modules/pace-progress/pace.min.js')}}"></script>
     <script src="{{asset('dashboard/node_modules/perfect-scrollbar/dist/perfect-scrollbar.min.js')}}"></script>
     <script src="{{asset('dashboard/node_modules/@coreui/coreui/dist/js/coreui.min.js')}}"></script>
-    <!-- Plugins and scripts required by this view-->
-    {{-- <script src="{{asset('dashboard/node_modules/chart.js/dist/Chart.min.js')}}"></script> --}}
-{{--     <script src="{{asset('dashboard/node_modules/@coreui/coreui-plugin-chartjs-custom-tooltips/dist/js/custom-tooltips.min.js')}}"></script> --}}
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
     <script src="{{asset('dashboard/js/main.js')}}"></script>
     <script type="text/javascript" src="{{asset('introjs/intro.js')}}"></script>

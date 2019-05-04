@@ -10,7 +10,7 @@ class PesertaUjian extends Model
     protected $guarded = [];
 
 	public function user(){
-	    return $this->belongsTo('App\User');
+	    return $this->belongsTo('App\User', 'user_id', 'idUser');
 	}
 
 	public function ujians(){

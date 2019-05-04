@@ -69,21 +69,17 @@
                     <input type="text" maxlength="100" class="form-control" name="nama" id="nama" placeholder="Nama Ujian" required>
                   </div>
                   <div class="form-group">
-                    <label for="nama">Lama ujian(menit)</label>
-                    <input type="number" min="1" class="form-control" name="waktu_ujian" id="waktu_ujian" placeholder="Waktu Ujian (menit)" required>
-                  </div>
-                  <div class="form-group">
                     <label for="nama">Jumlah soal</label>
-                    <input type="number" min="1" class="form-control" name="jumlah_soal" id="jumlah_soal" placeholder="Jumlah soal" required>
+                    <input type="text" onkeypress='validate(event)' onkeyup='getVal()' class="form-control" name="jumlah_soal" id="jumlah_soal" placeholder="Jumlah soal" required>
                   </div>
                   <div class="form-row">
                     <div class="form-group col">
                       <label for="">Skor jawaban benar</label>
-                      <input type="number" min="1" class="form-control" id="nilai_benar" name="nilai_benar" placeholder="Skor jika jawaban benar. contoh: 2" required>
+                      <input type="text" min="1" class="form-control" id="nilai_benar" name="nilai_benar" placeholder="Skor jika jawaban benar. contoh: 2" required readonly disabled>
                     </div>
                     <div class="form-group col">
                       <label for="">Skor jawaban salah</label>
-                      <input type="number" class="form-control" id="nilai_salah" name="nilai_salah" placeholder="Skor jika jawaban benar. contoh: 0 atau -1" required>
+                      <input type="number" class="form-control" id="nilai_salah" name="nilai_salah" placeholder="Skor jika jawaban salah. contoh: 0 atau -1" required>
                     </div>
                   </div>
                   <div class="form-row">
@@ -140,7 +136,44 @@
 @section('script')
 <script>
   $('#body-section').removeClass('aside-menu-lg-show');
+
+  function validate(evt) {
+    var theEvent = evt || window.event;
+
+    if (theEvent.type === 'paste') {
+        key = event.clipboardData.getData('text/plain');
+    } else {
+        var key = theEvent.keyCode || theEvent.which;
+        key = String.fromCharCode(key);
+    }
+    var regex = /[0-9]|\./;
+    if( !regex.test(key) ) {
+      theEvent.returnValue = false;
+      if(theEvent.preventDefault) theEvent.preventDefault();
+    }
+  }
+
+  function getVal(){
+    $('#nilai_benar').val(100/$('#jumlah_soal').val());
+  }
+
   $(document).ready( function () {
+      var today = new Date();
+      var dd = today.getDate();
+      var mm = today.getMonth()+1;
+      var yyyy = today.getFullYear();
+        if(dd<10){
+          dd='0'+dd
+        }
+        if(mm<10){
+          mm='0'+mm
+        }
+
+      today = yyyy+'-'+mm+'-'+dd;
+      // document.getElementById("tanggal_mulai").setAttribute("min", today);
+      document.getElementById("tanggal_akhir").setAttribute("min", today);
+
+
       let dataTable = $(".table").DataTable({
         responsive: true,
         ajax: '{{url('dosen/list/ujian/data')}}',
@@ -200,14 +233,13 @@
         // console.log((data.ujian.date_start))
         $('#id_ujian').val(data.ujian.id)
         $('#nama').val(data.ujian.nama)
-        $('#waktu_ujian').val(data.ujian.test_time)
-        $('#nilai_benar').val(data.ujian.true_answer)
         $('#nilai_salah').val(data.ujian.false_answer)
         $('#jumlah_soal').val(data.ujian.jumlah_soal)
         $('#tanggal_mulai').val((data.ujian.date_start).slice(0, 10))
         $('#waktu_mulai').val(data.ujian.time_start)
         $('#tanggal_akhir').val((data.ujian.date_end).slice(0, 10))
         $('#waktu_akhir').val(data.ujian.time_end)
+        $('#nilai_benar').val(100/$('#jumlah_soal').val());
         if (data.ujian.result_to_user=='ya') {
           $("#result").val('ya');
         }

@@ -10,6 +10,7 @@ use App\PesertaUjian;
 use Validator;
 use Auth;
 use Log;
+use DB;
 
 class DosenController extends Controller
 {
@@ -17,11 +18,10 @@ class DosenController extends Controller
     {
     	// return $request;
 		try {
-			Ujian::create([
+			$ujian = Ujian::create([
 				'nama' => $request->nama,
-				'id_dosen' => Auth::user()->id,
-				'test_time'	=>	$request->waktu_ujian,
-				'true_answer'	=>	$request->nilai_benar,
+				'id_dosen' => Auth::user()->idUser,
+				'true_answer'	=>	100/$request->jumlah_soal,
 				'false_answer'	=>	$request->nilai_salah,
 				'jumlah_soal'	=>	$request->jumlah_soal,
 				'result_to_user'	=>	$request->result,
@@ -31,8 +31,17 @@ class DosenController extends Controller
 				'time_start'	=>	$request->waktu_mulai,
 				'time_end'	=>	$request->waktu_akhir,
 	      	]);
+
+	      	$peserta =  DB::table('kehadiran')->where('idAgenda', $request->idAgenda)->get();
+			foreach ($peserta as $p) {
+				PesertaUjian::updateOrCreate ([
+					'ujian_id' => $ujian->id,
+					'user_id' => $p->idUser
+		      	]);
+			}
+
 		} catch (\Exception $e) {
-	        $eMessage = 'new ujian - User: ' . Auth::user()->id . ', error: ' . $e->getMessage();
+	        $eMessage = 'new ujian - User: ' . Auth::user()->idUser . ', error: ' . $e->getMessage();
 	        Log::emergency($eMessage);
 	    	return redirect()->back()->with('error', 'Whoops, something error!'); 
 	    }
@@ -45,9 +54,9 @@ class DosenController extends Controller
 		try {
 			Ujian::find($request->id_ujian)->update([
 				'nama' => $request->nama,
-				'test_time'	=>	$request->waktu_ujian,
-				'true_answer'	=>	$request->nilai_benar,
+				'true_answer'	=>	100/$request->jumlah_soal,
 				'false_answer'	=>	$request->nilai_salah,
+				'jumlah_soal'	=>	$request->jumlah_soal,
 				'result_to_user'	=>	$request->result,
 				'report_to_user'	=>	$request->report,
 				'date_start'	=>	$request->tanggal_mulai,
@@ -56,7 +65,7 @@ class DosenController extends Controller
 				'time_end'	=>	$request->waktu_akhir,
       	]);
 		} catch (\Exception $e) {
-	        $eMessage = 'update ujian - User: ' . Auth::user()->id . ', error: ' . $e->getMessage();
+	        $eMessage = 'update ujian - User: ' . Auth::user()->idUser . ', error: ' . $e->getMessage();
 	        Log::emergency($eMessage);
 	    	return redirect()->back()->with('error', 'Whoops, something error!'); 
 	    }
@@ -74,7 +83,7 @@ class DosenController extends Controller
 		      	]);
 			}
 		} catch (\Exception $e) {
-	        $eMessage = 'new participant - User: ' . Auth::user()->id . ', error: ' . $e->getMessage();
+	        $eMessage = 'new participant - User: ' . Auth::user()->idUser . ', error: ' . $e->getMessage();
 	        Log::emergency($eMessage);
 	    	return response()->json(['error' => $eMessage]);
 	    }
@@ -86,7 +95,7 @@ class DosenController extends Controller
 		try {
 			PesertaUjian::find($request->id)->delete();
 		} catch (\Exception $e) {
-	        $eMessage = 'delete participant - User: ' . Auth::user()->id . ', error: ' . $e->getMessage();
+	        $eMessage = 'delete participant - User: ' . Auth::user()->idUser . ', error: ' . $e->getMessage();
 	        Log::emergency($eMessage);
 	    	return redirect()->back()->with('error', 'Whoops, something error!'); 
 	    }
@@ -136,13 +145,13 @@ class DosenController extends Controller
 		            return redirect()->back()->withErrors($validator);
 		        }
 
-	    		$file_path = $request->file('image')->store('public/question-image');
+	    		$file_path = $request->file('image')->store('public/question-image/'.$request->ujian_id);
 
 	    		$soal->file_path = str_replace("public","", $file_path);
 	    	}
 		    $soal->save();
 		} catch (\Exception $e) {
-	        $eMessage = 'new soal - User: ' . Auth::user()->id . ', error: ' . $e->getMessage();
+	        $eMessage = 'new soal - User: ' . Auth::user()->idUser . ', error: ' . $e->getMessage();
 	        Log::emergency($eMessage);
 	    	return redirect()->back()->with('error', $eMessage); 
 	    }
@@ -154,7 +163,7 @@ class DosenController extends Controller
 		try {
 			Soal::find($request->id)->delete();
 		} catch (\Exception $e) {
-	        $eMessage = 'delete soal - User: ' . Auth::user()->id . ', error: ' . $e->getMessage();
+	        $eMessage = 'delete soal - User: ' . Auth::user()->idUser . ', error: ' . $e->getMessage();
 	        Log::emergency($eMessage);
 	    	return redirect()->back()->with('error', 'Whoops, something error!'); 
 	    }
