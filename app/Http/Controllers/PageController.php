@@ -60,7 +60,7 @@ class PageController extends Controller
     }
 
     public function finishTour(Request $request) {
-        $user = User::find(Auth::user()->idUser)->update(['has_finish_tour' => 1]);
+        $user = User::find(Auth::user()->id)->update(['has_finish_tour' => 1]);
         return response()->json(['message' => $user], 200);
     }
 
@@ -94,7 +94,6 @@ class PageController extends Controller
     public function getUjianPage($id, $name, Request $request)
     {
         $ujian = Ujian::find($id);
-        // return $ujian->peserta;
         $status = 0;
         foreach ($ujian->peserta as $peserta) {
             if ($peserta->user_id == Auth::user()->idUser) {
@@ -110,7 +109,7 @@ class PageController extends Controller
             $start = date($format,strtotime(substr($ujian->date_start, 0, 11).$ujian->time_start));
             $end = date($format,strtotime(substr($ujian->date_end, 0, 11).$ujian->time_end));
             $now = date($format);
-            if ($packets && strlen($packets->soal) && $now <= $end && $now > $start) {
+            if ($packets && strlen($packets->soal)>0 && $now <= $end && $now > $start) {
                 $daftarSoal = $packets->packet;
                 $total = count($daftarSoal);
                 if ($request->packet_id) {

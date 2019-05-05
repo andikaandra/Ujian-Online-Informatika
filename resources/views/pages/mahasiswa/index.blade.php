@@ -27,9 +27,20 @@
           </div>
           Your exam list :
           <div class="row">
+            @php
+                date_default_timezone_set('Asia/Jakarta');
+                $format = 'Y-m-d H:i:s';
+                $now = (new DateTime())->format($format);
+            @endphp
             <ul>
               @foreach(Auth::user()->ujians as $u)
-              <li><a href="{{url('mahasiswa/exam').'/'.$u->ujians->id.'/'.urlencode($u->ujians->nama)}}" style="text-decoration: none;">{{$u->ujians->nama}}</a></li>
+                @php
+                $start = DateTime::createFromFormat($format, substr($u->ujians->date_start, 0, 11).$u->ujians->time_start);
+                $end = DateTime::createFromFormat($format, substr($u->ujians->date_end, 0, 11).$u->ujians->time_end);
+                @endphp
+                @if($now < $end->format($format))
+                  <li><a href="{{url('mahasiswa/exam').'/'.$u->ujians->id.'/'.urlencode($u->ujians->nama)}}" style="text-decoration: none;">{{$u->ujians->nama}}</a></li>
+                @endif
               @endforeach
             </ul>
           </div>

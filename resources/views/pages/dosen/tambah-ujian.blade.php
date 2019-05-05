@@ -38,7 +38,7 @@
               <label for="nama">Nama Ujian</label>
               <select class="selectpicker form-control" data-live-search="true" name="nama" id="nama" placeholder="Nama Ujian">
                 @foreach($matkul as $m)
-                <option value="{{$m->namaAgenda}}" data-id="{{$m->idAgenda}}" data-mulai="{{$m->WaktuMulai}}" data-selesai="{{$m->WaktuSelesai}}">{{$m->namaAgenda}}</option> 
+                <option value="{{$m->namaAgenda}} | {{$m->notule}}" data-id="{{$m->idAgenda}}" data-mulai="{{$m->WaktuMulai}}" data-selesai="{{$m->WaktuSelesai}}">{{$m->namaAgenda}} | {{$m->notule}}</option> 
                 @endforeach
               </select>
               <input type="hidden" name="idAgenda">

@@ -40,14 +40,16 @@ class MahasiswaController extends Controller
 		try {
 			$start = microtime(true);
 			$ujian = Ujian::find($request->ujian_id);
-			$pesertaUjian = PesertaUjian::where('ujian_id', $request->ujian_id)->where('user_id', Auth::user()->id)->first();
+			$pesertaUjian = PesertaUjian::where('ujian_id', $request->ujian_id)->where('user_id', Auth::user()->idUser)->first();
 			$daftarSoal = $ujian->soals;
 			$totalSoal = count($daftarSoal);
 			$array = range(0, $totalSoal - 1);
 
 			$end = microtime(true);
 			shuffle($array);
-			
+			if (strlen($pesertaUjian->soal)>0) {
+				return redirect()->back()->with('success', 'Already Joined test!');
+			}
 			foreach ($array as $a) {
 				DB::table('packet')->insert([
 					'peserta_ujian_id' => $pesertaUjian->id,
@@ -60,7 +62,7 @@ class MahasiswaController extends Controller
 			return redirect()->back()->with('success', 'Successfully joined test!');
 			
 		} catch (\Exception $e) {
-	        $eMessage = 'ujian - User: ' . Auth::user()->id . ', error: ' . $e->getMessage();
+	        $eMessage = 'ujian - User: ' . Auth::user()->idUser . ', error: ' . $e->getMessage();
 	        Log::emergency($eMessage);
 	        // return $e->getMessage();
 	    	return redirect()->back()->with('error', 'Whoops, something error!');

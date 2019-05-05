@@ -30,17 +30,18 @@
                   <strong>Total Questions</strong> : {{count($ujian->soals)}}<br><br>
 
                   <strong>Lecturer</strong> : {{$ujian->dosen->name ?? 'Mr. lecturer'}}<br><br>
+                  <div id="time" style="font-size: 25px"></div><hr>
                   @php
                   date_default_timezone_set('Asia/Jakarta');
                   $format = 'Y-m-d H:i:s';
                   $start = DateTime::createFromFormat($format, substr($ujian->date_start, 0, 11).$ujian->time_start);
                   $end = DateTime::createFromFormat($format, substr($ujian->date_end, 0, 11).$ujian->time_end);
-                  $now = (new DateTime())->format('Y-m-d H:i:s');
+                  $now = (new DateTime())->format($format);
                   @endphp
-                  @if($now > $end->format('Y-m-d H:i:s'))
+                  @if($now > $end->format($format))
                     <button class="btn btn-success btn-block">ALREADY ENDED</button>
-                  @elseif($now < $start->format('Y-m-d H:i:s'))
-                    <button class="btn btn-success btn-block">NOT YET STARTED</button>
+                  @elseif($now < $start->format($format))
+                    <button class="btn btn-success btn-block">NOT STARTED YET</button>
                   @else
                     <form action="{{route('join.ujian')}}" method="post">
                       @csrf
@@ -48,7 +49,6 @@
                       <button type="submit" class="btn btn-success btn-block">JOIN</button>
                     </form>
                   @endif
-
                 </div>
               </div>
             </div>
@@ -66,6 +66,34 @@
 
     $('#body-section').removeClass('aside-menu-lg-show');
     $('#body-section').removeClass('sidebar-lg-show');
+
+    var start = <?php echo json_encode($ujian->time_start); ?>;
+
+    function checkTime(i) {
+        if (i < 10) {
+            i = "0" + i;
+        }
+        return i;
+    }
+
+    function startTime() {
+        var today = new Date();
+        var h = today.getHours();
+        var m = today.getMinutes();
+        var s = today.getSeconds();
+        // add a zero in front of numbers<10
+        m = checkTime(m);
+        s = checkTime(s);
+        document.getElementById('time').innerHTML = h + ":" + m + ":" + s;
+        if ((h + ":" + m + ":" + s) == start) {
+          window.location.reload();
+        }
+
+        t = setTimeout(function () {
+            startTime()
+        }, 500);
+    }
+    startTime();
 
 </script>
 @endsection

@@ -43,7 +43,11 @@
               
             </div>
             <div class="col-12 col-md-2">
+              @if(count($ujian->soals)<$ujian->jumlah_soal)
               <button type="button" class="mb-2 btn btn-block btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg" id="tambah"><i class="fas fa-plus"></i> &nbsp; Tambah soal</button>
+              @else
+              <button type="button" class="mb-2 btn btn-block btn-success" style="cursor: default;" disabled="">Soal mencukupi</button>
+              @endif
             </div>
           </div>
           <br>
