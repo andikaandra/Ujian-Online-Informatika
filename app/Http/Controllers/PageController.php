@@ -87,12 +87,14 @@ class PageController extends Controller
     {
         // return $id;
         $ujian = Ujian::where('id_dosen', Auth::user()->idUser)->where('id', $id)->first();
+        $listUjian = Ujian::where('id_dosen', Auth::user()->idUser)->where('id', '!=' , $ujian->id)->get();
         $users = User::where('role', 'mahasiswa')->get();
-        return view('pages.dosen.soal_ujian', compact('ujian', 'users'));
+        return view('pages.dosen.soal_ujian', compact('ujian', 'users', 'listUjian'));
     }
 
     public function getUjianPage($id, $name, Request $request)
     {
+        // $starts = microtime(true);
         $ujian = Ujian::find($id);
         $status = 0;
         foreach ($ujian->peserta as $peserta) {
@@ -121,7 +123,8 @@ class PageController extends Controller
                     $index = 0;
                 }
                 // return $soal->id;
-                return view('pages.mahasiswa.ujian-joined', compact('ujian', 'total', 'soal', 'index'));
+                // return microtime(true) - $starts;
+                return view('pages.mahasiswa.ujian-joined', compact('ujian', 'total', 'soal', 'index', 'packets'));
             }
             return view('pages.mahasiswa.ujian', compact('ujian'));
         }
@@ -132,6 +135,28 @@ class PageController extends Controller
     {
         return $request;
         return view('pages.dosen.soal_ujian', compact('ujian', 'users'));
+    }
+
+    public function raguRagu(Request $request){
+        try {
+            Packet::find($request->packet_id)->update(['status' => -1]);
+            return redirect()->back(); 
+        } catch (\Exception $e) {
+            $eMessage = 'ragu-ragu - User: ' . Auth::user()->id . ', error: ' . $e->getMessage();
+            Log::emergency($eMessage);
+            return redirect()->back()->with('error', 'Whoops, something error!'); 
+        }
+    }
+
+    public function yakinJawab(Request $request){
+        try {
+            Packet::find($request->packet_id)->update(['status' => 1]);
+            return redirect()->back(); 
+        } catch (\Exception $e) {
+            $eMessage = 'yakin - User: ' . Auth::user()->id . ', error: ' . $e->getMessage();
+            Log::emergency($eMessage);
+            return redirect()->back()->with('error', 'Whoops, something error!'); 
+        }
     }
 
 }

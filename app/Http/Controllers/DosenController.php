@@ -23,6 +23,7 @@ class DosenController extends Controller
 				'id_dosen' => Auth::user()->idUser,
 				'true_answer'	=>	100/$request->jumlah_soal,
 				'false_answer'	=>	$request->nilai_salah,
+				'pass_test'	=>	$request->pass_test,
 				'jumlah_soal'	=>	$request->jumlah_soal,
 				'result_to_user'	=>	$request->result,
 				'report_to_user'	=>	$request->report,
@@ -56,6 +57,7 @@ class DosenController extends Controller
 				'nama' => $request->nama,
 				'true_answer'	=>	100/$request->jumlah_soal,
 				'false_answer'	=>	$request->nilai_salah,
+				'pass_test'	=>	$request->pass_test,
 				'jumlah_soal'	=>	$request->jumlah_soal,
 				'result_to_user'	=>	$request->result,
 				'report_to_user'	=>	$request->report,
@@ -168,6 +170,31 @@ class DosenController extends Controller
 	    	return redirect()->back()->with('error', 'Whoops, something error!'); 
 	    }
 	    return redirect()->back()->with('success', 'Delete Success!');
+    }
+
+    public function importSoal(Request $request){
+		try {
+	    	$ujian = Ujian::find($request->ujian);
+	    	foreach ($ujian->soals as $u) {
+				Soal::create([
+					'ujian_id'	=>	$request->ujianid,
+					'deskripsi'	=>	$u->deskripsi,
+					'file_path'	=>	$u->file_path,
+					'pilihan_a'	=>	$u->pilihan_a,
+					'pilihan_b'	=>	$u->pilihan_b,
+					'pilihan_c'	=>	$u->pilihan_c,
+					'pilihan_d'	=>	$u->pilihan_d,
+					'pilihan_e'	=>	$u->pilihan_e,
+					'status'	=>	$u->status,
+					'jawaban'	=>	$u->jawaban,
+		      	]);
+	    	}
+		} catch (\Exception $e) {
+	        $eMessage = 'import soal - User: ' . Auth::user()->idUser . ', error: ' . $e->getMessage();
+	        Log::emergency($eMessage);
+	    	return redirect()->back()->with('error', 'Whoops, something error!'); 
+	    }
+	    return redirect()->back()->with('success', 'Import from '.$ujian->name.' Success!');
     }
     
 }

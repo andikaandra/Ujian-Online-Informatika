@@ -32,6 +32,10 @@ Route::prefix('mahasiswa')->middleware(['mahasiswa_only'])->group(function () {
 
 	Route::get('/exam/{id}/{name}', 'PageController@getUjianPage')->name('change.question');
 	Route::post('/exam/join', 'MahasiswaController@ujian')->name('join.ujian');
+
+	//ujian
+	Route::post('/exam/jawab/ragu-ragu', 'PageController@raguRagu')->name('ragu.ragu');
+	Route::post('/exam/jawab/yakin', 'PageController@yakinJawab')->name('yakin.yakin');
 	// Route::post('/change/question', 'PageController@changeQuestion')->name('change.question');
 });
 
@@ -57,6 +61,10 @@ Route::prefix('dosen')->middleware(['dosen_only'])->group(function () {
 
 	Route::get('/ujian/peserta/{id}', 'PageController@getPesertaUjianPage');
 	Route::get('/ujian/soal/{id}', 'PageController@getSoalUjianPage');
+
+	Route::post('/import/soal', 'DosenController@importSoal')->name('import.soal');
+
+
 	// Route::get('/list/ujian/peserta/{id}', 'DosenController@getPesertaUjian');
 });
 

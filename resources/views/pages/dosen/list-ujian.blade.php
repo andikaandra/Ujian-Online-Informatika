@@ -82,6 +82,10 @@
                       <input type="number" class="form-control" id="nilai_salah" name="nilai_salah" placeholder="Skor jika jawaban salah. contoh: 0 atau -1" required>
                     </div>
                   </div>
+                  <div class="form-gorup">
+                    <label for="">Nilai lulus ujian</label>
+                    <input type="number" min="0" max="100" class="form-control" id="pass_test" name="pass_test" placeholder="Nilai untuk lulus ujian" required>
+                  </div>
                   <div class="form-row">
                     <div class="form-group col">
                       <label for="">Tanggal mulai</label>
@@ -235,6 +239,7 @@
         $('#nama').val(data.ujian.nama)
         $('#nilai_salah').val(data.ujian.false_answer)
         $('#jumlah_soal').val(data.ujian.jumlah_soal)
+        $('#pass_test').val(data.ujian.pass_test)
         $('#tanggal_mulai').val((data.ujian.date_start).slice(0, 10))
         $('#waktu_mulai').val(data.ujian.time_start)
         $('#tanggal_akhir').val((data.ujian.date_end).slice(0, 10))

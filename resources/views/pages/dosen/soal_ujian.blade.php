@@ -75,6 +75,31 @@
               @endforeach
             </tbody>
           </table>
+          <hr>
+          <small class="text-danger">*Fitur ini digunakan jika akan mengimport soal ujian dari ujian anda yang lainnya</small><br>
+          <div class="row">
+            <div class="col-md-2 col-6">
+              Import soal dari :
+            </div>
+            <form action="{{route('import.soal')}}" method="post">
+            <div class="col">
+              <div class="form-row">
+                <div class="form-group col">
+                  <select class="selectpicker form-control" data-live-search="true" name="ujian" id="ujian" placeholder="Nama Ujian">
+                    @foreach($listUjian as $uj)
+                      <option value="{{$uj->id}}">{{$uj->nama}}</option> 
+                    @endforeach
+                  </select>                
+                </div>
+                <div class="form-group col">
+                  @csrf
+                  <input type="hidden" name="ujianid" value="{{$ujian->id}}">
+                  <button class="btn btn-info text-white" type="submit">Import</button>
+                </div>
+              </div>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
       <div class="card-footer">

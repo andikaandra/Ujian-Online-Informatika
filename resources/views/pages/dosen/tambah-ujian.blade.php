@@ -57,6 +57,10 @@
                 <input type="number" class="form-control" id="nilai_salah" name="nilai_salah" placeholder="Skor jika jawaban salah. contoh: 0 atau -1" required>
               </div>
             </div>
+            <div class="form-gorup">
+              <label for="">Nilai lulus ujian</label>
+              <input type="number" min="0" max="100" class="form-control" id="pass_test" name="pass_test" placeholder="Nilai untuk lulus ujian" required>
+            </div>
             <hr>
             <div class="form-row">
               <div class="form-group col">

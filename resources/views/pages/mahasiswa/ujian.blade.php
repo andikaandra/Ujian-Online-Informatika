@@ -39,9 +39,9 @@
                   $now = (new DateTime())->format($format);
                   @endphp
                   @if($now > $end->format($format))
-                    <button class="btn btn-success btn-block">ALREADY ENDED</button>
+                    <button class="btn btn-danger text-white btn-block" style="cursor: no-drop;" disabled>ALREADY ENDED</button>
                   @elseif($now < $start->format($format))
-                    <button class="btn btn-success btn-block">NOT STARTED YET</button>
+                    <button class="btn btn-info text-white btn-block" style="cursor: no-drop;" disabled>NOT STARTED YET</button>
                   @else
                     <form action="{{route('join.ujian')}}" method="post">
                       @csrf
@@ -56,7 +56,6 @@
         </div>
       </div>
       <div class="card-footer">
-
       </div>
     </div>
 @endsection
