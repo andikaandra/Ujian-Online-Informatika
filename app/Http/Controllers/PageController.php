@@ -111,7 +111,7 @@ class PageController extends Controller
             $start = date($format,strtotime(substr($ujian->date_start, 0, 11).$ujian->time_start));
             $end = date($format,strtotime(substr($ujian->date_end, 0, 11).$ujian->time_end));
             $now = date($format);
-            if ($packets && strlen($packets->soal)>0 && $now <= $end && $now > $start) {
+            if ($packets && strlen($packets->soal)>0 && $now <= $end && $now > $start && $packets->status==0) {
                 $daftarSoal = $packets->packet;
                 $total = count($daftarSoal);
                 if ($request->packet_id) {
@@ -125,6 +125,9 @@ class PageController extends Controller
                 // return $soal->id;
                 // return microtime(true) - $starts;
                 return view('pages.mahasiswa.ujian-joined', compact('ujian', 'total', 'soal', 'index', 'packets'));
+            }
+            elseif ($packets->status==1) {
+                return "You already ended test!";
             }
             return view('pages.mahasiswa.ujian', compact('ujian'));
         }
@@ -154,6 +157,28 @@ class PageController extends Controller
             return redirect()->back(); 
         } catch (\Exception $e) {
             $eMessage = 'yakin - User: ' . Auth::user()->id . ', error: ' . $e->getMessage();
+            Log::emergency($eMessage);
+            return redirect()->back()->with('error', 'Whoops, something error!'); 
+        }
+    }
+
+    public function jawabSoal(Request $request){
+        try {
+            Packet::find($request->packet_id)->update(['jawaban' => $request->jawaban, 'status' => 1]);
+            return redirect()->back(); 
+        } catch (\Exception $e) {
+            $eMessage = 'jawab - User: ' . Auth::user()->id . ', error: ' . $e->getMessage();
+            Log::emergency($eMessage);
+            return redirect()->back()->with('error', 'Whoops, something error!'); 
+        }
+    }
+
+    public function resetSoal(Request $request){
+        try {
+            Packet::find($request->packet_id)->update(['jawaban' => null, 'status' => 0]);
+            return redirect()->back(); 
+        } catch (\Exception $e) {
+            $eMessage = 'jawab - User: ' . Auth::user()->id . ', error: ' . $e->getMessage();
             Log::emergency($eMessage);
             return redirect()->back()->with('error', 'Whoops, something error!'); 
         }

@@ -36,6 +36,8 @@ Route::prefix('mahasiswa')->middleware(['mahasiswa_only'])->group(function () {
 	//ujian
 	Route::post('/exam/jawab/ragu-ragu', 'PageController@raguRagu')->name('ragu.ragu');
 	Route::post('/exam/jawab/yakin', 'PageController@yakinJawab')->name('yakin.yakin');
+	Route::post('/exam/jawab/soal', 'PageController@jawabSoal')->name('jawab.soal');
+	Route::post('/exam/reset/soal', 'PageController@resetSoal')->name('reset.soal');
 	// Route::post('/change/question', 'PageController@changeQuestion')->name('change.question');
 });
 

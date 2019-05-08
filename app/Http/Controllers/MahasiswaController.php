@@ -36,7 +36,6 @@ class MahasiswaController extends Controller
 
     public function ujian(Request $request)
     {
-    	// return $request;
 		try {
 			$start = microtime(true);
 			$ujian = Ujian::find($request->ujian_id);
@@ -44,7 +43,6 @@ class MahasiswaController extends Controller
 			$daftarSoal = $ujian->soals;
 			$totalSoal = count($daftarSoal);
 			$array = range(0, $totalSoal - 1);
-
 			$end = microtime(true);
 			shuffle($array);
 			if (strlen($pesertaUjian->soal)>0) {
@@ -53,6 +51,7 @@ class MahasiswaController extends Controller
 			foreach ($array as $a) {
 				DB::table('packet')->insert([
 					'peserta_ujian_id' => $pesertaUjian->id,
+					'ujian_id' => $request->ujian_id,
 					'soal_id' => $daftarSoal[$a]->id,
 		      	]);
 			}

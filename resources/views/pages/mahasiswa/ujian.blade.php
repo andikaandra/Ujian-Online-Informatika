@@ -19,6 +19,16 @@
         <hr>
         <div class="chart-wrapper mt-3" style="min-height:300px;">
           <div class="container h-100">
+            @if (\Session::has('success'))
+                <div class="alert alert-success">
+                  {!! \Session::get('success') !!}
+                </div>
+            @endif
+            @if (\Session::has('error'))
+                <div class="alert alert-danger">
+                  {!! \Session::get('error') !!}
+                </div>
+            @endif
             <div class="row align-items-center h-100 ">
               <div class="col-12 col-md-6 mx-auto">
                 <div class="jumbotron text-center bg-white">
