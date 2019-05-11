@@ -1,4 +1,4 @@
-@extends('layouts.dosen')
+@extends('tcexam.layouts.dosen')
 
 @section('path', 'Test participants')
 
@@ -65,6 +65,7 @@
               <th>Nama</th>
               <th>NRP</th>
               <th>Nilai</th>
+              <th>Paket</th>
               <th >Action</th>
             </thead>
             <tbody>
@@ -73,8 +74,17 @@
                 <td class="text-center">{{$no++}}</td>
                 <td>{{$u->user->name}}</td>
                 <td>{{$u->user->idUser}}</td>
-                <td>{{$u->nilai}}</td>
-                <td align="center"><button class="btn btn-danger btn-sm delete" data-id="{{$u->id}}">Hapus</button></td>
+                <td align="center">{{$u->nilai}}</td>
+                <td align="center">
+                @if($u->soal!=null)
+                  <a class="btn btn-sm btn-success" target="_blank" role="button" href="{{url('tcexam/dosen/check/exam').'/'.$u->ujians->id.'/'.$u->user->idUser}}">Check</a>
+                @else
+                  -
+                @endif
+                </td>
+                <td align="center">
+                  <button class="btn btn-danger btn-sm delete" data-id="{{$u->id}}">Hapus</button>
+                </td>
               </tr>
               @endforeach
             </tbody>
@@ -82,7 +92,6 @@
         </div>
       </div>
       <div class="card-footer">
-
       </div>
     </div>
 <form method="post" id="hapusPeserta" action="{{route('hapus.peserta')}}">
@@ -105,6 +114,7 @@
           null,
           null,
           null,
+          null,
           {orderable: false},
         ]
       });
@@ -119,7 +129,6 @@
                         method: 'POST',
                         data: $('form').serialize()
                       });
-                console.log(res);
               } catch (error) {
                   alert("error adding");
                   console.log(error);
@@ -138,9 +147,22 @@
       });
 
       $(".delete").click(function() {
-        const id = $(this).attr('data-id');
-        $('#idPesertaUjian').val(id);
-        $('#hapusPeserta').submit();
+            const id = $(this).attr('data-id');
+            alertify.confirm('Confirmation', 'Would you like to delete these participants?', function() {
+              try {
+                $('#idPesertaUjian').val(id);
+                $('#hapusPeserta').submit();
+              } catch (error) {
+                  alert("error");
+                  console.log(error);
+                  return;
+              };
+              // location.reload();
+            }, 
+            function() { 
+                // alertify.error('Cancel')
+            }
+          );
       });
 
   });

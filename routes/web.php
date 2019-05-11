@@ -27,6 +27,7 @@ Route::prefix('tcexam')->group(function () {
 
 		Route::get('/exam/{id}/{name}', 'PageController@getUjianPage')->name('change.question');
 		Route::get('/exam/{id}/u/{flag}', 'PageController@getUjianPageDummy');
+
 		Route::post('/exam/join', 'MahasiswaController@ujian')->name('join.ujian');
 
 		//ujian
@@ -63,7 +64,8 @@ Route::prefix('tcexam')->group(function () {
 
 		Route::post('/import/soal', 'DosenController@importSoal')->name('import.soal');
 
-
+		Route::get('/check/exam/{id}/{idUser}', 'PageController@getUjianDoneQuestion');
+		Route::get('/export/{id}', 'PageController@exportNilai');
 		// Route::get('/list/ujian/peserta/{id}', 'DosenController@getPesertaUjian');
 	});
 

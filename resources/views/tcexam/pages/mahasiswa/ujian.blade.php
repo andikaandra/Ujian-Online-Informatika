@@ -1,4 +1,4 @@
-@extends('layouts.mahasiswa')
+@extends('tcexam.layouts.mahasiswa')
 
 @section('path', 'Ujian')
 
@@ -62,6 +62,18 @@
                     @endif
                   @else
                       <button class="btn btn-danger text-white btn-block" style="cursor: no-drop;" disabled>EXAM IS NOT READY YET</button>                  
+                  @endif
+                  @if(strlen($packets->soal)>0 && $packets->status==0)
+                    <br>
+                    <p>You already joined test but never finish your test. Know your result by click button below!</p>
+                    <form action="{{route('finish.test')}}" method="post" id="finishTest">
+                    @csrf
+                      <div class="row justify-content-center">
+                        <input type="hidden" value="{{$packets->id}}" name="peserta_ujian">
+                        <input type="hidden" value="{{$packets->ujian_id}}" name="ujian_id">
+                        <button class="btn btn-success" type="submit">Finish test</button>  
+                      </div>
+                    </form>
                   @endif
                 </div>
               </div>

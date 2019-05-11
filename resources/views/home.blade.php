@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('tcexam.layouts.app')
 
 @section('content')
 <div class="container">

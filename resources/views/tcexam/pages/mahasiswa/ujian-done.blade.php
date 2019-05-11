@@ -1,4 +1,4 @@
-@extends('layouts.mahasiswa')
+@extends('tcexam.layouts.mahasiswa')
 
 @section('path', 'Ujian')
 

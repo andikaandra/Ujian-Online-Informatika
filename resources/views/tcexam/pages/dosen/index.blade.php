@@ -1,4 +1,4 @@
-@extends('layouts.dosen')
+@extends('tcexam.layouts.dosen')
 
 @section('path', 'Dashboard')
 

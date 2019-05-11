@@ -22,7 +22,7 @@
                 </div>
               </div>
             </div>
-            @include('pages.mahasiswa.include.aside-question')
+            @include('tcexam.pages.mahasiswa.include.aside-question')
             @endisset
           </div>
         </div>

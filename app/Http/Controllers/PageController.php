@@ -8,6 +8,8 @@ use App\TcExamSoal;
 use App\TcExamUjian;
 use App\TcExamPacket;
 use App\TcExamPesertaUjian;
+use App\Exports\NilaiExport;
+use Maatwebsite\Excel\Facades\Excel;
 use Auth;
 use Log;
 use DB;
@@ -16,23 +18,23 @@ class PageController extends Controller
 {
     public function getMahasiswaPage()
     {
-        return view('pages.mahasiswa.index');
+        return view('tcexam.pages.mahasiswa.index');
     }   
 
     public function getDosenPage()
     {
-        return view('pages.dosen.index');
+        return view('tcexam.pages.dosen.index');
     }
 
     public function getTambahUjianPage()
     {
         $matkul = DB::table('agenda')->where('fk_idPIC',Auth::user()->idUser)->get();
-        return view('pages.dosen.tambah-ujian', compact('matkul'));
+        return view('tcexam.pages.dosen.tambah-ujian', compact('matkul'));
     }
 
     public function getListUjianPage()
     {
-        return view('pages.dosen.list-ujian');
+        return view('tcexam.pages.dosen.list-ujian');
     }
 
     public function getListUjianData()
@@ -58,7 +60,7 @@ class PageController extends Controller
 
     public function getHistoryPage()
     {
-        return view('pages.mahasiswa.historis');
+        return view('tcexam.pages.mahasiswa.historis');
     }
 
     public function getPesertaUjianPage($id)
@@ -68,7 +70,7 @@ class PageController extends Controller
             return redirect('tcexam/dosen/');
         }
         $users = User::where('role', 'mahasiswa')->get();
-        return view('pages.dosen.peserta_ujian', compact('ujian', 'users'));
+        return view('tcexam.pages.dosen.peserta_ujian', compact('ujian', 'users'));
     }
 
     public function getSoalUjianPage($id)
@@ -79,7 +81,7 @@ class PageController extends Controller
             return "500, This is not your authority";
         }
         $listUjian = TcExamUjian::where('id_dosen', Auth::user()->idUser)->where('id', '!=' , $id)->get();
-        return view('pages.dosen.soal_ujian', compact('ujian', 'listUjian'));
+        return view('tcexam.pages.dosen.soal_ujian', compact('ujian', 'listUjian'));
     }
 
     public function getUjianPage($id, $name, Request $request)
@@ -114,14 +116,14 @@ class PageController extends Controller
                 }
                 // return $soal->id;
                 // return microtime(true) - $starts;
-                return view('pages.mahasiswa.ujian-joined', compact('ujian', 'total', 'soal', 'index', 'packets'));
+                return view('tcexam.pages.mahasiswa.ujian-joined', compact('ujian', 'total', 'soal', 'index', 'packets'));
             }
             elseif ($packets->status==1) {
                 // return "You already ended test! nilai : ".$packets->nilai;
                 $nilai = $packets->nilai;
-                return view('pages.mahasiswa.ujian-done', compact('ujian', 'nilai'));
+                return view('tcexam.pages.mahasiswa.ujian-done', compact('ujian', 'nilai'));
             }
-            return view('pages.mahasiswa.ujian', compact('ujian'));
+            return view('tcexam.pages.mahasiswa.ujian', compact('ujian', 'packets'));
         }
         return redirect('tcexam/mahasiswa/');
     }
@@ -179,4 +181,31 @@ class PageController extends Controller
         }
     }
 
+    public function getUjianDoneQuestion($id, $idUser){
+        $packets = TcExamPesertaUjian::where('ujian_id', $id)->where('user_id', $idUser)->first();
+        return view('tcexam.pages.dosen.soal_read_only', compact('packets'));
+        return $packets->packet;
+    }
+
+    public function exportNilai($id){
+        $ujian = TcExamUjian::find($id);
+        $peserta = $ujian->peserta;
+        $data = array(['NO', 'NRP', 'NAMA', 'JUMLAH BENAR', 'JUMLAH SALAH', 'NILAI']);
+        $no=1;
+        foreach ($peserta as $p) {
+            array_push($data, [$no++, $p->user_id, $p->user->name, $p->total_true_anwer, $p->total_false_anwer, $p->nilai]);
+        }
+        $export = new NilaiExport([
+            $data
+        ]);
+
+        return Excel::download($export, 'invoices.xlsx');
+
+        return Excel::download(new NilaiExport, 'nilai.xlsx');
+        // return (new NilaiExport($id))->download('invoices.xlsx');
+
+        // return (new NilaiExport($id))->download('nilai.xlsx');
+
+        return $ujian->peserta;
+    }
 }

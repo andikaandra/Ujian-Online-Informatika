@@ -1,4 +1,4 @@
-@extends('layouts.dosen')
+@extends('tcexam.layouts.dosen')
 
 @section('path', 'Test list')
 
@@ -162,20 +162,20 @@
   }
 
   $(document).ready( function () {
-      var today = new Date();
-      var dd = today.getDate();
-      var mm = today.getMonth()+1;
-      var yyyy = today.getFullYear();
-        if(dd<10){
-          dd='0'+dd
-        }
-        if(mm<10){
-          mm='0'+mm
-        }
+      // var today = new Date();
+      // var dd = today.getDate();
+      // var mm = today.getMonth()+1;
+      // var yyyy = today.getFullYear();
+      //   if(dd<10){
+      //     dd='0'+dd
+      //   }
+      //   if(mm<10){
+      //     mm='0'+mm
+      //   }
 
-      today = yyyy+'-'+mm+'-'+dd;
+      // today = yyyy+'-'+mm+'-'+dd;
       // document.getElementById("tanggal_mulai").setAttribute("min", today);
-      document.getElementById("tanggal_akhir").setAttribute("min", today);
+      // document.getElementById("tanggal_akhir").setAttribute("min", today);
 
 
       let dataTable = $(".table").DataTable({
@@ -213,7 +213,7 @@
           },
           {data: null, className: "text-center",
             render: function(data, type, row) {
-                return "<button class='btn btn-success btn-sm info' data-id='"+row.id+"'>Info</button>";
+                return "<button class='btn btn-success btn-sm info mr-3' data-id='"+row.id+"'>Info</button><a href='{{url('tcexam/dosen/export')}}"+'/'+row.id+"' role='button' target='_blank' class='btn btn-warning text-white btn-sm' data-id='"+row.id+"'>Export</a>";
             }
           }
         ]

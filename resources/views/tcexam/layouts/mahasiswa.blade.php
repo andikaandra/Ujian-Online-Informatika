@@ -21,12 +21,10 @@
     <!-- Main styles for this application-->
     <link href="{{asset('dashboard/css/style.css')}}" rel="stylesheet">
     <link href="{{asset('dashboard/vendors/pace-progress/css/pace.min.css')}}" rel="stylesheet">
+    <link href="{{asset('dashboard/css/style.css')}}" rel="stylesheet">
+    <link href="{{asset('dashboard/vendors/pace-progress/css/pace.min.css')}}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
-    <link href="{{asset('introjs/introjs.css')}}" rel="stylesheet"> 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.11.2/build/css/alertify.min.css"/>    
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.11.2/build/css/themes/bootstrap.min.css"/>
-
+    <link href="{{asset('introjs/introjs.css')}}" rel="stylesheet">
     <style>
       .card-content{
         box-shadow: 0px 0px 0px grey;
@@ -60,23 +58,22 @@
           transform: scale(1);
         }
       }
-
     </style>
     @yield('style')
   </head>
   <body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show aside-menu-lg-show" id="body-section">
    
-    @include('includes.dosen.header')
+    @include('tcexam.includes.mahasiswa.header')
 
     <div class="app-body">
      
-        @include('includes.dosen.sidebar')
+        @include('tcexam.includes.mahasiswa.sidebar')
 
       <main class="main">
         <!-- Breadcrumb-->
         <ol class="breadcrumb">
           <li class="breadcrumb-item">Home</li>
-          <li class="breadcrumb-item">Dosen</li>
+          <li class="breadcrumb-item">Mahasiswa</li>
           <li class="breadcrumb-item active">@yield('path')</li>
 
 {{--           <li class="breadcrumb-menu d-md-down-none">
@@ -99,7 +96,7 @@
           </div>
         </div>
       </main>
-      @include('includes.dosen.aside')
+      @include('tcexam.includes.mahasiswa.aside')
     </div>
     <footer class="app-footer">
       <div>
@@ -116,9 +113,8 @@
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
     <script src="{{asset('dashboard/js/main.js')}}"></script>
     <script type="text/javascript" src="{{asset('introjs/intro.js')}}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
     {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/i18n/defaults-*.min.js"></script> --}}
-    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.11.2/build/alertify.min.js"></script>    
+{{--     <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.11.2/build/alertify.min.js"></script>     --}}
     @yield('script')
   </body>
 </html>

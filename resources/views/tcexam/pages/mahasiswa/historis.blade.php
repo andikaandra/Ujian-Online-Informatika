@@ -1,4 +1,4 @@
-@extends('layouts.mahasiswa')
+@extends('tcexam.layouts.mahasiswa')
 
 @section('path', 'History')
 
@@ -39,6 +39,7 @@
               <th width="15%">Jumlah Benar</th>
               <th width="15%">Jumlah Salah</th>
               <th width="20%">Nilai</th>
+              <th width="10%">Cek</th>
             </thead>
             <tbody>
               @foreach(Auth::user()->ujians as $u)
@@ -54,6 +55,9 @@
                   <td align="center">secret</td>
                   <td align="center">secret</td>
                 @endif
+                  <td align="center">
+                    <a role="button" class="btn btn-sm btn-info text-white" target="_blank" href="{{url('tcexam/mahasiswa/exam').'/'.$u->ujians->id.'/'.urlencode($u->ujians->nama)}}" style="text-decoration: none;">Cek</a>
+                  </td>
               </tr>
               @endforeach
             </tbody>
