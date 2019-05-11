@@ -27,7 +27,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/mahasiswa';
+    protected $redirectTo = 'tcexam/mahasiswa';
 
     /**
      * Create a new controller instance.
@@ -52,11 +52,9 @@ class LoginController extends Controller
     // return $userdata;
         if (Auth::attempt($userdata)) {
             if (Auth::user()->role == "mahasiswa") {
-                return redirect('mahasiswa');
+                return redirect('tcexam/mahasiswa');
             } elseif(Auth::user()->role == "dosen") {
-                return redirect('dosen');
-            } else {
-                return redirect('admin');
+                return redirect('tcexam/dosen');
             }
         } else {
             return redirect('login')->with('message', "Account not found");

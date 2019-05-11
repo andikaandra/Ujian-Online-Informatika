@@ -48,16 +48,20 @@
                   $end = DateTime::createFromFormat($format, substr($ujian->date_end, 0, 11).$ujian->time_end);
                   $now = (new DateTime())->format($format);
                   @endphp
-                  @if($now > $end->format($format))
-                    <button class="btn btn-danger text-white btn-block" style="cursor: no-drop;" disabled>ALREADY ENDED</button>
-                  @elseif($now < $start->format($format))
-                    <button class="btn btn-info text-white btn-block" style="cursor: no-drop;" disabled>NOT STARTED YET</button>
+                  @if(count($ujian->soals) == $ujian->jumlah_soal)
+                    @if($now > $end->format($format))
+                      <button class="btn btn-danger text-white btn-block" style="cursor: no-drop;" disabled>ALREADY ENDED</button>
+                    @elseif($now < $start->format($format))
+                      <button class="btn btn-info text-white btn-block" style="cursor: no-drop;" disabled>NOT STARTED YET</button>
+                    @else
+                      <form action="{{route('join.ujian')}}" method="post">
+                        @csrf
+                        <input type="hidden" name="ujian_id" value="{{$ujian->id}}">
+                        <button type="submit" class="btn btn-success btn-block">JOIN</button>
+                      </form>
+                    @endif
                   @else
-                    <form action="{{route('join.ujian')}}" method="post">
-                      @csrf
-                      <input type="hidden" name="ujian_id" value="{{$ujian->id}}">
-                      <button type="submit" class="btn btn-success btn-block">JOIN</button>
-                    </form>
+                      <button class="btn btn-danger text-white btn-block" style="cursor: no-drop;" disabled>EXAM IS NOT READY YET</button>                  
                   @endif
                 </div>
               </div>

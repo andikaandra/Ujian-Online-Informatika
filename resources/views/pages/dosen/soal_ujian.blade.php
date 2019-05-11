@@ -18,6 +18,12 @@
           </div>
         </div>
         <hr>
+        @if(count($ujian->soals)!=$ujian->jumlah_soal)
+          <div class="alert alert-danger">
+            Ujian dapat dimulai jika soal telah mencapai {{$ujian->jumlah_soal}} butir
+          </div>        
+        @endif
+        <hr>
         @if($errors->any())
           <div class="alert alert-danger">
             @foreach ($errors->all() as $error)
@@ -37,7 +43,7 @@
           <br>
           <div class="row">
             <div class="col-12 col-md-2">
-              <a href="{{url('dosen/list-ujian')}}" role="button" class="mb-2 btn btn-block btn-info text-white"><i class="fas fa-backward"></i> &nbsp;List Ujian</a>
+              <a href="{{url('tcexam/dosen/list-ujian')}}" role="button" class="mb-2 btn btn-block btn-info text-white"><i class="fas fa-backward"></i> &nbsp;List Ujian</a>
             </div>
             <div class="col">
               
@@ -296,7 +302,7 @@
         let data;
         try {
             data = await $.ajax({
-              url: '{{url('dosen/list/soal/data')}}/' + id
+              url: '{{url('tcexam/dosen/list/soal/data')}}/' + id
             });
         } catch (e) {
           alert("Ajax error");

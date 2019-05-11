@@ -1,4 +1,4 @@
-<form action="{{url('mahasiswa/exam').'/'.$ujian->id.'/'.urlencode($ujian->nama)}}">
+<form action="{{url('tcexam/mahasiswa/exam').'/'.$ujian->id.'/'.urlencode($ujian->nama)}}">
 @csrf
 @php
   $myPackets = $packets->packet;
@@ -21,4 +21,12 @@
     @endphp
   @endforeach
 </ul>
+</form>
+<form action="{{route('finish.test')}}" method="post" id="finishTest">
+@csrf
+  <div class="row justify-content-center">
+    <input type="hidden" value="{{$packets->id}}" name="peserta_ujian">
+    <input type="hidden" value="{{$packets->ujian_id}}" name="ujian_id">
+    <button class="btn btn-success" type="submit">Selesai Ujian</button>  
+  </div>
 </form>

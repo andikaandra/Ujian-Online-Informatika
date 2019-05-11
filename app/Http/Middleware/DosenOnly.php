@@ -13,10 +13,7 @@ class DosenOnly
             return $next($request);
         }
         elseif (Auth::user() && Auth::user()->role == 'mahasiswa') {
-            return redirect('/mahasiswa');
-        }
-        elseif (Auth::user() && Auth::user()->role == 'admin') {
-            return redirect('/admin');
+            return redirect('tcexam/mahasiswa');
         }
         if ($request->ajax()) {
           return response()->json(['message' => 'unauthorised'], 401);

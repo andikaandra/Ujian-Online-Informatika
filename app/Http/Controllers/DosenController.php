@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
-use App\Soal;
-use App\Ujian;
-use App\PesertaUjian;
+use App\TcExamSoal;
+use App\TcExamUjian;
+use App\TcExamPesertaUjian;
 use Validator;
 use Auth;
 use Log;
@@ -18,7 +18,7 @@ class DosenController extends Controller
     {
     	// return $request;
 		try {
-			$ujian = Ujian::create([
+			$ujian = TcExamUjian::create([
 				'nama' => $request->nama,
 				'id_dosen' => Auth::user()->idUser,
 				'true_answer'	=>	100/$request->jumlah_soal,
@@ -35,7 +35,7 @@ class DosenController extends Controller
 
 	      	$peserta =  DB::table('kehadiran')->where('idAgenda', $request->idAgenda)->get();
 			foreach ($peserta as $p) {
-				PesertaUjian::updateOrCreate ([
+				TcExamPesertaUjian::updateOrCreate ([
 					'ujian_id' => $ujian->id,
 					'user_id' => $p->idUser
 		      	]);
@@ -46,14 +46,14 @@ class DosenController extends Controller
 	        Log::emergency($eMessage);
 	    	return redirect()->back()->with('error', 'Whoops, something error!'); 
 	    }
-	    return redirect('dosen/list-ujian')->with('success', 'Test successfully created!'); 
+	    return redirect('tcexam/dosen/list-ujian')->with('success', 'Test successfully created!'); 
     }
 
     public function setUpdateUjian(Request $request)
     {
     	// return $request;
 		try {
-			Ujian::find($request->id_ujian)->update([
+			TcExamUjian::find($request->id_ujian)->update([
 				'nama' => $request->nama,
 				'true_answer'	=>	100/$request->jumlah_soal,
 				'false_answer'	=>	$request->nilai_salah,
@@ -71,15 +71,14 @@ class DosenController extends Controller
 	        Log::emergency($eMessage);
 	    	return redirect()->back()->with('error', 'Whoops, something error!'); 
 	    }
-	    return redirect('dosen/list-ujian')->with('success', 'Test successfully updated!'); 
+	    return redirect('tcexam/dosen/list-ujian')->with('success', 'Test successfully updated!'); 
     }
 
     public function setTambahPeserta(Request $request)
     {
-    	// return $request;
 		try {
 			foreach ($request->peserta as $peserta) {
-				PesertaUjian::updateOrCreate ([
+				TcExamPesertaUjian::updateOrCreate ([
 					'ujian_id' => $request->ujian_id,
 					'user_id' => $peserta
 		      	]);
@@ -95,7 +94,7 @@ class DosenController extends Controller
     public function deletePeserta(Request $request)
     {
 		try {
-			PesertaUjian::find($request->id)->delete();
+			TcExamPesertaUjian::find($request->id)->delete();
 		} catch (\Exception $e) {
 	        $eMessage = 'delete participant - User: ' . Auth::user()->idUser . ', error: ' . $e->getMessage();
 	        Log::emergency($eMessage);
@@ -121,7 +120,7 @@ class DosenController extends Controller
 	            return redirect()->back()->withErrors($validator)->withInput();
 	        }
 
-			$soal = new Soal;
+			$soal = new TcExamSoal;
 
 		    $soal->ujian_id = $request->ujian_id;
 		    $soal->deskripsi = $request->description;
@@ -163,7 +162,7 @@ class DosenController extends Controller
     public function deleteSoal(Request $request)
     {
 		try {
-			Soal::find($request->id)->delete();
+			TcExamSoal::find($request->id)->delete();
 		} catch (\Exception $e) {
 	        $eMessage = 'delete soal - User: ' . Auth::user()->idUser . ', error: ' . $e->getMessage();
 	        Log::emergency($eMessage);
@@ -174,9 +173,15 @@ class DosenController extends Controller
 
     public function importSoal(Request $request){
 		try {
-	    	$ujian = Ujian::find($request->ujian);
+	    	$ujian = TcExamUjian::find($request->ujian);
+	    	$jumlahSoalYgDiimport = count($ujian->soals);
+
+	    	$ujianSekarang = TcExamUjian::find($request->ujianid);
+	    	if (count($ujianSekarang->soals) + $jumlahSoalYgDiimport > $ujianSekarang->jumlah_soal) {
+	    		return redirect()->back()->with('error', 'Jumlah soal tidak boleh melebihi kapasitas!'); 
+	    	}
 	    	foreach ($ujian->soals as $u) {
-				Soal::create([
+				TcExamSoal::create([
 					'ujian_id'	=>	$request->ujianid,
 					'deskripsi'	=>	$u->deskripsi,
 					'file_path'	=>	$u->file_path,

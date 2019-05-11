@@ -34,10 +34,11 @@
 
 @section('script')
 <script>
+    $('#body-section').removeClass('aside-menu-lg-show');
   function completeTour() {
     try {
         res = $.ajax({
-          url: '{{url('finish-tour')}}',
+          url: '{{url('tcexam/finish-tour')}}',
           method: 'POST',
           data: {'_token': '{{ csrf_token() }}'}
         });

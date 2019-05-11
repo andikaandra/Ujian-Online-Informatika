@@ -115,6 +115,7 @@
 
 @section('script')
 <script>
+  $('#body-section').removeClass('aside-menu-lg-show');
   $(document).ready(function(){
         var selected = $('#nama').find('option:selected');
         var mulai = selected.data('mulai'); 

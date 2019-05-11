@@ -13,7 +13,8 @@
             <h4 class="card-title mb-0">Soal no : {{$index+1}}</h4>
             <div class="text-muted">{{$ujian->nama}}</div>
           </div>
-          <div class="col d-none d-md-block">
+          <div class="col d-none d-md-block text-right">
+            <div id="clock" style="font-size: 20px"></div>
           </div>
         </div>
         <hr>
@@ -86,7 +87,7 @@
         <div class="row">
           <div class="col">
             @if($index>0)
-            <form action="{{url('mahasiswa/exam').'/'.$ujian->id.'/'.urlencode($ujian->nama)}}">
+            <form action="{{url('tcexam/mahasiswa/exam').'/'.$ujian->id.'/'.urlencode($ujian->nama)}}">
             @csrf
             <button type="submit" name="packet_id" class="text-white btn btn-info" value="{{$index-1}}"><i class="fa fa-chevron-circle-left text-white" aria-hidden="true"></i> Sebelumnya</button>
             </form>
@@ -107,7 +108,7 @@
           </div>
           <div class="col text-right">
             @if($index<$total-1)
-            <form action="{{url('mahasiswa/exam').'/'.$ujian->id.'/'.urlencode($ujian->nama)}}">
+            <form action="{{url('tcexam/mahasiswa/exam').'/'.$ujian->id.'/'.urlencode($ujian->nama)}}">
             @csrf
             <button type="submit" name="packet_id" class="text-white btn btn-info" value="{{$index+1}}">Selanjutnya <i class="fa fa-chevron-circle-right text-white" aria-hidden="true"></i></button>
             </form>
@@ -123,7 +124,28 @@
     // $('#body-section').removeClass('aside-menu-lg-show');
     $('#body-section').removeClass('sidebar-lg-show');
     $(function() {  
-      // console.log($('cb1').val());
+      
+      var end = <?php echo json_encode(substr($ujian->date_end, 0, 10).' '.$ujian->time_end); ?>;
+      var countDownDate = new Date(end).getTime();
+      var x = setInterval(function() {
+        var now = new Date().getTime();
+
+        var distance = countDownDate - now;
+          
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+          
+        document.getElementById("clock").innerHTML = days + "d " + hours + "h "
+        + minutes + "m " + seconds + "s ";
+          
+        if (distance < 0) {
+          clearInterval(x);
+          document.getElementById("clock").innerHTML = "UJIAN SELESAI";
+          $('#finishTest').submit();
+        }
+      }, 1000);
     });
 </script>
 @endsection

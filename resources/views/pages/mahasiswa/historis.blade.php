@@ -45,9 +45,15 @@
               <tr>
                 <td>{{$no++}}</td>
                 <td>{{$u->ujians->nama}}</td>
-                <td align="center">{{$u->total_true_answer ?? '-'}}</td>
-                <td align="center">{{$u->total_false_answer ?? '-'}}</td>
-                <td align="center">{{$u->nilai ?? '-'}}</td>
+                @if($u->ujians->result_to_user == 'ya')
+                  <td align="center">{{$u->total_true_answer ?? '-'}}</td>
+                  <td align="center">{{$u->total_false_answer ?? '-'}}</td>
+                  <td align="center">{{$u->nilai ?? '-'}}</td>
+                @else
+                  <td align="center">secret</td>
+                  <td align="center">secret</td>
+                  <td align="center">secret</td>
+                @endif
               </tr>
               @endforeach
             </tbody>

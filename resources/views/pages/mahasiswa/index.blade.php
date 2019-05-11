@@ -19,9 +19,6 @@
         <hr>
         <div class="chart-wrapper mt-3" style="min-height:300px;">
           <div class="email-unverified">
-            @if(!Auth::user()->name)
-            <p>Please complete your name and email <a href="{{url('/data/fill-data')}}">here</a></p>
-            @endif
             <p>Hello {{Auth::user()->name ? Auth::user()->name : ' '}} 
               <strong>{{Auth::user()->kode}}</strong>. <br> </p>
           </div>
@@ -39,7 +36,7 @@
                 $end = DateTime::createFromFormat($format, substr($u->ujians->date_end, 0, 11).$u->ujians->time_end);
                 @endphp
                 @if($now < $end->format($format))
-                  <li><a href="{{url('mahasiswa/exam').'/'.$u->ujians->id.'/'.urlencode($u->ujians->nama)}}" style="text-decoration: none;">{{$u->ujians->nama}}</a></li>
+                  <li><a href="{{url('tcexam/mahasiswa/exam').'/'.$u->ujians->id.'/'.urlencode($u->ujians->nama)}}" style="text-decoration: none;">{{$u->ujians->nama}}</a></li>
                 @endif
               @endforeach
             </ul>
@@ -54,10 +51,11 @@
 
 @section('script')
 <script>
+      $('#body-section').removeClass('aside-menu-lg-show');
   function completeTour() {
     try {
         res = $.ajax({
-          url: '{{url('finish-tour')}}',
+          url: '{{url('tcexam/finish-tour')}}',
           method: 'POST',
           data: {'_token': '{{ csrf_token() }}'}
         });

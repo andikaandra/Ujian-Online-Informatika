@@ -180,7 +180,7 @@
 
       let dataTable = $(".table").DataTable({
         responsive: true,
-        ajax: '{{url('dosen/list/ujian/data')}}',
+        ajax: '{{url('tcexam/dosen/list/ujian/data')}}',
         columns: [
           {data: "id"},
           {data: "nama"},
@@ -226,7 +226,7 @@
 
         try {
             data = await $.ajax({
-              url: '{{url('dosen/list/ujian/data')}}/' + id
+              url: '{{url('tcexam/dosen/list/ujian/data')}}/' + id
             });
             console.log(id);
         } catch (e) {

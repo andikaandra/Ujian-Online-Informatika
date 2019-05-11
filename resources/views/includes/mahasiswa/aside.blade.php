@@ -10,37 +10,6 @@
         <div class="tab-content">
           <div class="tab-pane active" id="timeline" role="tabpanel">
             <div class="list-group list-group-accent">
-              @if(!Auth::user()->name)
-              <div class="list-group-item list-group-item-accent-secondary bg-light text-center font-weight-bold text-muted text-uppercase small">Fill Data</div>
-              <div class="list-group-item list-group-item-accent-{{ Auth::user()->name ? 'success' : 'danger' }} list-group-item-divider">
-                <div class="row">
-                  <div class="col-10">
-                  Fill Name
-                  </div>
-                  <div class="col-2 float-right text-right">
-                    @if(Auth::user()->name)
-                      <i class="fa fa-chevron-circle-left text-info" aria-hidden="true"></i>
-                    @else
-                    <i class="fa fa-times text-danger" aria-hidden="true"></i>
-                    @endif
-                  </div>
-                </div>
-              </div>
-              <div class="list-group-item list-group-item-accent-{{ Auth::user()->email ? 'success' : 'danger' }} list-group-item-divider">
-                <div class="row">
-                  <div class="col-10">
-                  Fill Email
-                  </div>
-                  <div class="col-2 float-right text-right">
-                    @if(Auth::user()->email)
-                      <i class="fa fa-chevron-circle-left text-info" aria-hidden="true"></i>
-                    @else
-                    <i class="fa fa-times text-danger" aria-hidden="true"></i>
-                    @endif
-                  </div>
-                </div>
-              </div>
-              @endif
             </div>
             @isset($index)
             <div class="list-group-item list-group-item-accent-primary list-group-item-divider">

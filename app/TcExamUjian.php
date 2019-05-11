@@ -4,17 +4,17 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Ujian extends Model
+class TcExamUjian extends Model
 {
-	protected $table = 'ujian';
+	protected $table = 'tcexam_ujian';
     protected $guarded = [];
 
 	public function peserta(){
-	    return $this->hasMany('App\PesertaUjian', 'ujian_id', 'id');
+	    return $this->hasMany('App\TcExamPesertaUjian', 'ujian_id', 'id');
 	}
 
 	public function soals(){
-	    return $this->hasMany('App\Soal', 'ujian_id', 'id');
+	    return $this->hasMany('App\TcExamSoal', 'ujian_id', 'id');
 	}
 
 	public function dosen(){

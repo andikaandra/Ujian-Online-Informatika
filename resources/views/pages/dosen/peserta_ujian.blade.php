@@ -34,7 +34,7 @@
           @csrf
           <div class="row">
             <div class="col-12 col-md-2">
-              <a href="{{url('dosen/list-ujian')}}" role="button" class="mb-2 btn btn-block btn-info text-white"><i class="fas fa-backward"></i> &nbsp;List Ujian</a>
+              <a href="{{url('tcexam/dosen/list-ujian')}}" role="button" class="mb-2 btn btn-block btn-info text-white"><i class="fas fa-backward"></i> &nbsp;List Ujian</a>
             </div>
             <div class="col-12 col-md-2">
               Pilih peserta ujian :
@@ -43,7 +43,7 @@
               <div class="form-group">
                 <select class="selectpicker form-control" id="peserta" data-live-search="true" multiple name="peserta[]">
                   @foreach($users as $user)
-                  <option value="{{$user->id}}">{{$user->idUser}} | {{$user->name}}</option> 
+                  <option value="{{$user->idUser}}">{{$user->idUser}} | {{$user->name}}</option> 
                   @endforeach
                 </select>
               </div>
@@ -115,7 +115,7 @@
               let res;
               try {
                 res = await $.ajax({
-                        url: `{{url('dosen/add/ujian/peserta')}}`, 
+                        url: `{{url('tcexam/dosen/add/ujian/peserta')}}`, 
                         method: 'POST',
                         data: $('form').serialize()
                       });

@@ -13,10 +13,7 @@ class MahasiswaOnly
             return $next($request);
         }
         elseif (Auth::user() && Auth::user()->role == 'dosen') {
-            return redirect('/dosen');
-        }
-        elseif (Auth::user() && Auth::user()->role == 'admin') {
-            return redirect('/admin');
+            return redirect('tcexam/dosen');
         }
         if ($request->ajax()) {
           return response()->json(['message' => 'unauthorised'], 401);

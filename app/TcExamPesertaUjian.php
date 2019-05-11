@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class PesertaUjian extends Model
+class TcExamPesertaUjian extends Model
 {
-	protected $table = 'peserta_ujian';
+	protected $table = 'tcexam_peserta_ujian';
     protected $guarded = [];
 
 	public function user(){
@@ -14,10 +14,10 @@ class PesertaUjian extends Model
 	}
 
 	public function ujians(){
-	    return $this->belongsTo('App\Ujian', 'ujian_id', 'id');
+	    return $this->belongsTo('App\TcExamUjian', 'ujian_id', 'id');
 	}
 
 	public function packet(){
-	    return $this->hasMany('App\Packet', 'peserta_ujian_id', 'id');
+	    return $this->hasMany('App\TcExamPacket', 'peserta_ujian_id', 'id');
 	}
 }
