@@ -25,7 +25,7 @@ class DosenController extends Controller
 		try {
 			$ujian = TcExamUjian::create([
 				'nama' => $request->nama,
-				'id_dosen' => Auth::user()->id,
+				'id_dosen' => Auth::user()->kode,
 				'true_answer'	=>	100/$request->jumlah_soal,
 				'false_answer'	=>	$request->nilai_salah,
 				'pass_test'	=>	$request->pass_test,
@@ -38,18 +38,10 @@ class DosenController extends Controller
 				'time_end'	=>	$request->waktu_akhir,
 	      	]);
 
-	      	$peserta =  DB::table('kehadiran')->where('idAgenda', $request->idAgenda)->get();
-			foreach ($peserta as $p) {
-				TcExamPesertaUjian::updateOrCreate ([
-					'ujian_id' => $ujian->id,
-					'user_id' => $p->id
-		      	]);
-			}
-
 		} catch (\Exception $e) {
-	        $eMessage = 'new ujian - User: ' . Auth::user()->id . ', error: ' . $e->getMessage();
+	        $eMessage = 'new ujian - User: ' . Auth::user()->kode . ', error: ' . $e->getMessage();
 	        Log::emergency($eMessage);
-	    	return redirect()->back()->with('error', 'Whoops, something error!'); 
+	    	return redirect()->back()->with('error', $eMessage); 
 	    }
 	    return redirect('tcexam/dosen/list-ujian')->with('success', 'Test successfully created!'); 
     }
@@ -71,7 +63,7 @@ class DosenController extends Controller
 				'time_end'	=>	$request->waktu_akhir,
       	]);
 		} catch (\Exception $e) {
-	        $eMessage = 'update ujian - User: ' . Auth::user()->id . ', error: ' . $e->getMessage();
+	        $eMessage = 'update ujian - User: ' . Auth::user()->kode . ', error: ' . $e->getMessage();
 	        Log::emergency($eMessage);
 	    	return redirect()->back()->with('error', 'Whoops, something error!'); 
 	    }
@@ -88,7 +80,7 @@ class DosenController extends Controller
 		      	]);
 			}
 		} catch (\Exception $e) {
-	        $eMessage = 'new participant - User: ' . Auth::user()->id . ', error: ' . $e->getMessage();
+	        $eMessage = 'new participant - User: ' . Auth::user()->kode . ', error: ' . $e->getMessage();
 	        Log::emergency($eMessage);
 	    	return response()->json(['error' => $eMessage]);
 	    }
@@ -100,7 +92,7 @@ class DosenController extends Controller
 		try {
 			TcExamPesertaUjian::find($request->id)->delete();
 		} catch (\Exception $e) {
-	        $eMessage = 'delete participant - User: ' . Auth::user()->id . ', error: ' . $e->getMessage();
+	        $eMessage = 'delete participant - User: ' . Auth::user()->kode . ', error: ' . $e->getMessage();
 	        Log::emergency($eMessage);
 	    	return redirect()->back()->with('error', 'Whoops, something error!'); 
 	    }
@@ -156,7 +148,7 @@ class DosenController extends Controller
 	    	}
 		    $soal->save();
 		} catch (\Exception $e) {
-	        $eMessage = 'new soal - User: ' . Auth::user()->id . ', error: ' . $e->getMessage();
+	        $eMessage = 'new soal - User: ' . Auth::user()->kode . ', error: ' . $e->getMessage();
 	        Log::emergency($eMessage);
 	    	return redirect()->back()->with('error', $eMessage); 
 	    }
@@ -200,7 +192,7 @@ class DosenController extends Controller
 
 		    $soal->save();
 		} catch (\Exception $e) {
-	        $eMessage = 'edit soal - User: ' . Auth::user()->id . ', error: ' . $e->getMessage();
+	        $eMessage = 'edit soal - User: ' . Auth::user()->kode . ', error: ' . $e->getMessage();
 	        Log::emergency($eMessage);
 	    	return redirect()->back()->with('error', $eMessage); 
 	    }
@@ -212,7 +204,7 @@ class DosenController extends Controller
 		try {
 			TcExamSoal::find($request->id)->delete();
 		} catch (\Exception $e) {
-	        $eMessage = 'delete soal - User: ' . Auth::user()->id . ', error: ' . $e->getMessage();
+	        $eMessage = 'delete soal - User: ' . Auth::user()->kode . ', error: ' . $e->getMessage();
 	        Log::emergency($eMessage);
 	    	return redirect()->back()->with('error', 'Whoops, something error!'); 
 	    }
@@ -243,7 +235,7 @@ class DosenController extends Controller
 		      	]);
 	    	}
 		} catch (\Exception $e) {
-	        $eMessage = 'import soal - User: ' . Auth::user()->id . ', error: ' . $e->getMessage();
+	        $eMessage = 'import soal - User: ' . Auth::user()->kode . ', error: ' . $e->getMessage();
 	        Log::emergency($eMessage);
 	    	return redirect()->back()->with('error', 'Whoops, something error!'); 
 	    }
@@ -256,7 +248,7 @@ class DosenController extends Controller
 		try {
 			$peserta =TcExamPesertaUjian::find($request->peserta_ujian_id)->update(['total_true_answer' =>  null, 'total_false_answer' => null, 'nilai' => null, 'status' => 0]);
 		} catch (\Exception $e) {
-	        $eMessage = 'edit status peserta ujian - User: ' . Auth::user()->id . ', error: ' . $e->getMessage();
+	        $eMessage = 'edit status peserta ujian - User: ' . Auth::user()->kode . ', error: ' . $e->getMessage();
 	        Log::emergency($eMessage);
 	    	return response()->json(['error' => $eMessage]);
 	    }

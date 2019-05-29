@@ -16,13 +16,13 @@ class CreateSoalTable extends Migration
             $table->bigInteger('ujian_id')->unsigned();
             $table->text("deskripsi");
             $table->text("file_path")->nullable();
-            $table->string("pilihan_a");
-            $table->string("pilihan_b");
-            $table->string("pilihan_c");
-            $table->string("pilihan_d");
-            $table->string("pilihan_e")->nullable();
+            $table->text("pilihan_a");
+            $table->text("pilihan_b");
+            $table->text("pilihan_c");
+            $table->text("pilihan_d");
+            $table->text("pilihan_e")->nullable();
             $table->string("status")->nullable();
-            $table->string("jawaban");
+            $table->text("jawaban");
             $table->timestamps();
         });
     }

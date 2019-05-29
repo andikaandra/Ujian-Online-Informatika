@@ -40,7 +40,7 @@
                   <strong>Total Questions</strong> : {{count($ujian->soals)}}<br><br>
 
                   <strong>Lecturer</strong> : {{$ujian->dosen->name ?? 'Mr. lecturer'}}<br><br>
-                  <div id="time" style="font-size: 25px"></div><hr>
+                  <div id="clock" style="font-size: 25px"></div><hr>
                   @php
                   date_default_timezone_set('Asia/Jakarta');
                   $format = 'Y-m-d H:i:s';
@@ -92,33 +92,29 @@
     $('#body-section').removeClass('aside-menu-lg-show');
     $('#body-section').removeClass('sidebar-lg-show');
 
-    var start = <?php echo json_encode($ujian->time_start); ?>;
+    $(function() {  
+      
+      var start = <?php echo json_encode(substr($ujian->date_start, 0, 10).' '.$ujian->time_start); ?>;
+      var countDownDate = new Date(start).getTime();
+      var x = setInterval(function() {
+        var now = new Date().getTime();
 
-    function checkTime(i) {
-        if (i < 10) {
-            i = "0" + i;
+        var distance = countDownDate-now;
+          
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+          
+        document.getElementById("clock").innerHTML = days + "d " + hours + "h "
+        + minutes + "m " + seconds + "s ";
+          
+        if (distance < 0) {
+          document.getElementById("clock").innerHTML = "Ujian telah dimulai";
+          // window.location.reload();
         }
-        return i;
-    }
-
-    function startTime() {
-        var today = new Date();
-        var h = ("0" + today.getHours()).slice(-2);
-        var m = ("0" + today.getMinutes()).slice(-2);
-        var s = today.getSeconds();
-        // add a zero in front of numbers<10
-        m = checkTime(m);
-        s = checkTime(s);
-        document.getElementById('time').innerHTML = h + ":" + m + ":" + s;
-        if ((h + ":" + m + ":" + s) == start) {
-          window.location.reload();
-        }
-
-        t = setTimeout(function () {
-            startTime()
-        }, 1000);
-    }
-    startTime();
+      }, 1000);
+    });
 
 </script>
 @endsection

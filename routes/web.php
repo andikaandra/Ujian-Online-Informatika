@@ -15,6 +15,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('register', 'Auth\RegisterController@registerPage');
+Route::post('register', 'Auth\RegisterController@register');
 Route::get('login', 'Auth\LoginController@loginPage');
 Route::post('login', 'Auth\LoginController@login');
 Route::post('logout', 'Auth\LogoutController@logout');
@@ -50,10 +52,10 @@ Route::prefix('tcexam')->group(function () {
 		Route::post('/add/ujian/peserta', 'DosenController@setTambahPeserta')->name('tambah.peserta');
 		Route::post('/delete/ujian/peserta', 'DosenController@deletePeserta')->name('hapus.peserta');
 
-		Route::post('/lanjutkan/ujian', 'TcExamDosenController@lanjutkanUjian')->name('lanjutkan.ujian');
+		Route::post('/lanjutkan/ujian', 'DosenController@lanjutkanUjian')->name('lanjutkan.ujian');
 
-        Route::post('/add/ujian/soal', 'TcExamDosenController@setTambahSoal')->name('tambah.soal');
-        Route::post('/edit/ujian/soal', 'TcExamDosenController@setEditSoal')->name('edit.soal');
+        Route::post('/add/ujian/soal', 'DosenController@setTambahSoal')->name('tambah.soal');
+        Route::post('/edit/ujian/soal', 'DosenController@setEditSoal')->name('edit.soal');
 		Route::post('/delete/ujian/soal', 'DosenController@deleteSoal')->name('hapus.soal');
 
 		Route::get('/list-ujian', 'PageController@getListUjianPage');
@@ -68,7 +70,7 @@ Route::prefix('tcexam')->group(function () {
 
 		Route::post('/import/soal', 'DosenController@importSoal')->name('import.soal');
 
-		Route::get('/check/exam/{id}/{idUser}', 'PageController@getUjianDoneQuestion');
+		Route::get('/check/exam/{id}/{kode}', 'PageController@getUjianDoneQuestion');
 		Route::get('/export/{id}', 'PageController@exportNilai');
 		// Route::get('/list/ujian/peserta/{id}', 'DosenController@getPesertaUjian');
 	});

@@ -17,8 +17,9 @@ class CreateUjianTable extends Migration
             $table->bigInteger('id_dosen')->unsigned();
             $table->integer("test_time")->nullable();
             $table->integer("jumlah_soal");
+            $table->integer("pass_test");
             $table->integer("status")->default('0');
-            $table->integer("true_answer")->nullable();
+            $table->float("true_answer", 8, 2)->nullable();
             $table->integer("false_answer");
             $table->string("result_to_user");
             $table->string("report_to_user");

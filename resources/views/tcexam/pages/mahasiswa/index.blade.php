@@ -55,9 +55,9 @@
   function completeTour() {
     try {
         res = $.ajax({
-          url: '{{url('tcexam/finish-tour')}}',
+          url: '{{url("tcexam/finish-tour")}}',
           method: 'POST',
-          data: {'_token': '{{ csrf_token() }}'}
+          data: {'_token': "{{ csrf_token() }}"}
         });
         // console.log(res);
     } catch (error) {

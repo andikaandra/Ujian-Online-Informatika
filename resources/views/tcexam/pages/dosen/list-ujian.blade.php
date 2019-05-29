@@ -221,14 +221,12 @@
 
       $(document).on('click', '.info', async function(){
         var id = $(this).attr('data-id');
-        // console.log(id);
         let data;
 
         try {
             data = await $.ajax({
               url: '{{url('tcexam/dosen/list/ujian/data')}}/' + id
             });
-            console.log(id);
         } catch (e) {
           alert("Ajax error");
           console.log(e);

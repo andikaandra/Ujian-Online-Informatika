@@ -18,6 +18,6 @@ class TcExamUjian extends Model
 	}
 
 	public function dosen(){
-	    return $this->belongsTo('App\User', 'id_dosen', 'id');
+	    return $this->belongsTo('App\User', 'id_dosen', 'kode');
 	}
 }

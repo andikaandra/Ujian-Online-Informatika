@@ -144,7 +144,7 @@
         if (distance < 0) {
           clearInterval(x);
           document.getElementById("clock").innerHTML = "UJIAN SELESAI";
-          $('#finishTest').submit();
+          // $('#finishTest').submit();
         }
       }, 1000);
     });

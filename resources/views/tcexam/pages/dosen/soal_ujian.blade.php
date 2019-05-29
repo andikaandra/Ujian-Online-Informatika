@@ -63,7 +63,7 @@
           <table class="display responsive no-wrap table" width="100%">
             <thead class="text-center">
               <th width="10">NO</th>
-              <td>Soal</td>
+              <th>Soal</th>
               <th>Jawaban</th>
               <th >Action</th>
             </thead>
@@ -71,7 +71,7 @@
               @foreach($ujian->soals as $u)
               <tr>
                 <td align="center">{{$no++}}</td>
-                <td width="45%">{!! substr($u->deskripsi,0,50) !!}</td>
+                <td width="45%">click view to read question</td>
                 <td width="30%">{{ substr($u->jawaban,0,30) }}</td>
                 <td align="center">
                   <button class="btn btn-info text-white btn-sm view" data-id="{{$u->id}}">View</button>

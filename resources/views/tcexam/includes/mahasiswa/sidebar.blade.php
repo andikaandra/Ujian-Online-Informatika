@@ -10,12 +10,12 @@
         </div>
         <div class="row justify-content-center">
             <div class="nav-profile-text d-flex flex-column">
-              <span class="font-weight-bold mb-2">{{Auth::user()->idr}}</span>
+              <span class="font-weight-bold mb-2">{{Auth::user()->kode}}</span>
             </div>            
         </div>
         <div class="row justify-content-center">
             <div class="nav-profile-text d-flex flex-column">
-              <span class="font-weight-bold mb-2">{{Auth::user()->name}}</span>
+              <span class="font-weight-bold mb-2">{{substr(Auth::user()->name,0,20)}}</span>
             </div>            
         </div>
       </a>

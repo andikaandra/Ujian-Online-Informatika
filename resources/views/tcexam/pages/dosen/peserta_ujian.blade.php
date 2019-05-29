@@ -43,7 +43,7 @@
               <div class="form-group">
                 <select class="selectpicker form-control" id="peserta" data-live-search="true" multiple name="peserta[]">
                   @foreach($users as $user)
-                  <option value="{{$user->idUser}}">{{$user->idUser}} | {{$user->name}}</option> 
+                  <option value="{{$user->kode}}">{{$user->kode}} | {{$user->name}}</option> 
                   @endforeach
                 </select>
               </div>
@@ -75,10 +75,10 @@
               <tr>
                 <td class="text-center">{{$no++}}</td>
                 <td>{{$u->user->name}}</td>
-                <td>{{$u->user->idUser}}</td>
+                <td>{{$u->user->kode}}</td>
                 <td align="center">
                   @if($u->nilai)
-                    {{$u->total_true_answer*(100/$jumlahSoal) + ($u->total_false_answer* $nilaiSalah)}}
+                    {{$u->nilai}}
                   @else
                     @if(strlen($u->soal)>0)
                       Belum Selesai
@@ -89,7 +89,7 @@
                 </td>
                 <td align="center">
                 @if($u->soal!=null)
-                  <a class="btn btn-sm btn-success" target="_blank" role="button" href="{{url('tcexam/dosen/check/exam').'/'.$u->ujians->id.'/'.$u->user->idUser}}">Check</a>
+                  <a class="btn btn-sm btn-success" target="_blank" role="button" href="{{url('tcexam/dosen/check/exam').'/'.$u->ujians->id.'/'.$u->user->kode}}">Check</a>
                 @else
                   -
                 @endif

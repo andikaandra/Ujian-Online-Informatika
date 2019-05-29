@@ -36,12 +36,7 @@
             @csrf
             <div class="form-group">
               <label for="nama">Nama Ujian</label>
-              <select class="selectpicker form-control" data-live-search="true" name="nama" id="nama" placeholder="Nama Ujian">
-                @foreach($matkul as $m)
-                <option value="{{$m->namaAgenda}} | {{$m->notule}}" data-id="{{$m->idAgenda}}" data-mulai="{{$m->WaktuMulai}}" data-selesai="{{$m->WaktuSelesai}}">{{$m->namaAgenda}} | {{$m->notule}}</option> 
-                @endforeach
-              </select>
-              <input type="hidden" name="idAgenda">
+              <input type="text" class="form-control" id="nama" name="nama" placeholder="Nama ujian" required>
             </div>
             <div class="form-group">
               <label for="nama">Jumlah soal</label>
@@ -54,7 +49,7 @@
               </div>
               <div class="form-group col">
                 <label for="">Skor jawaban salah</label>
-                <input type="number" class="form-control" id="nilai_salah" name="nilai_salah" placeholder="Skor jika jawaban salah. contoh: 0 atau -1" required>
+                <input type="number" class="form-control" min="-100" max="0" id="nilai_salah" name="nilai_salah" placeholder="Skor jika jawaban salah. contoh: 0 atau -1" required>
               </div>
             </div>
             <div class="form-gorup">
@@ -69,8 +64,7 @@
               </div>
               <div class="form-group col">
                 <label for="">Waktu mulai</label>
-                <input type="time" class="form-control" id="waktu_mulai" placeholder="Waktu ujian dimulai" required disabled readonly>
-                <input type="hidden" name="waktu_mulai">
+                <input type="time" name="waktu_mulai" class="form-control" id="waktu_mulai" placeholder="Waktu ujian dimulai" required>
               </div>
             </div>
             <div class="form-row">
@@ -80,8 +74,7 @@
               </div>
               <div class="form-group col">
                 <label for="">Waktu akhir</label>
-                <input type="time" class="form-control" id="waktu_akhir"  placeholder="Waktu ujian dimulai" required disabled readonly>
-                <input type="hidden" name="waktu_akhir">
+                <input type="time" name="waktu_akhir" class="form-control" id="waktu_akhir"  placeholder="Waktu ujian dimulai" required>
               </div>
             </div>
             <hr>
@@ -117,16 +110,6 @@
 <script>
   $('#body-section').removeClass('aside-menu-lg-show');
   $(document).ready(function(){
-        var selected = $('#nama').find('option:selected');
-        var mulai = selected.data('mulai'); 
-        var selesai = selected.data('selesai'); 
-        var id = selected.data('id'); 
-        $('#waktu_mulai').val(mulai.slice(0,5));
-        $('#waktu_akhir').val(selesai.slice(0,5));
-        $('[name="waktu_mulai"]').val(mulai);
-        $('[name="waktu_akhir"]').val(selesai);
-        $('[name="idAgenda"]').val(id);
-
         var today = new Date();
         var dd = today.getDate();
         var mm = today.getMonth()+1;
@@ -141,18 +124,6 @@
         today = yyyy+'-'+mm+'-'+dd;
         document.getElementById("tanggal_mulai").setAttribute("min", today);
         document.getElementById("tanggal_akhir").setAttribute("min", today);
-
-        $('#nama').on('change', function() {
-          var selected = $(this).find('option:selected');
-          var mulai = selected.data('mulai'); 
-          var selesai = selected.data('selesai'); 
-          var id = selected.data('id'); 
-          $('#waktu_mulai').val(mulai.slice(0,5));
-          $('#waktu_akhir').val(selesai.slice(0,5));
-          $('[name="waktu_mulai"]').val(mulai);
-          $('[name="waktu_akhir"]').val(selesai);
-          $('[name="idAgenda"]').val(id);
-        });
 
   });
 

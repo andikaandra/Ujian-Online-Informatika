@@ -14,8 +14,11 @@ class CreatePacketTable extends Migration
         Schema::create('tcexam_packet', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('peserta_ujian_id')->unsigned();
+            $table->unsignedBigInteger('ujian_id');
             $table->bigInteger('soal_id')->unsigned();
-            $table->string('jawaban')->nullable();
+            $table->text("jawaban_soal");
+            $table->integer("status")->default(0);
+            $table->text("jawaban")->nullable();
             $table->timestamps();
         });
     }

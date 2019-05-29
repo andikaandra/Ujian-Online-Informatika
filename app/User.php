@@ -36,6 +36,6 @@ class User extends Authenticatable
     ];
 
     public function ujians(){
-        return $this->hasMany('App\TcExamPesertaUjian', 'user_id', 'id');
+        return $this->hasMany('App\TcExamPesertaUjian', 'user_id', 'kode');
     }
 }

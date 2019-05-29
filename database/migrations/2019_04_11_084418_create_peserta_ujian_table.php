@@ -20,7 +20,7 @@ class CreatePesertaUjianTable extends Migration
             // $table->text("jawaban")->nullable();
             $table->integer("total_true_answer")->nullable();
             $table->integer("total_false_answer")->nullable();
-            $table->integer("nilai")->nullable();
+            $table->float("nilai", 8, 2)->nullable();
             $table->timestamps();
         });
     }
