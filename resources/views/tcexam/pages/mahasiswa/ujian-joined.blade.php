@@ -22,6 +22,7 @@
           <div class="row justify-content-center">
             <div class="col">
               {!!$soal->soal->deskripsi!!}
+              <hr>
               @if($soal->soal->file_path)
                 <img id="gambarview" src="{{asset('/storage').$soal->soal->file_path}}" alt="gambar soal" class="img-fluid" style=" max-width:600px;" >
               @endif

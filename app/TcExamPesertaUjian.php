@@ -10,7 +10,7 @@ class TcExamPesertaUjian extends Model
     protected $guarded = [];
 
 	public function user(){
-	    return $this->belongsTo('App\User', 'user_id', 'idUser');
+	    return $this->belongsTo('App\User', 'user_id', 'id');
 	}
 
 	public function ujians(){

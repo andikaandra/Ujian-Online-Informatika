@@ -58,6 +58,8 @@
           <br>
           @php
             $no=1; 
+            $jumlahSoal = count($ujian->soals);
+            $nilaiSalah = $ujian->false_answer;
           @endphp
           <table class="display responsive no-wrap table" width="100%">
             <thead class="text-center">
@@ -66,7 +68,7 @@
               <th>NRP</th>
               <th>Nilai</th>
               <th>Paket</th>
-              <th >Action</th>
+              <th>Action</th>
             </thead>
             <tbody>
               @foreach($ujian->peserta as $u)
@@ -74,7 +76,17 @@
                 <td class="text-center">{{$no++}}</td>
                 <td>{{$u->user->name}}</td>
                 <td>{{$u->user->idUser}}</td>
-                <td align="center">{{$u->nilai}}</td>
+                <td align="center">
+                  @if($u->nilai)
+                    {{$u->total_true_answer*(100/$jumlahSoal) + ($u->total_false_answer* $nilaiSalah)}}
+                  @else
+                    @if(strlen($u->soal)>0)
+                      Belum Selesai
+                    @else
+                      Belum Ikut
+                    @endif
+                  @endif
+                </td>
                 <td align="center">
                 @if($u->soal!=null)
                   <a class="btn btn-sm btn-success" target="_blank" role="button" href="{{url('tcexam/dosen/check/exam').'/'.$u->ujians->id.'/'.$u->user->idUser}}">Check</a>
@@ -83,6 +95,9 @@
                 @endif
                 </td>
                 <td align="center">
+                  @if($u->status==1)
+                  <button class="btn btn-info btn-sm text-white m-2 lanjut" data-id="{{$u->id}}">Lanjutkan</button>
+                  @endif
                   <button class="btn btn-danger btn-sm delete" data-id="{{$u->id}}">Hapus</button>
                 </td>
               </tr>
@@ -94,6 +109,10 @@
       <div class="card-footer">
       </div>
     </div>
+<form action="{{route('lanjutkan.ujian')}}" method="post" id="lanjutUjian">
+  @csrf
+  <input type="hidden" name="peserta_ujian_id" id="peserta_ujian_id">
+</form>
 <form method="post" id="hapusPeserta" action="{{route('hapus.peserta')}}">
   @csrf
   <input type="hidden" name="id" id="idPesertaUjian">
@@ -152,6 +171,25 @@
               try {
                 $('#idPesertaUjian').val(id);
                 $('#hapusPeserta').submit();
+              } catch (error) {
+                  alert("error");
+                  console.log(error);
+                  return;
+              };
+              // location.reload();
+            }, 
+            function() { 
+                // alertify.error('Cancel')
+            }
+          );
+      });
+
+      $(".lanjut").click(function() {
+            const id = $(this).attr('data-id');
+            alertify.confirm('Confirmation', 'Jika iya maka peserta dapat melanjutkan ujiannya', function() {
+              try {
+                $('#peserta_ujian_id').val(id);
+                $('#lanjutUjian').submit();
               } catch (error) {
                   alert("error");
                   console.log(error);

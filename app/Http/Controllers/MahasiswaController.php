@@ -13,12 +13,17 @@ use DB;
 
 class MahasiswaController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function ujian(Request $request)
     {
 		try {
 			$start = microtime(true);
 			$ujian = TcExamUjian::find($request->ujian_id);
-			$pesertaUjian = TcExamPesertaUjian::where('ujian_id', $request->ujian_id)->where('user_id', Auth::user()->idUser)->first();
+			$pesertaUjian = TcExamPesertaUjian::where('ujian_id', $request->ujian_id)->where('user_id', Auth::user()->id)->first();
 			$daftarSoal = $ujian->soals;
 			$totalSoal = count($daftarSoal);
 			$array = range(0, $totalSoal - 1);
@@ -41,7 +46,7 @@ class MahasiswaController extends Controller
 			return redirect()->back()->with('success', 'Successfully joined test!');
 			
 		} catch (\Exception $e) {
-	        $eMessage = 'ujian - User: ' . Auth::user()->idUser . ', error: ' . $e->getMessage();
+	        $eMessage = 'ujian - User: ' . Auth::user()->id . ', error: ' . $e->getMessage();
 	        Log::emergency($eMessage);
 	        // return $e->getMessage();
 	    	return redirect()->back()->with('error', 'Whoops, something error!');
@@ -66,13 +71,14 @@ class MahasiswaController extends Controller
 			}
 			$valueTrue = $pesertaUjian->ujians->true_answer;
 			$valueFalse = $pesertaUjian->ujians->false_answer;
-			$nilai = ($true*(int)$valueTrue) + ($false*(int)$valueFalse);
+			// $nilai = ($true*(int)$valueTrue) + ($false*(int)$valueFalse);
+			$nilai = ($true*(100/count($packets))) + ($false*(int)$valueFalse);
 			$pesertaUjian->update(['status' => 1, 'total_true_answer' => $true, 'total_false_answer' => $false, 'nilai' => $nilai ]);
 
 			return redirect()->back()->with('success', 'Finished Test!');
 			
 		} catch (\Exception $e) {
-	        $eMessage = 'finish test - User: ' . Auth::user()->idUser . ', error: ' . $e->getMessage();
+	        $eMessage = 'finish test - User: ' . Auth::user()->id . ', error: ' . $e->getMessage();
 	        Log::emergency($eMessage);
 	        // return $e->getMessage();
 	    	return redirect()->back()->with('error', 'Whoops, something error!');

@@ -50,7 +50,7 @@
               @foreach($packets->packet as $pack)
               <tr>
                 <td align="center">{{$no++}}</td>
-                <td><?php echo str_limit($pack->soal->deskripsi, 80, '...'); ?></td>
+                <td width="40%">{{ substr($pack->soal->deskripsi,0,50) }}</td>
                 <td><?php echo str_limit($pack->jawaban_soal, 30, '...'); ?></td>
                 <td><?php echo str_limit($pack->jawaban, 30, '...'); ?></td>
                 <td align="center">

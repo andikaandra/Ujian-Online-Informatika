@@ -63,7 +63,7 @@
           <table class="display responsive no-wrap table" width="100%">
             <thead class="text-center">
               <th width="10">NO</th>
-              <th>Soal</th>
+              <td>Soal</td>
               <th>Jawaban</th>
               <th >Action</th>
             </thead>
@@ -71,8 +71,8 @@
               @foreach($ujian->soals as $u)
               <tr>
                 <td align="center">{{$no++}}</td>
-                <td><?php echo str_limit($u->deskripsi, 80, '...'); ?></td>
-                <td><?php echo str_limit($u->jawaban, 30, '...'); ?></td>
+                <td width="45%">{!! substr($u->deskripsi,0,50) !!}</td>
+                <td width="30%">{{ substr($u->jawaban,0,30) }}</td>
                 <td align="center">
                   <button class="btn btn-info text-white btn-sm view" data-id="{{$u->id}}">View</button>
                   <button class="btn btn-danger btn-sm delete" data-id="{{$u->id}}">Hapus</button>
@@ -140,10 +140,10 @@
         <div class="form-group">
           <label for="">Pilihan</label>
           <ol type="A">
-            <li><input type="text" class="form-control mb-2" name="pilihan1" autocomplete="off"></li>
-            <li><input type="text" class="form-control mb-2" name="pilihan2" autocomplete="off"></li>
-            <li><input type="text" class="form-control mb-2" name="pilihan3" autocomplete="off"></li>
-            <li><input type="text" class="form-control mb-2" name="pilihan4" autocomplete="off"></li>
+            <li><input type="text" class="form-control mb-2" name="pilihan1" autocomplete="off" required></li>
+            <li><input type="text" class="form-control mb-2" name="pilihan2" autocomplete="off" required></li>
+            <li><input type="text" class="form-control mb-2" name="pilihan3" autocomplete="off" required></li>
+            <li><input type="text" class="form-control mb-2" name="pilihan4" autocomplete="off" required></li>
             <li><input type="text" class="form-control mb-2" name="pilihan5" autocomplete="off" ></li>
           </ol>
           <small class="text-danger">*Kosongkan pilihan E jika pilihan hanya 4</small>
@@ -187,6 +187,8 @@
 <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" id="modalData2" aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
+      <form method="post" id="formsoaledit" enctype="multipart/form-data" action="{{route('edit.soal')}}">
+        @csrf
       <div class="modal-header">
         <h5 class="modal-title">Edit soal</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -196,7 +198,8 @@
       <div class="modal-body">
         <div class="form-group">
           <label for="nama">Deskripsi soal</label>
-          <div class="form-control" id="editor2"></div>
+          <div class="form-control" style="height: 375px;" class="mb-3" id="editor2"></div>
+          <input type="hidden" id="descriptionedit" name="descriptionedit">
         </div>
         <hr>
         <div class="form-group">
@@ -207,22 +210,48 @@
         <div class="form-group">
           <label for="">Pilihan</label>
           <ol type="A">
-            <li><input type="text" class="form-control mb-2" id="pilihan1view" readonly></li>
-            <li><input type="text" class="form-control mb-2" id="pilihan2view" readonly></li>
-            <li><input type="text" class="form-control mb-2" id="pilihan3view" readonly></li>
-            <li><input type="text" class="form-control mb-2" id="pilihan4view" readonly></li>
-            <li><input type="text" class="form-control mb-2" id="pilihan5view" readonly ></li>
+            <li><input type="text" class="form-control mb-2" name="pilihan1view" id="pilihan1view" autocomplete="off" required></li>
+            <li><input type="text" class="form-control mb-2" name="pilihan2view" id="pilihan2view" autocomplete="off" required></li>
+            <li><input type="text" class="form-control mb-2" name="pilihan3view" id="pilihan3view" autocomplete="off" required></li>
+            <li><input type="text" class="form-control mb-2" name="pilihan4view" id="pilihan4view" autocomplete="off" required></li>
+            <li><input type="text" class="form-control mb-2" name="pilihan5view" id="pilihan5view" autocomplete="off" ></li>
           </ol>
         </div>
         <hr>
         <div class="form-group">
+          <label for="">Jawaban</label><br>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" id="cb1view" value="pilihan1view" name="jawabanview" required>
+              <label class="form-check-label" for="cb1view">A</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" id="cb2view" value="pilihan2view" name="jawabanview" required>
+              <label class="form-check-label" for="cb2view">B</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" id="cb3view" value="pilihan3view" name="jawabanview" required>
+              <label class="form-check-label" for="cb3view">C</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" id="cb4view" value="pilihan4view" name="jawabanview" required>
+              <label class="form-check-label" for="cb4view">D</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" id="cb5view" value="pilihan5view" name="jawabanview" required>
+              <label class="form-check-label" for="cb5view">E</label>
+            </div>
+        </div>
+{{--         <div class="form-group">
           <label for="nama">Jawaban</label>
           <input type="text" class="form-control" readonly id="jawabanview">
-        </div>
+        </div> --}}
         <br><br>
       </div>
+      <input type="hidden" id="soal_ids" name="soal_id" value="">
+      <input type="hidden" name="ujian_id" value="{{$ujian->id}}">
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
       </div>
       </form>
     </div>
@@ -260,7 +289,7 @@
     modules: {
       toolbar: toolbarOptions
     },
-    readOnly: true,
+    placeholder: 'Deskripsi soal.',
   });
 </script>
 <script>
@@ -312,19 +341,34 @@
 
         quill2.root.innerHTML = data.soal.deskripsi
 
+        $('#soal_ids').val(id)
         $('#pilihan1view').val(data.soal.pilihan_a)
         $('#pilihan2view').val(data.soal.pilihan_b)
         $('#pilihan3view').val(data.soal.pilihan_c)
         $('#pilihan4view').val(data.soal.pilihan_d)
         $('#pilihan5view').val(data.soal.pilihan_e)
-        $('#jawabanview').val(data.soal.jawaban)
+        if (data.soal.pilihan_a==data.soal.jawaban) {
+          $("#cb1view").prop("checked", true);
+        }
+        else if(data.soal.pilihan_b==data.soal.jawaban){
+          $("#cb2view").prop("checked", true);
+        }
+        else if(data.soal.pilihan_c==data.soal.jawaban){
+          $("#cb3view").prop("checked", true);
+        }
+        else if(data.soal.pilihan_d==data.soal.jawaban){
+          $("#cb4view").prop("checked", true);
+        }
+        else if(data.soal.pilihan_e==data.soal.jawaban){
+          $("#cb5view").prop("checked", true);
+        }
+
         if (data.soal.file_path) {
           $('#gambarview').attr('src', $('#path').val()+data.soal.file_path).width(150).height('auto');
         }
         else{
           $('#gambarview').attr('src', '');
         }
-        console.log($('#path').val() + data.soal.file_path);
         $("#modalData2").modal('show');
       });
 
@@ -341,6 +385,22 @@
           e.preventDefault();
         }
         $("input[name='description']").val(html);
+
+      });
+
+      $("#formsoaledit").submit(function(e) {
+        var myEditor = document.querySelector('#editor2')
+        var html = myEditor.children[0].innerHTML
+
+        // if (!html.length) {
+        //   alert("Cannot be empty!");
+        //   return false;
+        // }
+        if ($('input[name=jawabanview]:checked').val()=="pilihan5view" && $("input[name='pilihan5view']").val().length == 0) {
+          alert("Pilihan 'E' tidak boleh kosong!")
+          e.preventDefault();
+        }
+        $("input[name='descriptionedit']").val(html);
 
       });
 

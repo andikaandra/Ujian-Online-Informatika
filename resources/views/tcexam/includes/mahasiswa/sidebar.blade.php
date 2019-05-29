@@ -10,7 +10,7 @@
         </div>
         <div class="row justify-content-center">
             <div class="nav-profile-text d-flex flex-column">
-              <span class="font-weight-bold mb-2">{{Auth::user()->idUser}}</span>
+              <span class="font-weight-bold mb-2">{{Auth::user()->idr}}</span>
             </div>            
         </div>
         <div class="row justify-content-center">

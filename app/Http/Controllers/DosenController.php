@@ -14,13 +14,18 @@ use DB;
 
 class DosenController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function setTambahUjian(Request $request)
     {
     	// return $request;
 		try {
 			$ujian = TcExamUjian::create([
 				'nama' => $request->nama,
-				'id_dosen' => Auth::user()->idUser,
+				'id_dosen' => Auth::user()->id,
 				'true_answer'	=>	100/$request->jumlah_soal,
 				'false_answer'	=>	$request->nilai_salah,
 				'pass_test'	=>	$request->pass_test,
@@ -37,12 +42,12 @@ class DosenController extends Controller
 			foreach ($peserta as $p) {
 				TcExamPesertaUjian::updateOrCreate ([
 					'ujian_id' => $ujian->id,
-					'user_id' => $p->idUser
+					'user_id' => $p->id
 		      	]);
 			}
 
 		} catch (\Exception $e) {
-	        $eMessage = 'new ujian - User: ' . Auth::user()->idUser . ', error: ' . $e->getMessage();
+	        $eMessage = 'new ujian - User: ' . Auth::user()->id . ', error: ' . $e->getMessage();
 	        Log::emergency($eMessage);
 	    	return redirect()->back()->with('error', 'Whoops, something error!'); 
 	    }
@@ -51,7 +56,6 @@ class DosenController extends Controller
 
     public function setUpdateUjian(Request $request)
     {
-    	// return $request;
 		try {
 			TcExamUjian::find($request->id_ujian)->update([
 				'nama' => $request->nama,
@@ -67,7 +71,7 @@ class DosenController extends Controller
 				'time_end'	=>	$request->waktu_akhir,
       	]);
 		} catch (\Exception $e) {
-	        $eMessage = 'update ujian - User: ' . Auth::user()->idUser . ', error: ' . $e->getMessage();
+	        $eMessage = 'update ujian - User: ' . Auth::user()->id . ', error: ' . $e->getMessage();
 	        Log::emergency($eMessage);
 	    	return redirect()->back()->with('error', 'Whoops, something error!'); 
 	    }
@@ -84,7 +88,7 @@ class DosenController extends Controller
 		      	]);
 			}
 		} catch (\Exception $e) {
-	        $eMessage = 'new participant - User: ' . Auth::user()->idUser . ', error: ' . $e->getMessage();
+	        $eMessage = 'new participant - User: ' . Auth::user()->id . ', error: ' . $e->getMessage();
 	        Log::emergency($eMessage);
 	    	return response()->json(['error' => $eMessage]);
 	    }
@@ -96,7 +100,7 @@ class DosenController extends Controller
 		try {
 			TcExamPesertaUjian::find($request->id)->delete();
 		} catch (\Exception $e) {
-	        $eMessage = 'delete participant - User: ' . Auth::user()->idUser . ', error: ' . $e->getMessage();
+	        $eMessage = 'delete participant - User: ' . Auth::user()->id . ', error: ' . $e->getMessage();
 	        Log::emergency($eMessage);
 	    	return redirect()->back()->with('error', 'Whoops, something error!'); 
 	    }
@@ -152,11 +156,55 @@ class DosenController extends Controller
 	    	}
 		    $soal->save();
 		} catch (\Exception $e) {
-	        $eMessage = 'new soal - User: ' . Auth::user()->idUser . ', error: ' . $e->getMessage();
+	        $eMessage = 'new soal - User: ' . Auth::user()->id . ', error: ' . $e->getMessage();
 	        Log::emergency($eMessage);
 	    	return redirect()->back()->with('error', $eMessage); 
 	    }
 	    return redirect()->back()->with('success', 'Question successfully created!');
+    }
+
+    public function setEditSoal(Request $request)
+    {
+    	// return $request;
+		try {
+	        $validator = Validator::make($request->all(), [
+	            'descriptionedit' =>  'required|max:2000',
+	            'pilihan1view' => 'required|max:600',
+	            'pilihan2view' => 'required|max:600',
+	            'pilihan3view' => 'required|max:600',
+	            'pilihan4view' => 'required|max:600',
+	            'jawabanview' => 'required|max:600'
+	        ]);
+
+	        if ($validator->fails()) {
+	            return redirect()->back()->withErrors($validator)->withInput();
+	        }
+
+			$soal = TcExamSoal::find($request->soal_id);
+		    $soal->ujian_id = $request->ujian_id;
+		    $soal->deskripsi = $request->descriptionedit;
+		    $soal->pilihan_a = $request->pilihan1view;
+		    $soal->pilihan_b = $request->pilihan2view;
+		    $soal->pilihan_c = $request->pilihan3view;
+		    $soal->pilihan_d = $request->pilihan4view;
+		    $soal->jawaban = $request->{$request->jawabanview};
+        	if ($request->pilihan5view!='') {
+	    		$validator = Validator::make($request->all(), [
+    	            'pilihan5view' => 'required|max:600',
+	        	]);
+				if ($validator->fails()) {
+		            return redirect()->back()->withErrors($validator);
+		        }
+    			$soal->pilihan_e = $request->pilihan5view;
+    		}
+
+		    $soal->save();
+		} catch (\Exception $e) {
+	        $eMessage = 'edit soal - User: ' . Auth::user()->id . ', error: ' . $e->getMessage();
+	        Log::emergency($eMessage);
+	    	return redirect()->back()->with('error', $eMessage); 
+	    }
+	    return redirect()->back()->with('success', 'Question successfully edited!');
     }
 
     public function deleteSoal(Request $request)
@@ -164,7 +212,7 @@ class DosenController extends Controller
 		try {
 			TcExamSoal::find($request->id)->delete();
 		} catch (\Exception $e) {
-	        $eMessage = 'delete soal - User: ' . Auth::user()->idUser . ', error: ' . $e->getMessage();
+	        $eMessage = 'delete soal - User: ' . Auth::user()->id . ', error: ' . $e->getMessage();
 	        Log::emergency($eMessage);
 	    	return redirect()->back()->with('error', 'Whoops, something error!'); 
 	    }
@@ -195,11 +243,23 @@ class DosenController extends Controller
 		      	]);
 	    	}
 		} catch (\Exception $e) {
-	        $eMessage = 'import soal - User: ' . Auth::user()->idUser . ', error: ' . $e->getMessage();
+	        $eMessage = 'import soal - User: ' . Auth::user()->id . ', error: ' . $e->getMessage();
 	        Log::emergency($eMessage);
 	    	return redirect()->back()->with('error', 'Whoops, something error!'); 
 	    }
 	    return redirect()->back()->with('success', 'Import from '.$ujian->name.' Success!');
     }
     
+
+    public function lanjutkanUjian(Request $request)
+    {
+		try {
+			$peserta =TcExamPesertaUjian::find($request->peserta_ujian_id)->update(['total_true_answer' =>  null, 'total_false_answer' => null, 'nilai' => null, 'status' => 0]);
+		} catch (\Exception $e) {
+	        $eMessage = 'edit status peserta ujian - User: ' . Auth::user()->id . ', error: ' . $e->getMessage();
+	        Log::emergency($eMessage);
+	    	return response()->json(['error' => $eMessage]);
+	    }
+	    return redirect()->back()->with('success', 'Peserta dapat melanjutkan ujian!');
+    }
 }

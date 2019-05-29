@@ -19,6 +19,7 @@ Route::get('login', 'Auth\LoginController@loginPage');
 Route::post('login', 'Auth\LoginController@login');
 Route::post('logout', 'Auth\LogoutController@logout');
 
+
 Route::prefix('tcexam')->group(function () {
 
 	Route::prefix('mahasiswa')->middleware(['mahasiswa_only'])->group(function () {
@@ -49,7 +50,10 @@ Route::prefix('tcexam')->group(function () {
 		Route::post('/add/ujian/peserta', 'DosenController@setTambahPeserta')->name('tambah.peserta');
 		Route::post('/delete/ujian/peserta', 'DosenController@deletePeserta')->name('hapus.peserta');
 
-		Route::post('/add/ujian/soal', 'DosenController@setTambahSoal')->name('tambah.soal');
+		Route::post('/lanjutkan/ujian', 'TcExamDosenController@lanjutkanUjian')->name('lanjutkan.ujian');
+
+        Route::post('/add/ujian/soal', 'TcExamDosenController@setTambahSoal')->name('tambah.soal');
+        Route::post('/edit/ujian/soal', 'TcExamDosenController@setEditSoal')->name('edit.soal');
 		Route::post('/delete/ujian/soal', 'DosenController@deleteSoal')->name('hapus.soal');
 
 		Route::get('/list-ujian', 'PageController@getListUjianPage');

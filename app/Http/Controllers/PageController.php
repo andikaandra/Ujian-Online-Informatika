@@ -16,6 +16,11 @@ use DB;
 
 class PageController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function getMahasiswaPage()
     {
         return view('tcexam.pages.mahasiswa.index');
@@ -28,7 +33,7 @@ class PageController extends Controller
 
     public function getTambahUjianPage()
     {
-        $matkul = DB::table('agenda')->where('fk_idPIC',Auth::user()->idUser)->get();
+        $matkul = DB::table('agenda')->where('fk_idPIC',Auth::user()->id)->get();
         return view('tcexam.pages.dosen.tambah-ujian', compact('matkul'));
     }
 
@@ -39,13 +44,13 @@ class PageController extends Controller
 
     public function getListUjianData()
     {
-        $listUjian = TcExamUjian::where('id_dosen', Auth::user()->idUser)->get();
+        $listUjian = TcExamUjian::where('id_dosen', Auth::user()->id)->get();
         return response()->json(['data' => $listUjian]);
     }
 
     public function getUjianData($id)
     {
-        return response()->json(['ujian' => TcExamUjian::where('id_dosen', Auth::user()->idUser)->where('id', $id)->first()]);
+        return response()->json(['ujian' => TcExamUjian::where('id_dosen', Auth::user()->id)->where('id', $id)->first()]);
     }
 
     public function getSoalData($id)
@@ -54,7 +59,7 @@ class PageController extends Controller
     }
 
     public function finishTour(Request $request) {
-        $user = User::find(Auth::user()->id)->update(['has_finish_tour' => 1]);
+        $user = User::where('id', Auth::user()->id)->update(['has_finish_tour' => 1]);
         return response()->json(['message' => $user], 200);
     }
 
@@ -65,7 +70,7 @@ class PageController extends Controller
 
     public function getPesertaUjianPage($id)
     {
-        $ujian = TcExamUjian::where('id_dosen', Auth::user()->idUser)->where('id', $id)->first();
+        $ujian = TcExamUjian::where('id_dosen', Auth::user()->id)->where('id', $id)->first();
         if (!$ujian) {
             return redirect('tcexam/dosen/');
         }
@@ -76,11 +81,11 @@ class PageController extends Controller
     public function getSoalUjianPage($id)
     {
         // return $id;
-        $ujian = TcExamUjian::where('id_dosen', Auth::user()->idUser)->where('id', $id)->first();
+        $ujian = TcExamUjian::where('id_dosen', Auth::user()->id)->where('id', $id)->first();
         if (!$ujian) {
             return "500, This is not your authority";
         }
-        $listUjian = TcExamUjian::where('id_dosen', Auth::user()->idUser)->where('id', '!=' , $id)->get();
+        $listUjian = TcExamUjian::where('id_dosen', Auth::user()->id)->where('id', '!=' , $id)->get();
         return view('tcexam.pages.dosen.soal_ujian', compact('ujian', 'listUjian'));
     }
 
@@ -90,14 +95,14 @@ class PageController extends Controller
         $ujian = TcExamUjian::find($id);
         $status = 0;
         foreach ($ujian->peserta as $peserta) {
-            if ($peserta->user_id == Auth::user()->idUser) {
+            if ($peserta->user_id == Auth::user()->id) {
                 $status = 1;
                 break;
             }
         }
         // return $status;
         if ($status) {
-            $packets = TcExamPesertaUjian::where('ujian_id', $ujian->id)->where('user_id', Auth::user()->idUser)->first();
+            $packets = TcExamPesertaUjian::where('ujian_id', $ujian->id)->where('user_id', Auth::user()->id)->first();
             date_default_timezone_set('Asia/Jakarta');
             $format = 'Y-m-d H:i:s';
             $start = date($format,strtotime(substr($ujian->date_start, 0, 11).$ujian->time_start));
@@ -131,7 +136,7 @@ class PageController extends Controller
     public function getUjianPageDummy($id, $flag)
     {
         if ($flag=='authority') {
-            $packets = TcExamPesertaUjian::where('ujian_id', $id)->where('user_id', Auth::user()->idUser)->first();
+            $packets = TcExamPesertaUjian::where('ujian_id', $id)->where('user_id', Auth::user()->id)->first();
             return $packets->packet;
         }
         return '404';
@@ -181,31 +186,57 @@ class PageController extends Controller
         }
     }
 
-    public function getUjianDoneQuestion($id, $idUser){
-        $packets = TcExamPesertaUjian::where('ujian_id', $id)->where('user_id', $idUser)->first();
+    public function getUjianDoneQuestion($id, $id){
+        $packets = TcExamPesertaUjian::where('ujian_id', $id)->where('user_id', $id)->first();
         return view('tcexam.pages.dosen.soal_read_only', compact('packets'));
         return $packets->packet;
     }
 
     public function exportNilai($id){
         $ujian = TcExamUjian::find($id);
+
+        date_default_timezone_set('Asia/Jakarta');
+        $format = 'Y-m-d H:i:s';
+        $end = date($format,strtotime(substr($ujian->date_end, 0, 11).$ujian->time_end));
+        $now = date($format);
+
+        if ($now <= $end) {
+            return "Anda tidak dapat export sampai ujian telah selesai";
+        }
+
         $peserta = $ujian->peserta;
+
+        foreach ($peserta as $pes) {
+            if (strlen($pes->soal)>0 && $pes->nilai==null) {
+                $packets = $pes->packet;
+                $true = 0;
+                $false = 0;
+                foreach ($packets as $packet) {
+                    if ($packet->jawaban == $packet->jawaban_soal) {
+                        $true = $true + 1;
+                    }
+                    else{
+                        $false = $false + 1;
+                    }
+                }
+                $valueTrue = $pes->ujians->true_answer;
+                $valueFalse = $pes->ujians->false_answer;
+                $nilai = ($true*(100/count($packets))) + ($false*(int)$valueFalse);
+                $pes->update(['status' => 1, 'total_true_answer' => $true, 'total_false_answer' => $false, 'nilai' => $nilai ]);
+            }
+        }
+        $jumlahSoal = count($ujian->soals);
+        $nilaiSalah = $ujian->false_answer;
         $data = array(['NO', 'NRP', 'NAMA', 'JUMLAH BENAR', 'JUMLAH SALAH', 'NILAI']);
         $no=1;
         foreach ($peserta as $p) {
-            array_push($data, [$no++, $p->user_id, $p->user->name, $p->total_true_anwer, $p->total_false_anwer, $p->nilai]);
+            array_push($data, [$no++, $p->user_id, $p->user->name, $p->total_true_answer, $p->total_false_answer, $p->total_true_answer*(100/$jumlahSoal) + ($p->total_false_answer* $nilaiSalah)]);
         }
         $export = new NilaiExport([
             $data
         ]);
 
-        return Excel::download($export, 'invoices.xlsx');
-
-        return Excel::download(new NilaiExport, 'nilai.xlsx');
-        // return (new NilaiExport($id))->download('invoices.xlsx');
-
-        // return (new NilaiExport($id))->download('nilai.xlsx');
-
+        return Excel::download($export, 'Rekap Nilai '.$ujian->nama.'.xlsx');
         return $ujian->peserta;
     }
 }
