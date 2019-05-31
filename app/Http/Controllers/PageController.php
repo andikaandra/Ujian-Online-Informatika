@@ -133,15 +133,6 @@ class PageController extends Controller
         return redirect('tcexam/mahasiswa/');
     }
 
-    public function getUjianPageDummy($id, $flag)
-    {
-        if ($flag=='authority') {
-            $packets = TcExamPesertaUjian::where('ujian_id', $id)->where('user_id', Auth::user()->kode)->first();
-            return $packets->packet;
-        }
-        return '404';
-    }
-
     public function raguRagu(Request $request){
         try {
             TcExamPacket::find($request->packet_id)->update(['status' => -1]);

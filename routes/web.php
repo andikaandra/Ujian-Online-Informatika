@@ -29,7 +29,6 @@ Route::prefix('tcexam')->group(function () {
 		Route::get('/history', 'PageController@getHistoryPage');
 
 		Route::get('/exam/{id}/{name}', 'PageController@getUjianPage')->name('change.question');
-		Route::get('/exam/{id}/u/{flag}', 'PageController@getUjianPageDummy');
 
 		Route::post('/exam/join', 'MahasiswaController@ujian')->name('join.ujian');
 
@@ -39,7 +38,6 @@ Route::prefix('tcexam')->group(function () {
 		Route::post('/exam/jawab/soal', 'PageController@jawabSoal')->name('jawab.soal');
 		Route::post('/exam/reset/soal', 'PageController@resetSoal')->name('reset.soal');
 		Route::post('/exam/finish/test', 'MahasiswaController@finishTest')->name('finish.test');
-		// Route::post('/change/question', 'PageController@changeQuestion')->name('change.question');
 	});
 
 
