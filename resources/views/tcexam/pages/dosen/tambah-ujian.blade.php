@@ -40,12 +40,12 @@
             </div>
             <div class="form-group">
               <label for="nama">Jumlah soal</label>
-              <input type="text" onkeypress='validate(event)' onkeyup='getVal()' class="form-control" name="jumlah_soal" id="jumlah_soal" placeholder="Jumlah soal" required>
+              <input type="text" onkeypress='validate(event)' class="form-control" name="jumlah_soal" id="jumlah_soal" placeholder="Jumlah soal" required>
             </div>
             <div class="form-row">
               <div class="form-group col">
                 <label for="">Skor jawaban benar</label>
-                <input type="text" min="1" class="form-control" id="nilai_benar" name="nilai_benar" placeholder="Skor jika jawaban benar. contoh: 2" required readonly disabled>
+                <input type="text" min="1" class="form-control" id="nilai_benar" name="nilai_benar" placeholder="Skor jika jawaban benar. contoh: 2" required>
               </div>
               <div class="form-group col">
                 <label for="">Skor jawaban salah</label>
@@ -141,10 +141,6 @@
       theEvent.returnValue = false;
       if(theEvent.preventDefault) theEvent.preventDefault();
     }
-  }
-
-  function getVal(){
-    $('#nilai_benar').val(100/$('#jumlah_soal').val());
   }
 </script>
 @endsection

@@ -26,7 +26,7 @@ class DosenController extends Controller
 			$ujian = TcExamUjian::create([
 				'nama' => $request->nama,
 				'id_dosen' => Auth::user()->kode,
-				'true_answer'	=>	100/$request->jumlah_soal,
+				'true_answer'	=>	$request->nilai_benar,
 				'false_answer'	=>	$request->nilai_salah,
 				'pass_test'	=>	$request->pass_test,
 				'jumlah_soal'	=>	$request->jumlah_soal,
@@ -51,7 +51,7 @@ class DosenController extends Controller
 		try {
 			TcExamUjian::find($request->id_ujian)->update([
 				'nama' => $request->nama,
-				'true_answer'	=>	100/$request->jumlah_soal,
+				'true_answer'	=>	$request->nilai_benar,
 				'false_answer'	=>	$request->nilai_salah,
 				'pass_test'	=>	$request->pass_test,
 				'jumlah_soal'	=>	$request->jumlah_soal,
