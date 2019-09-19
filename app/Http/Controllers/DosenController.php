@@ -99,6 +99,12 @@ class DosenController extends Controller
 	    return redirect()->back()->with('success', 'Delete Success!');
     }
 
+	public function uploadImage(Request $request)
+    {
+		$file_path = $request->file('image')->store('public/question-image/'.$request->ujian_id);
+	    $file_path = str_replace("public","", $file_path);
+		return $file_path;
+    }
 
     public function setTambahSoal(Request $request)
     {

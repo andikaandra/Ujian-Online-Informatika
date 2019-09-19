@@ -284,7 +284,6 @@
     [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
     [ 'link', 'image', 'formula' ],
     [{ 'color': [] }, { 'background': [] }],
-    [{ 'font': [] }],
     [{ 'align': [] }],
 
     ['clean']
@@ -305,8 +304,68 @@
     },
     placeholder: 'Deskripsi soal.',
   });
-</script>
-<script>
+
+  function selectLocalImage() {
+      const input = document.createElement('input');
+      input.setAttribute('type', 'file');
+      input.click();
+
+      // Listen upload local image and save to server
+      input.onchange = () => {
+        const file = input.files[0];
+
+        // file type is only image.
+        if (/^image\//.test(file.type)) {
+          saveToServer(file);
+        } else {
+          console.warn('You could only upload images.');
+        }
+      };
+    }
+
+    /**
+     * Step2. save to server
+     *
+     * @param {File} file
+     */
+    function saveToServer(file) {
+      let res;
+      try {
+          var fd = new FormData();        
+          fd.append('image', file);
+          fd.append('_token', '{{ csrf_token() }}');
+          fd.append('ujian_id', '{{$ujian->id}}');
+
+          $.ajax({
+            url: `{{url('/tcexam/dosen/upload/image')}}`, 
+            method: 'POST',
+            processData: false,
+            contentType: false,
+            cache: false,
+            enctype: 'multipart/form-data',
+            data: fd,
+            success:function(data) {
+              console.log(data)
+              insertToEditor(data);
+            }
+          });
+      } catch (error) {
+          alert("error accepting");
+          console.log(error);
+          return;
+      }
+    }
+
+    function insertToEditor(url) {
+      let base_url = `{{url('/')}}`
+      const range = quill.getSelection();
+      quill.insertEmbed(range.index, 'image', `${base_url}storage/${url}`);
+    }
+
+    quill.getModule('toolbar').addHandler('image', () => {
+      selectLocalImage();
+    });
+
   $('#body-section').removeClass('aside-menu-lg-show');
 
   function readURL(input) {
@@ -390,14 +449,11 @@
         var myEditor = document.querySelector('#editor')
         var html = myEditor.children[0].innerHTML
 
-        // if (!html.length) {
-        //   alert("Cannot be empty!");
-        //   return false;
-        // }
         if ($('input[name=jawaban]:checked').val()=="pilihan5" && $("input[name='pilihan5']").val().length == 0) {
           alert("Pilihan 'E' tidak boleh kosong!")
           e.preventDefault();
         }
+        // let w = quill.getContents()
         $("input[name='description']").val(html);
 
       });
@@ -406,10 +462,6 @@
         var myEditor = document.querySelector('#editor2')
         var html = myEditor.children[0].innerHTML
 
-        // if (!html.length) {
-        //   alert("Cannot be empty!");
-        //   return false;
-        // }
         if ($('input[name=jawabanview]:checked').val()=="pilihan5view" && $("input[name='pilihan5view']").val().length == 0) {
           alert("Pilihan 'E' tidak boleh kosong!")
           e.preventDefault();

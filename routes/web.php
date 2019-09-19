@@ -43,7 +43,7 @@ Route::prefix('tcexam')->group(function () {
 
 	Route::prefix('dosen')->middleware(['dosen_only'])->group(function () {
 		Route::get('/', 'PageController@getDosenPage');
-		
+		Route::post('/upload/image', 'DosenController@uploadImage');
 		Route::get('/tambah-ujian', 'PageController@getTambahUjianPage');
 		Route::post('/tambah-ujian', 'DosenController@setTambahUjian')->name('tambah.ujian');
 
